@@ -10,4 +10,31 @@ block content
     a(href='#about') About
     a.icon(href='javascript:void(0);' onclick='myFunction()')
       i.fa.fa-bars
+  .main
+    input#chk(type='checkbox' aria-hidden='true')
+    .signup
+      form
+        label(for='chk' aria-hidden='true') Sign up
+        input(type='email' name='email' placeholder='Email' required='')
+        input(type='password' name='pswd' placeholder='Password' required='')
+        button.form Sign up
+        .social
+          button.go
+            i.fa.fa-google
+          button.fb
+            i.fa.fa-facebook-square
+    .login
+      form
+        label(for='chk' aria-hidden='true') Login
+        input(type='email' name='email' placeholder='Email' required='')
+        input(type='password' name='pswd' placeholder='Password' required='')
+        button.form Login
+        .social
+          button.go
+            i.fa.fa-google
+          button.fb
+            i.fa.fa-facebook-square
+
+
+  
 

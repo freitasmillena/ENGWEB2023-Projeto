@@ -14,7 +14,7 @@
   --first-color: hsl(var(--hue-color), 100%, 50%);
   --first-color-second: hsl(var(--hue-color), 100%, 85%);
   --first-color-alt: hsl(var(--hue-color), 57%, 53%);
-  --first-color-lighter: hsl(var(--hue-color), 92%, 85%);
+  --first-color-darker: hsl(var(--hue-color), 100%, 21%);
   --title-color: hsl(var(--hue-color), 8%, 15%);
   --text-color: hsl(var(--hue-color), 8%, 45%);
   --text-color-light: hsl(var(--hue-color), 8%, 65%);
@@ -52,6 +52,7 @@
   --mb-2-5: 2.5rem;
   --mb-3: 3rem;
   --mb-3-125: 3.125rem;
+  --mb-9: 9rem;
 
   /*========== z index ==========*/
   --z-tooltip: 10;
@@ -138,6 +139,7 @@ img{
 .topnav {
   background-color: var(--first-color);
   overflow: hidden;
+  margin-bottom: var(--mb-3-125);
 }
 
 /* Style the links inside the navigation bar */
@@ -179,7 +181,7 @@ img{
 }
 
 /* When the screen is less than 600 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the topnav (.icon) */
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 968px) {
   .topnav a:not(:first-child) {display: none;}
     
   .topnav a.icon {
@@ -191,10 +193,12 @@ img{
     font-size: var(--h1-font-size);
     padding-top: var(--mb-3);
   }
+
+
 }
 
 /* The "responsive" class is added to the topnav with JavaScript when the user clicks on the icon. This class makes the topnav look good on small screens (display the links vertically instead of horizontally) */
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 968px) {
   .topnav.responsive {
     position: relative;  
   }
@@ -211,4 +215,112 @@ img{
 
 }
 
+
+.main{
+	width: 40%;
+	height: 500px;
+	background: var(--first-color);
+	overflow: hidden;
+	border-radius: 10px;
+	box-shadow: 5px 20px 50px var(--first-color-darker);
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: var(--mb-9);
+
+}
+#chk{
+	display: none;
+}
+.signup{
+	position: relative;
+	width:100%;
+	height: 100%;
+}
+
+label{
+	color: #fff;
+	font-size: 2.3em;
+	justify-content: center;
+	display: flex;
+	margin: 60px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: .5s ease-in-out;
+}
+input{
+	width: 60%;
+	height: 20px;
+	background: #e0dede;
+	justify-content: center;
+	display: flex;
+	margin: 20px auto;
+	padding: 10px;
+	border: none;
+	outline: none;
+	border-radius: 5px;
+}
+.form{
+	width: 60%;
+	height: 40px;
+	margin: 10px auto;
+	justify-content: center;
+	display: block;
+	color: #fff;
+	background: var(--first-color-darker);
+	font-size: 1em;
+	font-weight: bold;
+	margin-top: 20px;
+	outline: none;
+	border: none;
+	border-radius: 5px;
+	transition: .2s ease-in;
+	cursor: pointer;
+}
+
+.form:hover{
+	background: var(--first-color-second);
+}
+
+.login{
+	height: 460px;
+	background: #eee;
+	border-radius: 60% / 10%;
+	transform: translateY(-180px);
+	transition: .8s ease-in-out;
+}
+.login label{
+	color: var(--first-color);
+	transform: scale(.6);
+}
+
+#chk:checked ~ .login{
+	transform: translateY(-500px);
+}
+#chk:checked ~ .login label{
+	transform: scale(1);	
+}
+#chk:checked ~ .signup label{
+	transform: scale(.6);
+}
+
+.social{
+  margin-top: 30px;
+  margin-left: 47%;
+  display: flex;
+  color: var(--first-color);
+}
+
+.go, .fb{
+	font-size: var(--mb-1-5);
+	font-weight: bold;
+  margin-right: var(--mb-0-5);
+	outline: none;
+	border: none;	
+	cursor: pointer;
+  background-color: var(--first-color);
+}
+
+.login .go, .login .fb{
+  background-color: #eee;
+}
 
