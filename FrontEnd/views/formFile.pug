@@ -1,0 +1,28 @@
+extends layout
+
+block content
+    .container
+        .title Upload Form
+        .content
+        form(action='#')
+          .user-details
+            .input-box
+              span.details Title
+              input(type='text' placeholder='Enter a title' required='')
+            .input-box
+              span.details Description
+              input(type='text' placeholder='Enter a short description' required='')
+          .gender-details
+            input#dot-1(type='radio' name='gender')
+            input#dot-2(type='radio' name='gender')
+            span.gender-title Visibility
+            .category
+              label(for='dot-1')
+                span.dot.one
+                span.gender Public
+              label(for='dot-2')
+                span.dot.two
+                span.gender Private
+          .button
+            input(type='submit' value='Register')
+
