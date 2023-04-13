@@ -1,0 +1,23 @@
+{
+    "name": "Plataforma de Gestão e Disponibilização de Recursos Educativos",
+    "version": "1.0.0",
+    "description": "API de recursos educativos",
+    "keywords": [
+      "recursos"
+    ],
+    "homepage": "https://recursos.com",
+    "author": {
+      "name": "Rita Vaz, Millena Freitas, Ricardo Oliveira"
+    },
+    "license": "MIT(idk ´-`)",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/myapi/myapi.git"
+    },
+    "dependencies": {
+      "express": "^4.17.1",
+      "body-parser": "^1.19.0",
+      "mongoose": "^5.10.9"
+    }
+  }
+  
