@@ -4,7 +4,7 @@ block content
     .container
         .title Upload Form
         .content
-        form(action='#')
+        form(action='' method='post')
           .user-details
             .input-box
               span.details Title
@@ -23,6 +23,14 @@ block content
               label(for='dot-2')
                 span.dot.two
                 span.gender Private
+          .drop-zone 
+            input.upload_hide(type="file" name="myFile" required)
+            label.upload_label(for="upload_costum")  
+              h3 Drag your file or click to upload
+              i.fa-solid.fa-cloud-arrow-up
+            section.progress-area
+            section.uploaded-area
+             
           .button
             input(type='submit' value='Register')
 

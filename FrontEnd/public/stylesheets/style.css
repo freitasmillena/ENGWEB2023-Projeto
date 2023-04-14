@@ -634,6 +634,34 @@ form .input-box span.details{
   background: linear-gradient(-135deg,  var(--first-color), var(--first-color-second));
   }
 
+  .drop-zone{
+    text-align: center;
+    margin-top: var(--mb-3-125);
+    border-radius: 15px;
+    border: 5px dotted var(--first-color-second);
+  }
+  .drop-zone h3{
+    color: var(--first-color-darker);
+    margin-bottom: var(--mb-1);
+  }
+
+  
+  .fa-solid.fa-cloud-arrow-up{
+    color: var(--first-color);
+    font-size: 6rem;
+    margin-bottom: var(--mb-1);
+  }
+
+  .upload_hide {
+    position: absolute;
+    max-width: 700px;
+    max-height: 200px;
+    width: 100%;
+    height: 100%;
+    background-color: red;
+    transform: translate(-50%, -18%);
+    opacity: 0;
+}
 
   @media(max-width: 968px){
 
