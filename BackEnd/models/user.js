@@ -1,6 +1,7 @@
 // nome, email, filiação (estudante, docente, curso, departamento, ...), nível (administrador, produtor ou consumidor), dataRegisto (registo na plataforma), dataUltimoAcesso, password, outros campos que julgue necessários...
 
 const mongoose = require('mongoose');
+var Recurso = require('../models/recurso')
 
 var userSchema = new mongoose.Schema({
     _id: String,
@@ -13,4 +14,4 @@ var userSchema = new mongoose.Schema({
     password: String,
 });
 
-module.exports = mongoose.model('lista',userSchema)
+module.exports = mongoose.model('user',userSchema)

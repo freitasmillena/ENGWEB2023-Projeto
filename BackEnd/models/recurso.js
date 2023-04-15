@@ -15,4 +15,4 @@ var recursoSchema = new mongoose.Schema({
     autor: String,
 });
 
-module.exports = mongoose.model('lista',recursoSchema)
+module.exports = mongoose.model('recurso',recursoSchema)

@@ -1,4 +1,5 @@
 var User = require('../models/user')
+var Recurso = require('../models/recurso')
 
 // lista de users
 module.exports.list = () => {
@@ -56,3 +57,13 @@ module.exports.deleteUser = id => {
     })
 }
 
+//GET /api/Users/:id/recursos
+module.exports.getRecursos = id => {
+    return Recurso.find({autor: id})
+    .then(dados => {
+        return dados
+    })
+    .catch(erro => {
+        return erro
+    })
+}
