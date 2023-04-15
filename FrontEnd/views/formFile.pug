@@ -24,12 +24,12 @@ block content
                 span.dot.two
                 span.gender Private
           .drop-zone 
-            input.upload_hide(type="file" name="myFile" required)
+            input.upload_hide#fileInput(type="file" name="myFile" required)
             label.upload_label(for="upload_costum")  
               h3 Drag your file or click to upload
               i.fa-solid.fa-cloud-arrow-up
-            section.progress-area
-            section.uploaded-area
+          section.hidden.uploaded-area#fileInfo
+
              
           .button
             input(type='submit' value='Register')

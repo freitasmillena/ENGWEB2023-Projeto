@@ -663,7 +663,65 @@ form .input-box span.details{
     opacity: 0;
 }
 
-  @media(max-width: 968px){
+.hidden{
+  display: none;
+}
+
+
+section .row{
+  margin-top: 15px;
+  margin-bottom: 10px;
+  background: var(--first-color-light);
+  list-style: none;
+  padding: 15px 20px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+section .row i{
+  color: var(--first-color);
+  font-size: 30px;
+}
+section .details span{
+  font-size: 14px;
+}
+
+.uploaded-area{
+  max-height: 232px;
+  overflow-y: scroll;
+}
+.uploaded-area.onprogress{
+  max-height: 150px;
+}
+.uploaded-area::-webkit-scrollbar{
+  width: 0px;
+}
+.uploaded-area .row .content{
+  display: flex;
+  align-items: center;
+}
+.uploaded-area .row .details{
+  display: flex;
+  margin-left: 15px;
+  flex-direction: column;
+}
+.uploaded-area .row .details .size{
+  color: #404040;
+  font-size: 11px;
+}
+.uploaded-area i.fa-xmark{
+  font-size: 16px;
+}
+
+.removeButton {
+  background: white;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+@media(max-width: 968px){
 
  .container{
   max-width: 60%;
