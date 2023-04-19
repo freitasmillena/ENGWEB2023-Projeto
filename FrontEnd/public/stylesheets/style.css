@@ -391,7 +391,7 @@ img{
 
 .main{
 	width: 40%;
-	height: 600px;
+	height: 800px;
 	background: var(--first-color);
 	overflow: hidden;
 	border-radius: 10px;
@@ -399,6 +399,7 @@ img{
   margin-left: auto;
   margin-right: auto;
   margin-top: var(--mb-9);
+  margin-bottom: var(--mb-9);
 
 }
 #chk{
@@ -455,7 +456,7 @@ img{
 }
 
 .signup{
-	height: 560px;
+	height: 760px;
 	background: #eee;
 	border-radius: 60% / 10%;
 	transform: translateY(-180px);
@@ -467,7 +468,7 @@ img{
 }
 
 #chk:checked ~ .signup{
-	transform: translateY(-600px);
+	transform: translateY(-800px);
 }
 #chk:checked ~ .signup label{
 	transform: scale(1);	
@@ -475,6 +476,45 @@ img{
 #chk:checked ~ .login label{ 
 	transform: scale(.6);
 }
+
+.strength-wrapper {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+#strengthMeter {
+  display: inline-block;
+  width: 50%;
+  height: 5px;
+  background-color: #FF4D4D;
+  transition: width 0.5s, background-color 0.5s;
+  position: relative;
+}
+
+#strengthLevel {
+  display: inline-block;
+  margin-left: 5px;
+  font-size: var(--mb-1);
+  font-weight: bold;
+  vertical-align: middle;
+}
+
+.password-requirements{
+  font-size: var(--mb-0-75);
+  margin-top: 3px;
+  justify-content: center;
+}
+
+.password-requirements li{
+  color: #FF4D4D;
+
+  margin: 0 auto;
+  width: 200px;
+  display: block;
+  
+  
+}
+
 
 .social{
   margin-top: 30px;

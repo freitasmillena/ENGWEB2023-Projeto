@@ -19,8 +19,18 @@ block content
       form
         label(for='chk' aria-hidden='true') Sign up
         input(type='email' name='email' placeholder='Email' required='')
-        input(type='password' name='pswd' placeholder='Password' required='')
-        input(type='password' name='pswd' placeholder='Confirm Password' required='')
+        input#passwordInput(type='password' name='pswd' placeholder='Password' required='')
+        input#confirmPasswordInput(type='password' name='pswd' placeholder='Confirm Password' required='')
+        .strength-wrapper
+          .strength-meter#strengthMeter
+          span#strengthLevel
+        ul#passwordRequirements.password-requirements
+          li#lengthReq At least 8 characters
+          li#uppercaseReq At least one uppercase letter
+          li#lowercaseReq At least one lowercase letter
+          li#numberReq At least one number
+          li#specialCharReq At least one special character
+          li#passwordMatchReq Passwords match 
         button.form Sign up
         .social
           button.go
