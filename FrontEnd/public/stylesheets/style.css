@@ -562,6 +562,7 @@ img{
   margin-left: auto;
   margin-right: auto;
   margin-top: var(--mb-9);
+  margin-bottom: var(--mb-9);
   color: var(--first-color-darker);
 }
 .container .title{
@@ -618,8 +619,9 @@ form .input-box span.details{
   font-size: 20px;
   font-weight: 500;
  }
+
  form .category{
-   display: flex;
+   display: block;
    width: 80%;
    margin-top: 10px;
    justify-content: space-between;
@@ -629,6 +631,12 @@ form .input-box span.details{
    align-items: center;
    cursor: pointer;
  }
+
+form .groups-check {
+  margin-top: 5px;
+  display: none;
+}
+
 
  form .gender{
   color: var(--first-color-darker);
@@ -674,6 +682,8 @@ form .input-box span.details{
   background: linear-gradient(-135deg,  var(--first-color), var(--first-color-second));
   }
 
+
+
   .drop-zone{
     text-align: center;
     margin-top: var(--mb-3-125);
@@ -707,6 +717,34 @@ form .input-box span.details{
   display: none;
 }
 
+.search-wrapper {
+  position: relative;
+}
+
+.fa-magnifying-glass {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  color: var(--first-color);
+}
+
+.search-groups {
+  height: 45px;
+  width: 100%;
+  outline: none;
+  font-size: 16px;
+  border-radius: 5px;
+  padding: 5px 30px 5px 35px;
+  border: 1px solid #ccc;
+  border-bottom-width: 2px;
+  transition: border-color 0.3s ease-in-out;
+  margin-top: 5px;
+}
+
+.search-groups:focus{
+  border-color: var(--first-color);
+}
 
 section .row{
   margin-top: 15px;

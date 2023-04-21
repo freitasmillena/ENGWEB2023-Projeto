@@ -139,6 +139,21 @@ function formatFileSize(size){
     return `${size.toFixed(2)} ${units[unitIndex]}`;
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const privateInput = document.getElementById('dot-2');
+    const publicInput = document.getElementById('dot-1');
+    const groupsHidden = document.getElementById('groupsHidden');
+
+    privateInput.addEventListener('click', () => {
+        groupsHidden.classList.remove('hidden');
+    })
+
+    publicInput.addEventListener('click', () => {
+        if(!groupsHidden.classList.contains('hidden'))
+        groupsHidden.classList.add('hidden');
+    })
+})
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const fileInput = document.getElementById('fileInput');

@@ -23,6 +23,11 @@ block content
               label(for='dot-2')
                 span.dot.two
                 span.gender Private
+              .hidden#groupsHidden
+                .search-wrapper
+                  i.fa-solid.fa-magnifying-glass
+                  input.search-groups#searchInput(type='text' placeholder='Search here')
+                  
           .drop-zone 
             input.upload_hide#fileInput(type="file" name="myFile" required)
             label.upload_label(for="upload_costum")  
