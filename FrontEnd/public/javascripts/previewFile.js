@@ -191,3 +191,23 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 
+var bookmarkIcon = document.getElementById("bookmarkIcon");
+var bookmarkPopup = document.querySelector(".bookmarkPopup");
+
+bookmarkIcon.addEventListener("click", function() {
+  if (this.classList.contains("fa-regular")) {
+    this.classList.remove("fa-regular");
+    this.classList.add("fa-solid");
+    bookmarkPopup.textContent = "Saved!"; // Set the popup message to "Saved!"
+  } else {
+    this.classList.remove("fa-solid");
+    this.classList.add("fa-regular");
+    bookmarkPopup.textContent = "Removed"; // Set the popup message to "Removed!"
+  }
+  bookmarkPopup.classList.add("active"); // Add the active class to show the popup
+  setTimeout(function() {
+    bookmarkPopup.classList.remove("active"); // Remove the active class after 2 seconds to hide the popup
+  }, 2000);
+});
+
+

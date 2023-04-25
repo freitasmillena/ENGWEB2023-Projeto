@@ -184,7 +184,7 @@ img{
 }
 
 /* When the screen is less than 600 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the topnav (.icon) */
-@media screen and (max-width: 968px) {
+@media screen and (max-width: 1060px) {
   .topnav a:not(:first-child) {display: none;}
     
   .topnav a.icon {
@@ -201,7 +201,7 @@ img{
 }
 
 /* The "responsive" class is added to the topnav with JavaScript when the user clicks on the icon. This class makes the topnav look good on small screens (display the links vertically instead of horizontally) */
-@media screen and (max-width: 968px) {
+@media screen and (max-width: 1060px) {
   .topnav.responsive {
     position: relative;  
   }
@@ -370,7 +370,7 @@ img{
   margin: 0;
 }
 
-@media (max-width: 968px) {
+@media (max-width: 1060px) {
   .footer {
     font-size: 14px;
   }
@@ -576,7 +576,7 @@ img{
   left: 0;
   bottom: 0;
   height: 3px;
-  width: 240px;
+  width: 40%;
   border-radius: 5px;
   background: linear-gradient(135deg, var(--first-color), var(--first-color-second));
 }
@@ -799,7 +799,7 @@ section .details span{
   cursor: pointer;
 }
 
-@media(max-width: 968px){
+@media(max-width: 1060px){
 
  .container{
   max-width: 60%;
@@ -823,3 +823,215 @@ section .details span{
   }
 }
 
+/*==================== FILE PAGE ==================== */
+.container-wrapper{
+  display: flex;
+  justify-content: center;
+  min-height:100vh;
+  flex-wrap: wrap;
+}
+
+.container-left {
+  position: relative;
+  flex: 2;
+  max-width: calc(66.66% - 20px);
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+.container-right {
+  flex: 1;
+  max-width: calc(33.33% - 20px);
+  margin-right: 50px;
+}
+
+.fa-bookmark {
+  position: absolute; 
+  top: 0; 
+  right: 20px; 
+  margin-top: 25px; 
+  color: var(--first-color-darker); 
+  font-size: var(--mb-2-5);
+  cursor: pointer;
+}
+
+.bookmarkPopup {
+  /* Styles for the bookmark popup */
+  position: absolute;
+  top: -30px; /* Position the popup above the icon, adjust value as needed */
+  right: 0; /* Position the popup to the right of the icon */
+  padding: 8px;
+  background-color: var(--first-color-darker);
+  color: #fff;
+  border-radius: 5px;
+  opacity: 0; /* Hide the popup by default */
+  transition: opacity 0.3s ease-in-out; /* Add transition effect for smooth appearance/disappearance */
+}
+
+.bookmarkPopup.active {
+  /* Styles for the active bookmark popup */
+  opacity: 1; /* Show the popup when active class is applied */
+}
+
+.file-info {
+  display: flex; 
+  justify-content: flex-start; 
+  margin-top: 10px; 
+  margin-bottom: 10px; 
+  color: #455a64;
+  font-weight: bold;
+}
+
+.file-info p {
+  margin-right: 10px;
+}
+
+.preview-file {
+  margin-top: var(--mb-1-5);
+  margin-bottom: var(--mb-1-5);
+  min-height: 30vh;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  border: 5px solid var(--first-color);
+  border-radius: 5px;
+}
+
+.container-left .button{
+  width: 20%;
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: 5px;
+  border: none;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg,  var(--first-color), var(--first-color-second));
+}
+
+
+.container-right .button input{
+  width: 100%;
+  height: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: 5px;
+  position: relative;
+  border: none;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg,  var(--first-color), var(--first-color-second));
+}
+
+
+.container-left .button:hover,
+.container-right .button input:hover{
+ /* transform: scale(0.99); */
+ background: linear-gradient(-135deg,  var(--first-color), var(--first-color-second));
+}
+
+.comment-list {
+  margin-top: 20px;
+  flex-grow: 1;
+}
+
+.comment {
+  margin-bottom: 20px;
+}
+
+.comment-author {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.comment-author i {
+  margin-right: 5px;
+}
+
+.comment-content {
+  font-size: 14px;
+  margin-bottom:3px;
+}
+
+.comment-date {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #888;
+}
+
+.comment-date i {
+  margin-right: 5px;
+}
+
+.comment-form {
+  margin-top: 20px;
+}
+
+.container-right textarea{
+  margin-top: 25px;
+  width: calc(100% / 2 - 20px);
+  height: 15%;
+  width: 100%;
+  outline: none;
+  font-size: 16px;
+  border-radius: 5px;
+  padding-left: 5px;
+  border: 1px solid #ccc;
+  border-bottom-width: 2px;
+  transition: all 0.3s ease;
+}
+
+.container-right textarea:focus,
+.container-right textarea:valid{
+  border-color: var(--first-color);
+}
+
+@media (max-width: 1060px) {
+  .container-left,
+  .container-right {
+    max-width:100%;
+  }
+  .fa-bookmark{
+    font-size: var(--mb-1-5);
+  }
+
+  .file-info {
+    flex-direction: column; 
+    align-items: flex-start;
+  }
+
+  .file-info p {
+    margin-right: 0;
+  }
+
+  .container-left .button {
+    font-size: 12px;
+  }
+
+  .container-wrapper {
+    flex-direction: column;
+  }
+  
+  .container-left, .container-right {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .comment-author i, .comment-date i {
+    margin-right: 3px;
+  }
+}

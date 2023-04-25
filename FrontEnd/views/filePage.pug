@@ -1,0 +1,54 @@
+extends layout
+
+block content
+    .container-wrapper 
+        .container.container-left 
+            .title File Title
+            i#bookmarkIcon.fa-regular.fa-bookmark
+            .bookmarkPopup Saved
+            .file-info 
+                p Author: Asdrúbal 
+                p Date: 25-04-2023
+                p Type: Image
+                p Size: 84 kb
+            p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+            .preview-file
+                p Preview aqui
+            .button Download 
+                i.fa-solid.fa-download
+        .container.container-right 
+            .title Comment Section
+            .comment-list
+                .comment
+                    .comment-author
+                        i.fa-solid.fa-user
+                        span Author Name
+                    .comment-content
+                        p Comment Content
+                    .comment-date
+                        i.fa-solid.fa-clock
+                        span 2023-04-25
+                .comment
+                    .comment-author
+                        i.fa-solid.fa-user
+                        span Author Name
+                    .comment-content
+                        p Comment Content
+                    .comment-date
+                        i.fa-solid.fa-clock
+                        span 2023-04-24
+                .comment
+                    .comment-author
+                        i.fa-solid.fa-user
+                        span Author Name
+                    .comment-content
+                        p Comment Content
+                    .comment-date
+                        i.fa-solid.fa-clock
+                        span 2023-04-23
+            .comment-form
+                form
+                    textarea#commentText(name="commentText", rows="4", placeholder="Write your comment here...")
+                    .button
+                        input(type="submit" value="Comment") 
+                        
