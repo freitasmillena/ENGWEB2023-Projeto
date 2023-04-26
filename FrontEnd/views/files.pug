@@ -1,0 +1,108 @@
+extends layout
+
+block content
+    .container-wrapper 
+        .container.container-left 
+            .title All Files
+            .content
+                .filter-container
+                    .search-wrapper
+                      i.fa-solid.fa-magnifying-glass
+                      input.search-groups(type='text' placeholder='Search here')
+                    .filter-selectors
+                        .filter-sort
+                            select(name="sort")
+                              option(value="" selected) Sort by
+                              option(value="dateasc") Date Ascending
+                              option(value="datedesc") Date Descending
+                              option(value="alphasc") Alphabetically Ascending
+                              option(value="alphadesc") Alphabetically Descending
+                        .filter-sort
+                            select(name="sort")
+                              option(value="" selected) Type
+                              option(value="dateasc") PDF
+                              option(value="datedesc") JPEG
+                              option(value="alphasc") HTML
+                              option(value="alphadesc") PNG
+            .header-files 
+                .header-title Title
+                .header-details
+                  .header-detail Author
+                  .header-detail Date
+                  .header-detail Type
+                  .header-detail Size
+            .files-list
+                .header-title This is an example of a file title
+                .header-details
+                  .header-detail Mimi
+                  .header-detail 26-04-2023
+                  .header-detail JPEG
+                  .header-detail 84 kb
+            .files-list
+                .header-title This is an example of a file title
+                .header-details
+                  .header-detail Mimi
+                  .header-detail 26-04-2023
+                  .header-detail JPEG
+                  .header-detail 84 kb
+            .files-list
+                .header-title This is an example of a file title
+                .header-details
+                  .header-detail Mimi
+                  .header-detail 26-04-2023
+                  .header-detail JPEG
+                  .header-detail 84 kb
+            .files-list
+                .header-title This is an example of a file title
+                .header-details
+                  .header-detail Mimi
+                  .header-detail 26-04-2023
+                  .header-detail JPEG
+                  .header-detail 84 kb
+            .files-list
+                .header-title This is an example of a file title
+                .header-details
+                  .header-detail Mimi
+                  .header-detail 26-04-2023
+                  .header-detail JPEG
+                  .header-detail 84 kb
+        .container.container-right 
+            .title News
+            .news-list
+                .comment
+                        .comment-author
+                            i.fa-solid.fa-user
+                            span Author Name
+                        .comment-content
+                            p Upload a file
+                        .comment-date
+                            i.fa-solid.fa-clock
+                            span 2023-04-25
+                .comment
+                        .comment-author
+                            i.fa-solid.fa-user
+                            span Author Name
+                        .comment-content
+                            p Upload a file
+                        .comment-date
+                            i.fa-solid.fa-clock
+                            span 2023-04-25
+                .comment
+                        .comment-author
+                            i.fa-solid.fa-user
+                            span Author Name
+                        .comment-content
+                            p Upload a file
+                        .comment-date
+                            i.fa-solid.fa-clock
+                            span 2023-04-25
+                .comment
+                        .comment-author
+                            i.fa-solid.fa-user
+                            span Author Name
+                        .comment-content
+                            p Upload a file
+                        .comment-date
+                            i.fa-solid.fa-clock
+                            span 2023-04-25
+            

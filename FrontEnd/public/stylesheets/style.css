@@ -553,7 +553,7 @@ img{
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
 
 .container{
-  max-width: 700px;
+  max-width: 900px;
   width: 100%;
   background-color: #fff;
   padding: 25px 30px;
@@ -1035,3 +1035,121 @@ section .details span{
     margin-right: 3px;
   }
 }
+
+/*==================== FILES PAGE ==================== */
+
+
+.content {
+  display: flex;
+  margin-top: 10px;
+}
+
+.filter-container {
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
+.filter-container .search-wrapper{
+  position: relative;
+}
+
+.filter-container .search-groups{
+  height: 25px;
+}
+
+.filter-selectors {
+  display: flex;
+  align-items: center;
+  margin-left: 50%;
+}
+
+.filter-sort {
+  margin-right: 15px;
+}
+
+.filter-sort select,
+.filter-sort option{
+  height: 45px;
+  width: 100%;
+  outline: none;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: white;
+  border-bottom-width: 2px;
+  transition: all 0.3s ease;
+}
+
+.header-files{ 
+  display: flex;
+  margin-top: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  padding: 15px;
+  margin-left: auto;
+  margin-right: auto;
+  background: linear-gradient(-135deg,  var(--first-color), var(--first-color-second));
+}
+
+.files-list{ 
+  display: flex;
+  margin-top: 10px;
+  border-radius: 5px;
+  border:2px solid var(--first-color);
+  font-weight: bold;
+  padding: 15px;
+  margin-left: auto;
+  margin-right: auto;
+  background: white;
+  color: #455a64;
+
+}
+
+.header-title{
+  width: 60%;
+  font-size: 22px;
+
+}
+
+.header-details{
+  margin-left:var(--mb-1-5);
+  width: 60%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.header-detail{
+  width: 25%;
+  font-size: 18px;
+  text-align: center;
+}
+
+.news-list .comment {
+  border-radius: 5px;
+  background: linear-gradient(-135deg,  var(--first-color), var(--first-color-second));
+  margin-top: 15px;
+  padding: 15px;
+}
+
+@media (max-width: 1060px) {
+  .filter-container .search-groups{
+    width: 70%;
+  }
+
+  .header-title{
+    font-size: 16px;
+  }
+
+  .header-detail{
+    font-size: 12px;
+  }
+
+  .filter-selectors {
+    margin-left: 50px;
+  }
+}
+
+
+
