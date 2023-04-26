@@ -552,7 +552,7 @@ img{
 /*==================== UPLOAD FORM ==================== */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
 
-.container{
+.mycontainer{
   max-width: 900px;
   width: 100%;
   background-color: #fff;
@@ -565,12 +565,15 @@ img{
   margin-bottom: var(--mb-9);
   color: var(--first-color-darker);
 }
+.mycontainer .title,
 .container .title{
   font-size: var(--h1-font-size);
   font-weight: 500;
   position: relative;
 }
-.container .title::before{
+.mycontainer .title::before,
+.container .title::before
+{
   content: "";
   position: absolute;
   left: 0;
@@ -801,7 +804,7 @@ section .details span{
 
 @media(max-width: 1060px){
 
- .container{
+ .mycontainer{
   max-width: 60%;
   }
   form .user-details .input-box{
@@ -818,7 +821,7 @@ section .details span{
   .user-details::-webkit-scrollbar{
     width: 5px;
   }
-  .container .content .category{
+  .mycontainer .content .category{
     flex-direction: column;
   }
 }
@@ -845,7 +848,7 @@ section .details span{
   margin-right: 50px;
 }
 
-.fa-bookmark {
+.container-left  .fa-bookmark {
   position: absolute; 
   top: 0; 
   right: 20px; 
@@ -1153,3 +1156,38 @@ section .details span{
 
 
 
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap");
+body {
+	background: #f9f9f9;
+	font-family: "Roboto", sans-serif;
+}
+
+.shadow {
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+.profile-tab-nav {
+	min-width: 250px;
+}
+
+.tab-content {
+	flex: 1;
+}
+
+.form-group {
+	margin-bottom: 1.5rem;
+}
+
+.nav-pills a.nav-link {
+	padding: 15px 20px;
+	border-bottom: 1px solid #ddd;
+	border-radius: 0;
+	color: #333;
+}
+.nav-pills a.nav-link i {
+	width: 20px;
+}
+
+.row .button {
+  width: 100%;
+}

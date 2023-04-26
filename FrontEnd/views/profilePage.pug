@@ -1,0 +1,91 @@
+extends layout
+
+block content
+    section.py-5.my-5 
+        .container
+            h1.title.mb-5 Account Settings 
+            .bg-white.shadow.rounded-lg.d-block.d-sm-flex
+                .profile-tab-nav.border-right
+                    .p-4 
+                        h4.text-center Nome Aqui
+                    .nav.flex-column.nav-pills#v-pills-tab(role="tablist" aria-orientation="vertical")
+                        a.nav-link.active#account-tab(data-toggle="pill", href="#account", role="tab", aria-controls="account", aria-selected="true")
+                            i.fa.fa-home.text-center.mr-1
+                            | Account
+                        a.nav-link#password-tab(data-toggle="pill", href="#password", role="tab", aria-controls="password", aria-selected="false")
+                            i.fa.fa-key.text-center.mr-1
+                            | Password
+                        a.nav-link#groups-tab(data-toggle="pill", href="#groups", role="tab", aria-controls="groups", aria-selected="false")
+                            i.fa-solid.fa-users-viewfinder.text-center.mr-1
+                            | Groups
+                        a.nav-link#saved-tab(data-toggle="pill", href="#saved", role="tab", aria-controls="saved", aria-selected="false")
+                            i.fa-solid.fa-bookmark.text-center.mr-1
+                            | Saved Files
+                        a.nav-link#myfiles-tab(data-toggle="pill", href="#myfiles", role="tab", aria-controls="myfiles", aria-selected="false")
+                            i.fa-solid.fa-file.text-center.mr-1
+                            | My Files
+                        a.nav-link(data-toggle="pill", href="#", role="tab", aria-selected="false")
+                            i.fa-solid.fa-arrow-right-from-bracket.text-center.mr-1
+                            | Log out
+                .tab-content.p-4.p-md-5#v-pills-tabContent
+                    .tab-pane.fade.show.active#account(role="tabpanel", aria-labelledby="account-tab")
+                        h3.mb-4 Account Settings 
+                        form 
+                            .row 
+                                .col-md-6 
+                                    .form-group 
+                                        label First Name 
+                                        input.form-control(type="text", value="First Name")
+                                .col-md-6 
+                                    .form-group 
+                                        label Last Name 
+                                        input.form-control(type="text", value="Last Name")
+                                .col-md-6 
+                                    .form-group 
+                                        label E-mail
+                                        input.form-control(type="text", value="E-mail")
+                                .col-md-6 
+                                    .form-group 
+                                        label Occupation
+                                        input.form-control(type="text", value="Occupation")
+                                .col-md-12
+                                    .form-group 
+                                        label Bio
+                                        textarea.form-control(rows="4") Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore vero enim error similique quia numquam ullam corporis officia odio repellendus aperiam consequatur laudantium porro voluptatibus, itaque laboriosam veritatis voluptatum distinctio!
+                                .button
+                                    input(type="submit" value="Update") 
+                    .tab-pane.fade#password(role="tabpanel" aria-labelledby="password-tab")
+                        h3.mb-4 Password Settings 
+                        form 
+                            .row 
+                                .col-md-6 
+                                    .form-group 
+                                        label Old Password
+                                        input.form-control(type="password" required='')
+                                .col-md-6 
+                                    .form-group 
+                                        label New Password 
+                                        input.form-control#passwordInput(type="password" required='')
+                                .col-md-6 
+                                    .form-group 
+                                        label Confirm Password
+                                        input.form-control#confirmPasswordInput(type="password" required='')
+                                .col-md-6
+                                    .strength-wrapper
+                                        .strength-meter#strengthMeter
+                                        span#strengthLevel
+                                        ul#passwordRequirements.password-requirements
+                                            li#lengthReq At least 8 characters
+                                            li#uppercaseReq At least one uppercase letter
+                                            li#lowercaseReq At least one lowercase letter
+                                            li#numberReq At least one number
+                                            li#specialCharReq At least one special character
+                                            li#passwordMatchReq Passwords match 
+                                .button
+                                    input(type="submit" value="Update") 
+                    .tab-pane.fade#groups(role="tabpanel" aria-labelledby="groups-tab")
+                        h3.mb-4 My Groups 
+                    .tab-pane.fade#saved(role="tabpanel" aria-labelledby="saved-tab")
+                        h3.mb-4 Saved Files 
+                    .tab-pane.fade#myfiles(role="tabpanel" aria-labelledby="myfiles-tab")
+                        h3.mb-4 My Files 
