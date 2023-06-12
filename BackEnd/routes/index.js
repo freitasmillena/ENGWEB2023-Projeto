@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var Recurso = require('../controllers/recurso');
+var Recurso = require('../controllers/resource');
 
 /* GET recursos */
 router.get('/api/recursos', function(req, res, next) {
@@ -71,7 +71,7 @@ router.get('/api/tipos', function(req, res) {
 
 
 // GET recurso de um certo tipo 
-router.get('/api/tipos/:id/recursos', function(req, res) {
+router.get('/api/recursos/tipos/:id', function(req, res) {
   user.recsByTipo(req.params.id)
     .then(user => {
       res.jsonp(user)

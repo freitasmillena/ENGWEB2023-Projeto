@@ -1,7 +1,7 @@
-var User = require('../models/user')
+var Group = require('../models/group')
 var Recurso = require('../models/resource')
 
-// lista de users
+// lista de     
 module.exports.list = () => {
     return User.find().sort({data: -1})
         .then(dados => {

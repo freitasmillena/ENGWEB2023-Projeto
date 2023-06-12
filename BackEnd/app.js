@@ -16,6 +16,33 @@ var indexRouter = require('./routes/index');
 var app = express();
 
 app.use(logger('dev'));
+
+
+app.use(function(req, res, next){
+  var myToken 
+  if(req.query && req.query.token)
+    myToken = req.query.token
+  else if(req.body && req.body.token) 
+    myToken = req.body.token
+  else
+    myToken = false
+  
+    if(myToken){
+      jwt.verify(myToken, "EngWeb2023", function(e, payload){
+        if(e){
+          res.status(401).jsonp({error: e})
+        }
+        else{
+          next()
+        }
+      })
+    }
+    else{
+      res.status(401).jsonp({error: "Token inexistente!"})
+    }
+})
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 

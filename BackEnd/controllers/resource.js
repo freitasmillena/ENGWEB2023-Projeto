@@ -1,4 +1,4 @@
-var Recurso = require('../models/recurso')
+var Recurso = require('../models/resource')
 
 // lista de recursos
 module.exports.listRecursos = () => {
