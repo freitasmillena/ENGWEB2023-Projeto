@@ -18,7 +18,8 @@ block content
         label(for='chk' aria-hidden='true') Sign up
         input(type='text' name='name' placeholder='Name' required='')
         input(type='text' name='surname' placeholder='Surname' required='')
-        input(type='email' name='email' placeholder='Email' required='')
+        input#email(type='email' name='email' placeholder='Email' required='')
+        p#error-message-email
         input#username(type='text' name='username' placeholder='Username' required='')
         p#error-message
         .gender-details
@@ -43,7 +44,7 @@ block content
           li#numberReq At least one number
           li#specialCharReq At least one special character
           li#passwordMatchReq Passwords match 
-        button.form(type="submit" value="Send") Sign up
+        button.form#submit-button(type="submit" value="Send") Sign up
       
     
 

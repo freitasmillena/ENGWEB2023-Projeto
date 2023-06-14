@@ -520,8 +520,15 @@ img{
   
   
 }
+.button-disabled {
+  background-color: rgb(116, 112, 112);
+}
 
 #error-message {
+  margin-left: var(--mb-9);
+}
+
+#error-message-email {
   margin-left: var(--mb-9);
 }
 

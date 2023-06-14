@@ -25,6 +25,12 @@ router.get('/username/:username', function(req, res){
     .catch(e => res.status(500).jsonp({error: e}))
 })
 
+router.get('/email/:email', function(req, res){
+  User.getUserEmail(req.params.email)
+    .then(dados => res.status(200).jsonp({dados: dados}))
+    .catch(e => res.status(500).jsonp({error: e}))
+})
+
 router.post('/', auth.verificaAcesso, function(req, res){
   User.addUser(req.body)
     .then(dados => res.status(201).jsonp({dados: dados}))
@@ -42,7 +48,7 @@ router.post('/register', function(req, res) {
                     res.jsonp({error: err, message: "Register error: " + err})
                   else{
                     passport.authenticate("local")(req,res,function(){
-                      jwt.sign({ username: req.user.username, level: req.user.level, 
+                      jwt.sign({ username: req.user.username, level: req.user.level,
                         sub: 'aula de EngWeb2023'}, 
                         "EngWeb2023",
                         {expiresIn: 3600},

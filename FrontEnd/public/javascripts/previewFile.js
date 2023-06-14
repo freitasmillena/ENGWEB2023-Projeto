@@ -141,6 +141,22 @@ document.addEventListener('DOMContentLoaded',() => {
 $(document).ready(function() {
     var usernameInput = $('#username');
     var errorMessage = $('#error-message');
+    let submitButton = $('#submit-button'); 
+    var emailInput = $('#email');
+    var errorMessageEmail = $('#error-message-email');
+
+    let isUsernameAvailable = false;
+    let isEmailAvailable = false;
+  
+    function updateSubmitButtonState() {
+      if (isUsernameAvailable && isEmailAvailable) {
+        submitButton.prop('disabled', false); // Habilita o botão de envio
+        submitButton.removeClass('button-disabled');
+      } else {
+        submitButton.prop('disabled', true); // Desabilita o botão de envio
+        submitButton.addClass('button-disabled');
+      }
+    }
   
     usernameInput.on('blur', function() {
       var username = this.value;
@@ -148,15 +164,38 @@ $(document).ready(function() {
         if(data.dados != null) {
             errorMessage.text('Username is not available.');
             errorMessage.css('color', 'red');
+            isUsernameAvailable = false;
         } else {
             errorMessage.text('Username is available.');
             errorMessage.css('color', 'green');
+            isUsernameAvailable = true;
         }
+        updateSubmitButtonState();
       })
       .fail(function() {
         console.log('Error: Could not reach the API.');
       });
     });
+
+    emailInput.on('blur', function() {
+        var email = this.value;
+        $.get('http://localhost:8002/users/email/' + email, function(data) {
+          if(data.dados != null) {
+                errorMessageEmail.text('Email is not available.');
+                errorMessageEmail.css('color', 'red');
+                isEmailAvailable = false;
+              
+          } else {
+                errorMessageEmail.text('Email is available.');
+                errorMessageEmail.css('color', 'green');
+                isEmailAvailable = true;
+          }
+          updateSubmitButtonState();
+        })
+        .fail(function() {
+          console.log('Error: Could not reach the API.');
+        });
+      });
   });
   
 

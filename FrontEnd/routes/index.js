@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/recursos', function(req, res, next) {
-  res.render('formFile');
+  res.render('files');
 });
 
 router.post('/login', function(req, res){
