@@ -1,3 +1,19 @@
+
+window.onload = function() {
+    var chk = document.getElementById('chk');
+    var main = document.querySelector('.main');
+  
+    chk.addEventListener('change', function() {
+      if(this.checked) {
+        main.classList.add('expanded');
+      } else {
+        main.classList.remove('expanded');
+      }
+    });
+      
+}
+  
+  
 function checkPasswordStrength(password) {
     let strength = 0;
 
@@ -102,7 +118,7 @@ function confirmPasswordMatch() {
     }
 }
 
-
+ 
 
 document.addEventListener('DOMContentLoaded',() => {
     const passwordInput = document.getElementById('passwordInput');
@@ -122,7 +138,27 @@ document.addEventListener('DOMContentLoaded',() => {
 })
 
 
-
+$(document).ready(function() {
+    var usernameInput = $('#username');
+    var errorMessage = $('#error-message');
+  
+    usernameInput.on('blur', function() {
+      var username = this.value;
+      $.get('http://localhost:8002/users/username/' + username, function(data) {
+        if(data.dados != null) {
+            errorMessage.text('Username is not available.');
+            errorMessage.css('color', 'red');
+        } else {
+            errorMessage.text('Username is available.');
+            errorMessage.css('color', 'green');
+        }
+      })
+      .fail(function() {
+        console.log('Error: Could not reach the API.');
+      });
+    });
+  });
+  
 
 
 

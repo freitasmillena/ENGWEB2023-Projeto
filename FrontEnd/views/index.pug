@@ -1,26 +1,38 @@
 extends layout
 
 block content
+  if errorMessage
+    script.
+      alert("#{errorMessage}");
   .main
     input#chk(type='checkbox' aria-hidden='true')
     .login
-      form
+      form(action="/login" method="POST")
         label(for='chk' aria-hidden='true') Login
-        input(type='email' name='email' placeholder='Email' required='')
-        input(type='password' name='pswd' placeholder='Password' required='')
+        input(type='text' name='username' placeholder='Username' required='')
+        input(type='password' name='password' placeholder='Password' required='')
         a(href='') Forgot your password?
-        button.form Login
-        .social
-          button.go
-            i.fa.fa-google
-          button.fb
-            i.fa.fa-facebook-square
+        button.form(type="submit" value="Send") Login
     .signup
-      form
+      form(action="/register" method="POST")
         label(for='chk' aria-hidden='true') Sign up
+        input(type='text' name='name' placeholder='Name' required='')
+        input(type='text' name='surname' placeholder='Surname' required='')
         input(type='email' name='email' placeholder='Email' required='')
-        input#passwordInput(type='password' name='pswd' placeholder='Password' required='')
-        input#confirmPasswordInput(type='password' name='pswd' placeholder='Confirm Password' required='')
+        input#username(type='text' name='username' placeholder='Username' required='')
+        p#error-message
+        .gender-details
+            input#dot-1(type='radio' name='level' value='producer')
+            input#dot-2(type='radio' name='level' value='consumer')
+            .category-type
+              label(for='dot-1')
+                span.dot.one
+                span.gender Producer
+              label(for='dot-2')
+                span.dot.two
+                span.gender Consumer
+        input#passwordInput(type='password' name='password' placeholder='Password' required='')
+        input#confirmPasswordInput(type='password' name='confirmpassword' placeholder='Confirm Password' required='')
         .strength-wrapper
           .strength-meter#strengthMeter
           span#strengthLevel
@@ -31,12 +43,8 @@ block content
           li#numberReq At least one number
           li#specialCharReq At least one special character
           li#passwordMatchReq Passwords match 
-        button.form Sign up
-        .social
-          button.go
-            i.fa.fa-google
-          button.fb
-            i.fa.fa-facebook-square
+        button.form(type="submit" value="Send") Sign up
+      
     
 
 

@@ -19,16 +19,23 @@ router.get('/:id', auth.verificaAcesso, function(req, res){
     .catch(e => res.status(500).jsonp({error: e}))
 })
 
+router.get('/username/:username', function(req, res){
+  User.getUsername(req.params.username)
+    .then(dados => res.status(200).jsonp({dados: dados}))
+    .catch(e => res.status(500).jsonp({error: e}))
+})
+
 router.post('/', auth.verificaAcesso, function(req, res){
   User.addUser(req.body)
     .then(dados => res.status(201).jsonp({dados: dados}))
     .catch(e => res.status(500).jsonp({error: e}))
 })
 
-router.post('/register', auth.verificaAcesso, function(req, res) {
+router.post('/register', function(req, res) {
   var d = new Date().toISOString().substring(0,19)
+  console.log(req.body.level)
   userModel.register(new userModel({ username: req.body.username, name: req.body.name, 
-                                      level: req.body.level, active: true, dateCreated: d }), 
+                                      level: req.body.level, surname: req.body.surname, email: req.body.email, dataRegisto: d }), 
                 req.body.password, 
                 function(err, user) {
                   if (err) 

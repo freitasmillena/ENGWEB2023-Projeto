@@ -391,7 +391,7 @@ img{
 
 .main{
 	width: 40%;
-	height: 800px;
+	height: 600px;
 	background: var(--first-color);
 	overflow: hidden;
 	border-radius: 10px;
@@ -400,6 +400,7 @@ img{
   margin-right: auto;
   margin-top: var(--mb-9);
   margin-bottom: var(--mb-9);
+  transition: height 0.5s ease-in-out; 
 
 }
 #chk{
@@ -423,7 +424,7 @@ img{
 }
 .login input, .signup input{
 	width: 60%;
-	height: 20px;
+	height: 40px;
 	background: #e0dede;
 	justify-content: center;
 	display: flex;
@@ -456,7 +457,7 @@ img{
 }
 
 .signup{
-	height: 760px;
+	height: 1060px;
 	background: #eee;
 	border-radius: 60% / 10%;
 	transform: translateY(-180px);
@@ -468,7 +469,7 @@ img{
 }
 
 #chk:checked ~ .signup{
-	transform: translateY(-800px);
+	transform: translateY(-980px);
 }
 #chk:checked ~ .signup label{
 	transform: scale(1);	
@@ -476,6 +477,11 @@ img{
 #chk:checked ~ .login label{ 
 	transform: scale(.6);
 }
+
+.main.expanded {
+  height: 960px; /* tamanho maior para a tela de inscrição */
+}
+
 
 .strength-wrapper {
   text-align: center;
@@ -515,26 +521,8 @@ img{
   
 }
 
-
-.social{
-  margin-top: 30px;
-  margin-left: 47%;
-  display: flex;
-  color: var(--first-color);
-}
-
-.go, .fb{
-	font-size: var(--mb-1-5);
-	font-weight: bold;
-  margin-right: var(--mb-0-5);
-	outline: none;
-	border: none;	
-	cursor: pointer;
-  background-color: var(--first-color);
-}
-
-.signup .go, .signup .fb{
-  background-color: #eee;
+#error-message {
+  margin-left: var(--mb-9);
 }
 
 .login a {
@@ -548,6 +536,36 @@ img{
 .login a:hover {
   color: var(--first-color-darker);
 }
+
+form .category-type{
+  display: flex;
+  justify-content: center;
+}
+
+form .category-type label{
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin: 20px;
+}
+
+form .category-type label .dot{
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  margin-right: 10px;
+  background: #d9d9d9;
+  border: 5px solid transparent;
+  transition: all 0.3s ease;
+}
+ #dot-1:checked ~ .category-type label .one,
+ #dot-2:checked ~ .category-type label .two{
+   background: var(--first-color);
+   border-color: var(--first-color);
+ }
+
+
+
 
 /*==================== UPLOAD FORM ==================== */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
@@ -618,7 +636,8 @@ form .input-box span.details{
 .user-details .input-box input:valid{
   border-color: var(--first-color);
 }
- form .gender-details .gender-title{
+
+form .gender-details .gender-title{
   font-size: 20px;
   font-weight: 500;
  }
@@ -646,6 +665,9 @@ form .groups-check {
   font-size: var(--mb-1);
  }
 
+ 
+
+ 
  form .category label .dot{
   height: 8px;
   width: 8px;
@@ -658,11 +680,13 @@ form .groups-check {
  #dot-1:checked ~ .category label .one,
  #dot-2:checked ~ .category label .two{
    background: var(--first-color);
-   border-color: #d9d9d9;
+   border-color: var(--first-color);
  }
+
  form input[type="radio"]{
    display: none;
  }
+
  form .button{
    height: 45px;
    margin-top: 30px;

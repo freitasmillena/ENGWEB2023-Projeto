@@ -7,7 +7,7 @@ var LocalStrategy = require('passport-local').Strategy
 
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://127.0.0.1/authdemoEW', 
+mongoose.connect('mongodb://127.0.0.1/authProject', 
       { useNewUrlParser: true,
         useUnifiedTopology: true,
         serverSelectionTimeoutMS: 5000});
@@ -27,6 +27,12 @@ passport.deserializeUser(User.deserializeUser());
 var usersRouter = require('./routes/user');
 
 var app = express();
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
 
 app.use(logger('dev'));
 app.use(express.json());

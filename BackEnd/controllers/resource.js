@@ -89,3 +89,14 @@ module.exports.recsByTipo = (id) => {
                 return erro
             })
 }
+
+//GET /api/users/:id/recursos
+module.exports.getRecursos = id => {
+    return Recurso.find({autor: id})
+    .then(dados => {
+        return dados
+    })
+    .catch(erro => {
+        return erro
+    })
+}

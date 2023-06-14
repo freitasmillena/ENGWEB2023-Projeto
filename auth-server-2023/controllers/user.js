@@ -25,6 +25,16 @@ module.exports.getUser = id => {
             })
 }
 
+module.exports.getUsername = user => {
+    return User.findOne({username:user})
+            .then(resposta => {
+                return resposta
+            })
+            .catch(erro => {
+                return erro
+            })
+}
+
 module.exports.addUser = u => {
     return User.create(u)
             .then(resposta => {
@@ -46,7 +56,7 @@ module.exports.updateUser = (id, info) => {
             })
 }
 
-module.exports.updateUserStatus = (id, status) => {
+/* module.exports.updateUserStatus = (id, status) => {
     return User.updateOne({_id:id}, {active: status})
             .then(resposta => {
                 return resposta
@@ -54,7 +64,7 @@ module.exports.updateUserStatus = (id, status) => {
             .catch(erro => {
                 return erro
             })
-}
+} */
 
 module.exports.updateUserPassword = (id, pwd) => {
     return User.updateOne({_id:id}, pwd)
