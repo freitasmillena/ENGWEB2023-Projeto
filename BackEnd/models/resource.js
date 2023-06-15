@@ -16,7 +16,7 @@ var resourceSchema = new mongoose.Schema({
     type: String,
     path: String,
     title: String,
-    descrition: String,
+    description: String,
     created: String,
     modified: String, 
     creator: String,

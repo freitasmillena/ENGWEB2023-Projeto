@@ -1,14 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var axios = require('axios')
+var env = require('../config/env.js')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index');
-});
-
-router.get('/recursos', function(req, res, next) {
-  res.render('files');
 });
 
 router.post('/login', function(req, res){
@@ -33,6 +30,20 @@ router.post('/register', function(req, res){
       res.render('error', {error: e, message: "Erro no registo!"})
     })
 })
+
+router.get('/recursos', function(req, res) {
+  var token = ""
+  if(req.cookies && req.cookies.token)
+    token = req.cookies.token
+
+  axios.get(env.apiAccessPoint+"/recursos?token=" + token)
+    .then(response => {
+      res.render('files', { files: response.data, d: data });
+    })
+    .catch(err => {
+      res.render('error', {error: err})
+    })
+});
 
 
 module.exports = router;

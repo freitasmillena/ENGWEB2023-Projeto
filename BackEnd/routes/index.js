@@ -4,6 +4,7 @@ var Recurso = require('../controllers/resource');
 
 /* GET recursos */
 router.get('/api/recursos', function(req, res, next) {
+  console.log("GET /api/recursos")
   Recurso.listRecursos()
     .then(recursos => {
       res.jsonp(recursos)
@@ -15,6 +16,7 @@ router.get('/api/recursos', function(req, res, next) {
 
 /* GET recurso */
 router.get('/api/recursos/:id', function(req, res, next) {
+  console.log("GET /api/recursos/" + req.params.id)
   Recurso.getRecurso(req.params.id)
     .then(recurso => {
       res.jsonp(recurso)
@@ -27,6 +29,7 @@ router.get('/api/recursos/:id', function(req, res, next) {
 
 // POST: de um recurso
 router.post('/api/recursos', function(req, res) {
+  console.log("POST /api/recursos")
   Lista.addRecurso(req.body)
     .then(recurso => {
       res.jsonp(recurso)
@@ -38,6 +41,7 @@ router.post('/api/recursos', function(req, res) {
 
 // PUT: de um recurso
 router.put('/api/:idUser/recursos/:id', function(req, res) {
+  console.log("PUT /api/" + req.params.idUser + "/recursos/" + req.params.id)
   Lista.updateRecurso(req.params.idUser, req.body)
     .then(dados => {
       res.jsonp(dados)
@@ -49,6 +53,7 @@ router.put('/api/:idUser/recursos/:id', function(req, res) {
 
 // DELETE de um recurso
 router.delete('/api/:idUser/recursos/:id', function(req, res) {
+  console.log("DELETE /api/" + req.params.idUser + "/recursos/" + req.params.id)
   Lista.deleteRecurso(req.params.idUser, req.params.id)
     .then(dados => {
       res.jsonp(dados)
@@ -60,6 +65,7 @@ router.delete('/api/:idUser/recursos/:id', function(req, res) {
 
 // GET tipos de recursos
 router.get('/api/tipos', function(req, res) {
+  console.log("GET /api/tipos")
   user.tipos()
     .then(user => {
       res.jsonp(user)
@@ -72,6 +78,7 @@ router.get('/api/tipos', function(req, res) {
 
 // GET recurso de um certo tipo 
 router.get('/api/recursos/tipos/:id', function(req, res) {
+  console.log("GET /api/recursos/tipos/" + req.params.id)
   user.recsByTipo(req.params.id)
     .then(user => {
       res.jsonp(user)

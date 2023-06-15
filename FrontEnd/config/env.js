@@ -1,0 +1,1 @@
+module.exports.apiAccessPoint = "http://localhost:7777/api"

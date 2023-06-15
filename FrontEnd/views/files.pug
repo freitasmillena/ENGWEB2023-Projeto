@@ -29,43 +29,17 @@ block content
                 .header-details
                   .header-detail Author
                   .header-detail Date
-                  .header-detail Type
+                  .header-detail listasType
                   .header-detail Size
-            .files-list
-                .header-title This is an example of a file title
-                .header-details
-                  .header-detail Mimi
-                  .header-detail 26-04-2023
-                  .header-detail JPEG
-                  .header-detail 84 kb
-            .files-list
-                .header-title This is an example of a file title
-                .header-details
-                  .header-detail Mimi
-                  .header-detail 26-04-2023
-                  .header-detail JPEG
-                  .header-detail 84 kb
-            .files-list
-                .header-title This is an example of a file title
-                .header-details
-                  .header-detail Mimi
-                  .header-detail 26-04-2023
-                  .header-detail JPEG
-                  .header-detail 84 kb
-            .files-list
-                .header-title This is an example of a file title
-                .header-details
-                  .header-detail Mimi
-                  .header-detail 26-04-2023
-                  .header-detail JPEG
-                  .header-detail 84 kb
-            .files-list
-                .header-title This is an example of a file title
-                .header-details
-                  .header-detail Mimi
-                  .header-detail 26-04-2023
-                  .header-detail JPEG
-                  .header-detail 84 kb
+            
+            each f in files
+                .files-list
+                    .header-title #{f.title}
+                    .header-details
+                      .header-detail #{f.creator}
+                      .header-detail #{f.created}
+                      .header-detail #{f.type}
+                      .header-detail #{f.size}
         .mycontainer.container-right 
             .title News
             .news-list
