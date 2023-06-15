@@ -25,6 +25,16 @@ module.exports.getUser = user => {
             })
 }
 
+module.exports.searchUser = pattern => {
+    return User.find({ username: { $regex: pattern, $options: 'i' } })
+        .then(resposta => {
+            return resposta
+        })
+        .catch(erro => {
+            return erro
+        })
+}
+
 module.exports.getUsername = user => {
     return User.findOne({username:user})
             .then(resposta => {

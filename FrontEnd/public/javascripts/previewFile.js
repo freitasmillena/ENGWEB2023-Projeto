@@ -233,6 +233,8 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
     const fileInput = document.getElementById('fileInput');
     const fileInfo = document.getElementById('fileInfo');
+    const fileSizeInput = document.getElementById('fileSize');
+    const fileTypeInput = document.getElementById('fileType');
 
     fileInput.addEventListener('change', (event) => {
         const file = event.target.files[0];
@@ -252,15 +254,21 @@ document.addEventListener('DOMContentLoaded', () => {
                           </li>
             `
             fileInfo.classList.remove('hidden');
+            fileSizeInput.value = fileSize;
+            fileTypeInput.value = file.type;
 
             const removeFileButton = document.getElementById('removeFileButton');
             removeFileButton.addEventListener('click', () => {
                 fileInput.value = '';
                 fileInfo.classList.add('hidden');
+                fileSizeInput.value = '';
+                fileTypeInput.value = '';
             });
         }
         else {
             fileInfo.classList.add('hidden');
+            fileSizeInput.value = '';
+            fileTypeInput.value = '';
         }
     })
 })
@@ -284,4 +292,8 @@ bookmarkIcon.addEventListener("click", function() {
     bookmarkPopup.classList.remove("active"); // Remove the active class after 2 seconds to hide the popup
   }, 2000);
 });
+
+
+
+
 

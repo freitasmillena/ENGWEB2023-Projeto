@@ -1,18 +1,22 @@
 const mongoose = require('mongoose');
 
-var availableSchema = new mongoose.Schema({
-    groups: [String],
-    users: [String]
-});
+var availableSchema = new mongoose.Schema(
+    {
+      groups: [Number],
+      users: [String]
+    },
+    { _id: false } // Set _id option to false
+  );
 
 var commentSchema = new mongoose.Schema({
     user: String,
     comment: String
 });
 
-var resourceSchema = new mongoose.Schema({
-    _id: String,
-    size: Number,
+var recursoSchema = new mongoose.Schema({
+    _id: Number,
+    size: String,
+    name: String,
     type: String,
     path: String,
     title: String,
@@ -20,8 +24,9 @@ var resourceSchema = new mongoose.Schema({
     created: String,
     modified: String, 
     creator: String,
+    visibility: String,
     available_for: availableSchema,
     comments: [commentSchema],
 });
 
-module.exports = mongoose.model('resource',resourceSchema)
+module.exports = mongoose.model('recurso',recursoSchema)

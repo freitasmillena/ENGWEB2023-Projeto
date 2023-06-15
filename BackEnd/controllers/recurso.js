@@ -1,4 +1,4 @@
-var Recurso = require('../models/resource')
+var Recurso = require('../models/recurso')
 
 // lista de recursos
 module.exports.listRecursos = () => {
@@ -25,13 +25,29 @@ module.exports.getRecurso = id => {
 
 //POST /api/recursos
 module.exports.addRecurso = l => {
-    return Recurso.collection.insertOne(l)
-    .then(dados => {
-        return dados
-    })
-    .catch(erro => {
-        return erro
-    })
+    return Recurso.find({}, {_id: 1})
+        .then(qtd => {
+            
+            //ordenar
+            qtd.sort((a, b) => b._id - a._id);
+            var next
+            if (qtd.length == 0) next = 0
+            else next = qtd[0]._id
+            
+            l._id = next + 1
+            
+            
+            return Recurso.create(l)
+            .then(resposta => {
+                return resposta
+            })
+            .catch(erro => {
+                return erro
+            })
+        })
+        .catch(erro => {
+            return erro
+        })
 }
 
 //PUT api/:idUser/recursos/:id

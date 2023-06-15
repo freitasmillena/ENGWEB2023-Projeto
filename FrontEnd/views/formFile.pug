@@ -4,17 +4,17 @@ block content
     .mycontainer
         .title Upload Form
         .content
-        form(action='' method='post')
+        form(action='/uploadForm' method='post' enctype="multipart/form-data")
           .user-details
             .input-box
               span.details Title
-              input(type='text' placeholder='Enter a title' required='')
+              input(type='text' name='title' placeholder='Enter a title' required='')
             .input-box
               span.details Description
-              input(type='text' placeholder='Enter a short description' required='')
+              input(type='text' name='description' placeholder='Enter a short description' required='')
           .gender-details
-            input#dot-1(type='radio' name='gender' value='public')
-            input#dot-2(type='radio' name='gender' value='private')
+            input#dot-1(type='radio' name='visibility' value='public')
+            input#dot-2(type='radio' name='visibility' value='private')
             span.gender-title Visibility
             .category
               label(for='dot-1')
@@ -27,9 +27,14 @@ block content
                 .search-wrapper
                   i.fa-solid.fa-magnifying-glass
                   input.search-groups#searchInput(type='text' placeholder='Search here')
+                #searchResult
+                #selectedItems
                   
           .drop-zone 
             input.upload_hide#fileInput(type="file" name="myFile" required)
+            input#fileSize(type="hidden" name="size")
+            input#fileType(type="hidden" name="type")
+
             label.upload_label(for="upload_costum")  
               h3 Drag your file or click to upload
               i.fa-solid.fa-cloud-arrow-up
@@ -37,6 +42,6 @@ block content
 
              
           .button
-            input(type='submit' value='Register')
+            input#myForm(type='submit' value='Register')
             
 

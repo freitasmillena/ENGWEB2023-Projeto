@@ -1,0 +1,9 @@
+import json
+
+data = {"alunos":[]}
+with open("alunos.csv") as filecsv:    
+    for row in filecsv:
+        data["alunos"].append({"id":row.split(';')[0], "nome":row.split(';')[1], "repositório":row.split(';')[2]})
+
+with open("alunos.json", 'w', encoding='utf-8') as filejson:
+        filejson.write(json.dumps(data, indent=4,ensure_ascii=False))  

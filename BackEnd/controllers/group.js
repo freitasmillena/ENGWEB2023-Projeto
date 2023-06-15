@@ -1,7 +1,16 @@
 var Group = require('../models/group')
-var Recurso = require('../models/resource')
 
-// lista de     
+module.exports.searchGroup = pattern => {
+    return Group.find({ name: { $regex: pattern, $options: 'i' } })
+        .then(resposta => {
+            return resposta
+        })
+        .catch(erro => {
+            return erro
+        })
+}
+
+/* // lista de     
 module.exports.list = () => {
     return User.find().sort({data: -1})
         .then(dados => {
@@ -67,3 +76,4 @@ module.exports.getRecursos = id => {
         return erro
     })
 }
+ */

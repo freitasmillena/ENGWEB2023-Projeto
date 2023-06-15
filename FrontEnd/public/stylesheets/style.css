@@ -780,6 +780,28 @@ form .groups-check {
   border-color: var(--first-color);
 }
 
+#searchResult {
+  border: 1px solid var(--first-color);
+}
+.result-item {
+  cursor: pointer;
+  margin: 10px 0;
+  padding: 10px;
+}
+
+.result-item:not(:last-child) {
+  border-bottom: 1px solid var(--first-color);
+}
+
+#selectedItems {
+  margin-top: 5px;
+}
+
+.selected {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 section .row{
   margin-top: 15px;
   margin-bottom: 10px;

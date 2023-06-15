@@ -13,6 +13,15 @@ router.get('/', auth.verificaAcesso, function(req, res){
     .catch(e => res.status(500).jsonp({error: e}))
 })
 
+router.get('/search/:pattern', auth.verificaAcesso, function(req, res){
+  User.searchUser(req.params.pattern)
+    .then(dados => {
+      console.log(dados)
+      res.status(200).jsonp({dados: dados})
+    })
+    .catch(e => res.status(500).jsonp({error: e}))
+})
+
 router.get('/:id', auth.verificaAcesso, function(req, res){
   User.getUser(req.params.id)
     .then(dados => res.status(200).jsonp({dados: dados}))
