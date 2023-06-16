@@ -23,8 +23,8 @@ module.exports.listRecursosUser = (username,groups) => {
   };
 
 //GET /api/recursos/:id
-module.exports.getRecurso = id => {
-    return Recurso.findOne({_id: id})
+module.exports.getRecurso = (id, username, groups) => {
+    return Recurso.findOne({"$and": [{_id: id},{ "$or": [{ "creator": username, "available_for.users": username }, { "available_for.groups": {"$in":groups} }] }]})
     .then(dados => {
         return dados
     })

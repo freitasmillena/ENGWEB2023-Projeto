@@ -1,0 +1,67 @@
+extends layout
+
+block content
+    section.py-5.my-5 
+        .container
+            h1.title.mb-5 Account  
+            .bg-white.shadow.rounded-lg.d-block.d-sm-flex
+                .profile-tab-nav.border-right
+                    .p-4 
+                        h4.text-center #{user.username}
+                    .nav.flex-column.nav-pills#v-pills-tab(role="tablist" aria-orientation="vertical")
+                        a.nav-link.active#account-tab(data-toggle="pill", href="#account", role="tab", aria-controls="account", aria-selected="true")
+                            i.fa.fa-home.text-center.mr-1
+                            | Account
+                        a.nav-link#myfiles-tab(data-toggle="pill", href="#myfiles", role="tab", aria-controls="myfiles", aria-selected="false")
+                            i.fa-solid.fa-file.text-center.mr-1
+                            | Files
+                .tab-content.p-4.p-md-5#v-pills-tabContent
+                    .tab-pane.fade.show.active#account(role="tabpanel", aria-labelledby="account-tab")
+                        h3.mb-4 Account  
+                        
+                        .row 
+                            .col-md-6 
+                                .form-group 
+                                    p #[b First Name:] #{user.name} 
+                                    
+                            .col-md-6 
+                                .form-group 
+                                     p #[b Last Name:] #{user.surname}  
+                                    
+                            .col-md-6 
+                                .form-group 
+                                     p #[b E-mail:] #{user.email} 
+                                    
+                            .col-md-6 
+                                .form-group 
+                                     p #[b Occupation:] 
+                                        if user.occupation
+                                            #{user.occupation}
+
+                                    
+                            .col-md-12
+                                .form-group 
+                                     p #[b Bio:] 
+                                        if user.bio
+                                            #{user.bio} 
+                             
+                
+                    .tab-pane.fade#myfiles(role="tabpanel" aria-labelledby="myfiles-tab")
+                        h3.mb-4 Files 
+                        if submissions.length > 0
+
+                            .header-files 
+                                .header-title Title
+                                .header-details
+                                  .header-detail Date
+                                  .header-detail Type
+                                  .header-detail Size
+                            each f in submissions
+                                .files-list
+                                    .header-title #{f.title}
+                                    .header-details
+                                      .header-detail #{f.created}
+                                      .header-detail #{f.type}
+                                      .header-detail #{f.size}
+                        else
+                            h5 No files

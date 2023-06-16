@@ -27,7 +27,43 @@ module.exports.getGroupsUser = username => {
             return erro
         })
 }
+            
+module.exports.addGroup = l => {
+    return Group.find({}, {_id: 1})
+        .then(qtd => {
+            
+            //ordenar
+            qtd.sort((a, b) => b._id - a._id);
+            var next
+            if (qtd.length == 0) next = 0
+            else next = qtd[0]._id
+            
+            l._id = next + 1
+            
+            
+            return Group.create(l)
+            .then(resposta => {
+                return resposta
+            })
+            .catch(erro => {
+                return erro
+            })
+        })
+        .catch(erro => {
+            return erro
+        }
+    )
+}
 
+module.exports.getGroup = id => {
+    return Group.findOne({_id: id})
+    .then(dados => {
+        return dados
+    })
+    .catch(erro => {
+        return erro
+    })
+}
 
 /* // lista de     
 module.exports.list = () => {
@@ -53,15 +89,7 @@ module.exports.getUser = id => {
 }
 
 //POST /api/Users
-module.exports.addUser = l => {
-    return User.collection.insertOne(l)
-    .then(dados => {
-        return dados
-    })
-    .catch(erro => {
-        return erro
-    })
-}
+
 
 //PUT /users/:id
 module.exports.updateUser = l => {

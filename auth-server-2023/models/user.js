@@ -7,11 +7,13 @@ var userSchema = new mongoose.Schema({
     username: String,
     email: String,
     password: String,
+    bio: String,
+    occupation: String,
     level: String,
     dataUltimoAcesso: String,
-    groups: [String],
-    submissions: [String],
-    favorites: [String],
+    groups: [Number], //id groups
+    submissions: [Number], //id files
+    favorites: [Number], //id files
     dataRegisto: String
   });
 

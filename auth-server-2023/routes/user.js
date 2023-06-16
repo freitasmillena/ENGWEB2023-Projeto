@@ -13,6 +13,16 @@ router.get('/', auth.verificaAcesso, function(req, res){
     .catch(e => res.status(500).jsonp({error: e}))
 })
 
+router.get('/groups/:id', auth.verificaAcesso, function(req, res){
+  
+  User.getUserGroups(req.params.id)
+    .then(dados => {
+      
+      res.status(200).jsonp(dados)
+    })
+    .catch(e => res.status(500).jsonp({error: e}))
+})
+
 router.get('/search/:pattern', auth.verificaAcesso, function(req, res){
   User.searchUser(req.params.pattern)
     .then(dados => {
@@ -21,6 +31,27 @@ router.get('/search/:pattern', auth.verificaAcesso, function(req, res){
     })
     .catch(e => res.status(500).jsonp({error: e}))
 })
+
+router.get('/:id/addSub/:sub', auth.verificaAcesso, function(req, res){
+  
+  User.updateSubmissions(req.params.id, req.params.sub)
+    .then(dados => {
+      
+      res.status(200).jsonp(dados)
+    })
+    .catch(e => res.status(500).jsonp({error: e}))
+})
+
+router.get('/:id/addGroup/:group', auth.verificaAcesso, function(req, res){
+  
+  User.updateGroups(req.params.id, req.params.group)
+    .then(dados => {
+      
+      res.status(200).jsonp(dados)
+    })
+    .catch(e => res.status(500).jsonp({error: e}))
+})
+
 
 router.get('/:id', auth.verificaAcesso, function(req, res){
   User.getUser(req.params.id)

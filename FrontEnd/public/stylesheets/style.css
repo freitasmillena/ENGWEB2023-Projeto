@@ -1189,6 +1189,47 @@ section .details span{
   padding: 15px;
 }
 
+.fa-gear {
+  margin-left: var(--mb-2);
+  font-size: var(--mb-2);
+  color: var(--first-color);
+}
+
+.groups-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: stretch;
+}
+
+.group-title {
+  /* style the left element */
+  justify-self: start;
+}
+
+
+.group-button{
+  justify-self: end;
+  height: 60%;
+  width: 40%;
+  padding-left: var(--mb-0-75);
+  border-radius: 5px;
+  border: none;
+  color: #fff;
+  font-size: var(--mb-1-5);
+  align-content: center;
+  font-weight: 500;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg,  var(--first-color), var(--first-color-second));
+}
+.group-button:hover{
+ /* transform: scale(0.99); */
+ background: linear-gradient(-135deg,  var(--first-color), var(--first-color-second));
+ text-decoration: none;
+ color: var(--first-color)
+ }
+
 @media (max-width: 1060px) {
   .filter-container .search-groups{
     width: 70%;
@@ -1204,6 +1245,11 @@ section .details span{
 
   .filter-selectors {
     margin-left: 50px;
+  }
+
+  .group-button {
+    font-size: var(--mb-1);
+    padding-top: var(--mb-0-25);
   }
 }
 
