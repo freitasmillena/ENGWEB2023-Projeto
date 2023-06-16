@@ -10,6 +10,25 @@ module.exports.searchGroup = pattern => {
         })
 }
 
+module.exports.getGroupsUser = username => {
+    //return the id of all groups that the user is in participants or owner
+    return Group.find({ "$or": [{ "owner": username }, {"participants" :{"$in": username }}] })
+        .then(resposta => {
+            // add the element [0] to the array
+            var groups = []
+            resposta.forEach(element => {
+                groups.push(element._id)
+                }
+            )
+            groups.push(0)
+            return groups
+        })
+        .catch(erro => {
+            return erro
+        })
+}
+
+
 /* // lista de     
 module.exports.list = () => {
     return User.find().sort({data: -1})

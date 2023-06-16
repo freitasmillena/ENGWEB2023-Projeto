@@ -51,8 +51,8 @@ def gen_users(amount):
         user['hash'] = (''.join(random.choice(string.hexdigits) for _ in range(1024))).lower()
         user['email'] = str(user['_id'])+'@'+user['surname'].lower()+'.com'
         user['groups'] = random.sample([0,1,2,3,4], 1)
-        if 'public' not in user['groups']:
-            user['groups'].append('public')
+        if 0 not in user['groups']:
+            user['groups'].append(0)
         for group in user['groups']:
             for g in group_array:
                 if g['_id'] == group and group != 0:
@@ -93,9 +93,9 @@ def gen_entry(file):
     entry['creator'] = f"{user_array[u]['username']}"
     user_array[u]['submissions'].append(entry['_id'])
     entry['available_for'] = {}
-    entry['available_for']['groups'] = random.sample( groups, random.randint(0, 5))
-    if 'public' in entry['available_for']['groups']:
-        entry['available_for']['groups'] = ['public']
+    entry['available_for']['groups'] = random.sample( [0,1,2,3,4], random.randint(0, 5))
+    if 0 in entry['available_for']['groups']:
+        entry['available_for']['groups'] = [0]
         entry['available_for']['users'] = []
     else:
         users = random.sample(range(0, u_id), random.randint(0, 10))

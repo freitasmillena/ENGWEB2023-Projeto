@@ -12,28 +12,14 @@ module.exports.listRecursos = () => {
 
 }
 
-module.exports.listRecursosUser = (username) => {
-    return Recurso.find().sort({ dataCriacao: -1 })
+module.exports.listRecursosUser = (username,groups) => {
+    return Recurso.find({ "$or": [{ "creator": username, "available_for.users": username }, { "available_for.groups": {"$in":groups} }] }).sort({dataCriacao: -1}).skip(0).limit(10)
       .then((dados) => {
-        // Filter the resources based on user access
-        const filteredRecursos = dados.filter((recurso) => {
-          // Check if the username is in available_for.users array
-          const userAccess = recurso.available_for.users.includes(username);
-          
-          // Check if any of the user's groups is in available_for.groups array
-          const groupAccess = recurso.available_for.groups.some((group) =>
-            user.groups.includes(group)
-          );
-  
-          // Return the resource if either user or group access is granted
-          return userAccess || groupAccess;
+          return dados;
+        })
+        .catch((erro) => {
+            return erro;
         });
-  
-        return filteredRecursos;
-      })
-      .catch((erro) => {
-        return erro;
-      });
   };
 
 //GET /api/recursos/:id

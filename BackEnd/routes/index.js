@@ -1,13 +1,23 @@
 var express = require('express');
+const { decode } = require('jsonwebtoken');
 var router = express.Router();
 var Group = require('../controllers/group');
 var Recurso = require('../controllers/recurso');
 var date = new Date().toISOString().substring(0,16);
+var jwt = require("jsonwebtoken")
 
 /* GET recursos */
-router.get('/api/recursos', function(req, res, next) {
+router.get('/api/recursos', async function(req, res, next) {
   console.log("GET /api/recursos")
-  Recurso.listRecursosUser(req.user)
+
+  //print the token present in the query
+  console.log(req.query.token)
+
+  //decode the token
+  var decoded = jwt.verify(req.query.token, "EngWeb2023");
+  var groups = await Group.getGroupsUser(decoded.username)
+
+  Recurso.listRecursosUser(decoded.username,groups)
     .then(recursos => {
       res.jsonp(recursos)
     })
