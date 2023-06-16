@@ -3,17 +3,31 @@ var router = express.Router();
 var Group = require('../controllers/group');
 var Recurso = require('../controllers/recurso');
 var date = new Date().toISOString().substring(0,16);
+var jwt = require('jsonwebtoken')
+var axios = require('axios')
 
 /* GET recursos */
 router.get('/api/recursos', function(req, res, next) {
   console.log("GET /api/recursos")
-  Recurso.listRecursosUser(req.user)
-    .then(recursos => {
-      res.jsonp(recursos)
+ 
+  var decoded = jwt.verify(req.query.token, "EngWeb2023")
+ 
+  axios.get('http://localhost:8002/users/groups/' + decoded.username + '?token=' + req.query.token)
+    .then(response => {
+      
+      Recurso.listRecursosUser(decoded.username, response.data)
+      .then(recursos => {
+        
+        res.jsonp(recursos)
+      })
+      .catch(erro => {
+        res.render('error', {error: erro, message: "Erro na obtenção da user de recursos"})
+      })
     })
-    .catch(erro => {
-      res.render('error', {error: erro, message: "Erro na obtenção da user de recursos"})
+    .catch(e =>{
+      console.log(e);
     })
+ 
 });
 
 router.get('/api/search/groups/:pattern', function(req, res, next) {
@@ -31,13 +45,38 @@ router.get('/api/search/groups/:pattern', function(req, res, next) {
 /* GET recurso */
 router.get('/api/recursos/:id', function(req, res, next) {
   console.log("GET /api/recursos/" + req.params.id)
-  Recurso.getRecurso(req.params.id)
-    .then(recurso => {
-      res.jsonp(recurso)
+  var decoded = jwt.verify(req.query.token, "EngWeb2023")
+ 
+  axios.get('http://localhost:8002/users/groups/' + decoded.username + '?token=' + req.query.token)
+    .then(response => {
+      
+      Recurso.getRecurso(req.params.id, decoded.username, response.data)
+      .then(recursos => {
+        
+        res.jsonp(recursos)
+      })
+      .catch(erro => {
+        res.render('error', {error: erro, message: "Erro na obtenção do recurso"})
+      })
     })
-    .catch(erro => {
-      res.render('error', {error: erro, message: "Erro na obtenção do recurso"})
+    .catch(e =>{
+      console.log(e);
     })
+});
+
+/* GET group */
+router.get('/api/groups/:id', function(req, res, next) {
+  console.log("GET /api/groups/" + req.params.id)
+       
+  Group.getGroup(req.params.id)
+      .then(recursos => {
+        
+        res.jsonp(recursos)
+      })
+      .catch(erro => {
+        res.render('error', {error: erro, message: "Erro na obtenção do grupo"})
+      })
+   
 });
 
 
@@ -74,12 +113,87 @@ router.post('/api/recursos', function(req, res) {
         ...response.toObject(),
         token: token
       };
+
+      //adding to submissions 
+      axios.get('http://localhost:8002/users/' + response.creator + '/addSub/' + response._id + '?token=' + token)
+      .then(response => {
+
+        res.jsonp(responseWithToken);
+      })
+      .catch(e =>{
+        console.log("Erro ao atualizar submissions");
+      })
       
-      res.jsonp(responseWithToken);
     })
     .catch(erro => {
       res.render('error', {error: erro, message: "Erro na inserção do recurso"})
     })
+
+})
+
+// POST: de um grupo
+router.post('/api/groups', function(req, res) {
+  console.log("POST /api/groups")
+  // Create a new file record in the database
+  
+ var token = req.query.token
+ 
+  var group = {
+    name: req.body.name,
+    owner: req.body.owner,
+    participants: req.body.usernames
+  }
+ 
+  Group.addGroup(group)
+    .then(response => {
+      // Create a new response object with token included
+      const responseWithToken = {
+        ...response.toObject(),
+        token: token
+      };
+
+      // Create array of promises and add group to each participant
+      let promises = group.participants.map(participant =>
+        axios.get('http://localhost:8002/users/' + participant + '/addGroup/' + response._id + '?token=' + token)
+      );
+
+      // Add the creator to the array of promises
+      promises.push(axios.get('http://localhost:8002/users/' + group.owner + '/addGroup/' + response._id + '?token=' + token));
+
+      // Wait for all promises to resolve
+      return Promise.all(promises).then(() => responseWithToken);
+    })
+    .then(responseWithToken => {
+      res.jsonp(responseWithToken);
+    })
+    .catch(erro => {
+      res.render('error', {error: erro, message: "Erro na criação do grupo"})
+    })
+
+  /* Group.addGroup(group)
+    .then(response => {
+      
+      // Create a new response object with token included
+      const responseWithToken = {
+        ...response.toObject(),
+        token: token
+      };
+
+      //adding to submissions 
+      axios.get('http://localhost:8002/users/' + response.creator + '/addGroup/' + response._id + '?token=' + token)
+      .then(response => {
+
+        res.jsonp(responseWithToken);
+      })
+      .catch(e =>{
+        console.log("Erro ao atualizar submissions");
+      })
+      
+    })
+    .catch(erro => {
+      res.render('error', {error: erro, message: "Erro na inserção do recurso"})
+    })
+ */
 })
 
 // PUT: de um recurso
@@ -133,3 +247,4 @@ router.get('/api/recursos/tipos/:id', function(req, res) {
 
 
 module.exports = router;
+

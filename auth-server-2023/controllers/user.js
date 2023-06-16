@@ -55,6 +55,17 @@ module.exports.getUserEmail = e => {
             })
 }
 
+module.exports.getUserGroups = e => {
+    return User.findOne({username:e})
+            .then(resposta => {
+                
+                return resposta.groups
+            })
+            .catch(erro => {
+                return erro
+            })
+}
+
 module.exports.addUser = u => {
     return User.create(u)
             .then(resposta => {
@@ -65,6 +76,25 @@ module.exports.addUser = u => {
             })
 }
 
+module.exports.updateSubmissions = (user, sub) => {
+    return User.updateOne({ username: user }, { $push: { submissions: sub } })
+            .then(resposta => {
+                return resposta
+            })
+            .catch(erro => {
+                return erro
+            })
+}
+
+module.exports.updateGroups = (user, group) => {
+    return User.updateOne({ username: user }, { $push: { groups: group } })
+            .then(resposta => {
+                return resposta
+            })
+            .catch(erro => {
+                return erro
+            })
+}
 
 module.exports.updateUser = (user, info) => {
     return User.updateOne({username:user}, info)

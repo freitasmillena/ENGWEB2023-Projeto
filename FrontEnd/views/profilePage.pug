@@ -7,7 +7,7 @@ block content
             .bg-white.shadow.rounded-lg.d-block.d-sm-flex
                 .profile-tab-nav.border-right
                     .p-4 
-                        h4.text-center Nome Aqui
+                        h4.text-center #{user.username}
                     .nav.flex-column.nav-pills#v-pills-tab(role="tablist" aria-orientation="vertical")
                         a.nav-link.active#account-tab(data-toggle="pill", href="#account", role="tab", aria-controls="account", aria-selected="true")
                             i.fa.fa-home.text-center.mr-1
@@ -35,23 +35,23 @@ block content
                                 .col-md-6 
                                     .form-group 
                                         label First Name 
-                                        input.form-control(type="text", value="First Name")
+                                        input.form-control(type="text", value=user.name)
                                 .col-md-6 
                                     .form-group 
                                         label Last Name 
-                                        input.form-control(type="text", value="Last Name")
+                                        input.form-control(type="text", value=user.surname)
                                 .col-md-6 
                                     .form-group 
                                         label E-mail
-                                        input.form-control(type="text", value="E-mail")
+                                        input.form-control(type="text", value=user.email)
                                 .col-md-6 
                                     .form-group 
                                         label Occupation
-                                        input.form-control(type="text", value="Occupation")
+                                        input.form-control(type="text", value=user.occupation)
                                 .col-md-12
                                     .form-group 
                                         label Bio
-                                        textarea.form-control(rows="4") Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore vero enim error similique quia numquam ullam corporis officia odio repellendus aperiam consequatur laudantium porro voluptatibus, itaque laboriosam veritatis voluptatum distinctio!
+                                        textarea.form-control(rows="4") #{user.bio}
                                 .button
                                     input(type="submit" value="Update") 
                     .tab-pane.fade#password(role="tabpanel" aria-labelledby="password-tab")
@@ -84,8 +84,63 @@ block content
                                 .button
                                     input(type="submit" value="Update") 
                     .tab-pane.fade#groups(role="tabpanel" aria-labelledby="groups-tab")
-                        h3.mb-4 My Groups 
+                        .groups-header
+                            h3.mb-4.group-title My Groups 
+                            a.mb-4.group-button(href='')  New Group
+                        if groups.length > 0
+                            .header-files 
+                                .header-title Group
+                                .header-details
+                                  .header-detail Owner
+                            each f in groups
+                                .files-list
+                                    .header-title #{f.name}
+                                    .header-details
+                                      .header-detail #{f.owner}
+                        else
+                            h5 No files
+                        
                     .tab-pane.fade#saved(role="tabpanel" aria-labelledby="saved-tab")
-                        h3.mb-4 Saved Files 
+                        h3.mb-4 Saved Files
+                        if favorites.length > 0
+
+                            .header-files 
+                                .header-title Title
+                                .header-details
+                                  .header-detail Author
+                                  .header-detail Date
+                                  .header-detail Type
+                                  .header-detail Size
+                            each f in submissions
+                                .files-list
+                                    .header-title #{f.title}
+                                    .header-details
+                                      .header-detail #{f.creator}
+                                      .header-detail #{f.created}
+                                      .header-detail #{f.type}
+                                      .header-detail #{f.size}
+                        else
+                            h5 No files
+                        
                     .tab-pane.fade#myfiles(role="tabpanel" aria-labelledby="myfiles-tab")
                         h3.mb-4 My Files 
+                        if submissions.length > 0
+
+                            .header-files 
+                                .header-title Title
+                                .header-details
+                                  .header-detail Visibility
+                                  .header-detail Date
+                                  .header-detail Type
+                                  .header-detail Size
+                            each f in submissions
+                                .files-list
+                                    .header-title #{f.title}
+                                    .header-details
+                                      .header-detail #{f.visibility}
+                                      .header-detail #{f.created}
+                                      .header-detail #{f.type}
+                                      .header-detail #{f.size}
+                        else
+                            h5 No files
+                        

@@ -28,11 +28,101 @@ router.get('/uploadForm', function(req, res, next) {
   }
 });
 
+router.get('/formGroup', function(req, res, next) {
+  var token = ""
+  if(req.cookies && req.cookies.token)
+    token = req.cookies.token
+  var decoded = jwt.verify(token, "EngWeb2023");
+  console.log(decoded.level);
+  if(decoded.level === "producer" || decoded.level === "admin"){
+    console.log(token)
+    res.render('formGroup', {user: decoded.username});
+  }
+  else {
+    res.render('index', {error: e, errorMessage: "Permissão negada."});
+  }
+});
+
+router.post('/formGroup', function(req, res){
+  
+  
+  const filteredUsernames =  req.body.usernames.filter(item => item !== '');  
+  req.body.usernames = filteredUsernames
+  
+
+
+  var token = ""
+  if(req.cookies && req.cookies.token)
+    token = req.cookies.token
+  
+    
+  axios.post('http://localhost:7777/api/groups?token=' + token, req.body)
+    .then(response => {
+      
+      res.cookie('token', response.data.token)
+      res.redirect('/recursos')
+    })
+    .catch(e =>{
+      res.render('error', {error: e, message: "Erro no registo do grupo!"})
+    }) 
+}) 
+
+router.get('/profile/:username', function(req, res, next) {
+  var token = ""
+  if(req.cookies && req.cookies.token)
+    token = req.cookies.token
+  var decoded = jwt.verify(token, "EngWeb2023");
+  
+  axios.get('http://localhost:8002/users/'+ req.params.username + "?token=" + token)
+    .then(user => {
+          
+          var submissionsPromises = user.data.dados.submissions.map(submission => 
+            axios.get(env.apiAccessPoint+"/recursos/" + submission +"?token=" + token)
+            .then(response => response.data)
+          );
+          
+          var favoritesPromises = user.data.dados.favorites.map(favorite => 
+            axios.get(env.apiAccessPoint+"/recursos/" + favorite +"?token=" + token)
+            .then(response => response.data)
+          );
+              
+          var groupsPromises = user.data.dados.groups.map(group => 
+            axios.get(env.apiAccessPoint+"/groups/" + group +"?token=" + token)
+            .then(response => response.data)
+            .catch(err => console.log("Erro ao obter grupos"))
+          );
+          
+          return Promise.all([...submissionsPromises, ...favoritesPromises, ...groupsPromises])
+          .then(results => {
+            var submissions = results.slice(0, user.data.dados.submissions.length);
+            var favorites = results.slice(user.data.dados.submissions.length, user.data.dados.submissions.length + user.data.dados.favorites.length);
+            var groups = results.slice(user.data.dados.submissions.length + user.data.dados.favorites.length);
+            //console.log('submissions:', submissions);
+            //console.log('favorites:', favorites);
+            //console.log('groups:', groups);
+            if(decoded.username === req.params.username){
+              
+              res.render('profilePage', {user: user.data.dados, submissions: submissions, favorites: favorites, groups: groups});
+            }
+            else {
+              res.render('userPage', {user: user.data.dados, submissions: submissions});
+            } 
+          });
+    })
+    .catch(err => {
+      console.log("Erro ao buscar user.")
+      res.render('error', {error: err})
+    })
+
+  
+});
+
+
 router.post('/login', function(req, res){
   axios.post('http://localhost:8002/users/login', req.body)
     .then(response => {
       res.cookie('token', response.data.token)
-      res.redirect('/uploadForm')
+      res.redirect('/recursos')
     })
     .catch(e =>{
       res.render('index', {error: e, errorMessage: "Credenciais inválidas"});
@@ -96,7 +186,7 @@ router.get('/recursos', function(req, res) {
   var token = ""
   if(req.cookies && req.cookies.token)
     token = req.cookies.token
-
+  console.log(token)
   axios.get(env.apiAccessPoint+"/recursos?token=" + token)
     .then(response => {
       res.render('files', { files: response.data, d: data });

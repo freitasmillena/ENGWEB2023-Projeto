@@ -12,23 +12,36 @@ module.exports.listRecursos = () => {
 
 }
 
-module.exports.listRecursosUser = (username) => {
+module.exports.listRecursosUser = (username, groups) => {
+    
     return Recurso.find().sort({ dataCriacao: -1 })
       .then((dados) => {
         // Filter the resources based on user access
         const filteredRecursos = dados.filter((recurso) => {
-          // Check if the username is in available_for.users array
-          const userAccess = recurso.available_for.users.includes(username);
           
-          // Check if any of the user's groups is in available_for.groups array
-          const groupAccess = recurso.available_for.groups.some((group) =>
-            user.groups.includes(group)
-          );
-  
-          // Return the resource if either user or group access is granted
-          return userAccess || groupAccess;
+          const publicAccess = recurso.visibility === 'public';
+                    
+          if(publicAccess) return true;
+          else {
+            
+            // Check if the username is in available_for.users array
+            const userAccess = recurso.available_for.users.includes(username) || recurso.creator === username;
+            
+            if(userAccess) return true;
+            else {
+            // Check if any of the user's groups is in available_for.groups array
+            const groupAccess = recurso.available_for.groups.some((group) =>
+              groups.includes(group)
+            );
+
+            return groupAccess;
+            }
+
+            
+          }
+          
         });
-  
+        
         return filteredRecursos;
       })
       .catch((erro) => {
@@ -37,11 +50,35 @@ module.exports.listRecursosUser = (username) => {
   };
 
 //GET /api/recursos/:id
-module.exports.getRecurso = id => {
+module.exports.getRecurso = (id, username, groups) => {
     return Recurso.findOne({_id: id})
-    .then(dados => {
-        return dados
-    })
+    .then((recurso) => {
+        
+          
+          const publicAccess = recurso.visibility === 'public';
+                    
+          if(publicAccess) return recurso;
+          else {
+            
+            // Check if the username is in available_for.users array
+            const userAccess = recurso.available_for.users.includes(username) || recurso.creator === username;
+            
+            if(userAccess) return recurso;
+            else {
+                // Check if any of the user's groups is in available_for.groups array
+                const groupAccess = recurso.available_for.groups.some((group) =>
+                  groups.includes(group)
+                );
+
+                if(groupAccess) return recurso;
+                else return NULL;
+
+            
+            }
+
+            
+          }      
+        })
     .catch(erro => {
         return erro
     })

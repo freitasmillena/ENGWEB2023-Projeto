@@ -1,0 +1,21 @@
+extends layout
+
+block content
+    .mycontainer
+        .title New Group Form
+        .content
+        form(action='/formGroup' method='post')
+          .user-details
+            .input-box
+              span.details Name
+              input(type='text' name='name' placeholder='Enter a title' required='')
+              input(type='hidden' name='owner' value=user)
+            .search-wrapper
+                span.details Add Participants
+                input.search-groups#searchUser(type='text' placeholder='Search users')
+                #userResult
+                #selectedUsers           
+          .button
+            input#groupForm(type='submit' value='Create')
+            
+
