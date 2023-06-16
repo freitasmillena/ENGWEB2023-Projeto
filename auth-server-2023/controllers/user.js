@@ -67,6 +67,8 @@ module.exports.getUserGroups = e => {
 }
 
 module.exports.addUser = u => {
+    var group = [0]
+    u.groups = group
     return User.create(u)
             .then(resposta => {
                 return resposta

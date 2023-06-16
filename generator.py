@@ -18,7 +18,7 @@ comments = ["Great file post!", "Awesome upload!", "Thanks for sharing!", "Very 
             ]
 user_array = []
 group_array = []
-level_array = ['consumer','pruducer']
+level_array = ['consumer','producer']
 
 
 def gen_groups():

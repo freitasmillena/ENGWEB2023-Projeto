@@ -15,6 +15,7 @@ module.exports.listRecursos = () => {
 module.exports.listRecursosUser = (username,groups) => {
     return Recurso.find({ "$or": [{ "creator": username, "available_for.users": username }, { "available_for.groups": {"$in":groups} }] }).sort({dataCriacao: -1}).skip(0).limit(10)
       .then((dados) => {
+        console.log(dados)
           return dados;
         })
         .catch((erro) => {

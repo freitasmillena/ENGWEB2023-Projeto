@@ -75,7 +75,9 @@ router.get('/profile/:username', function(req, res, next) {
   
   axios.get('http://localhost:8002/users/'+ req.params.username + "?token=" + token)
     .then(user => {
-          
+      //console.log("sub: " + user.data.dados.submissions)
+      //console.log("fav: " + user.data.dados.favorite)
+      //console.log("groups: " + user.data.dados.groups)
           var submissionsPromises = user.data.dados.submissions.map(submission => 
             axios.get(env.apiAccessPoint+"/recursos/" + submission +"?token=" + token)
             .then(response => response.data)
@@ -97,9 +99,9 @@ router.get('/profile/:username', function(req, res, next) {
             var submissions = results.slice(0, user.data.dados.submissions.length);
             var favorites = results.slice(user.data.dados.submissions.length, user.data.dados.submissions.length + user.data.dados.favorites.length);
             var groups = results.slice(user.data.dados.submissions.length + user.data.dados.favorites.length);
-            //console.log('submissions:', submissions);
-            //console.log('favorites:', favorites);
-            //console.log('groups:', groups);
+            console.log('submissions:', submissions);
+            console.log('favorites:', favorites);
+            console.log('groups:', groups);
             if(decoded.username === req.params.username){
               
               res.render('profilePage', {user: user.data.dados, submissions: submissions, favorites: favorites, groups: groups});
@@ -142,14 +144,24 @@ router.post('/register', function(req, res){
 })
 
 router.post('/uploadForm', upload.single('myFile'),function(req, res){
+  var token = ""
+  if(req.cookies && req.cookies.token)
+    token = req.cookies.token
   
+  var decodedToken = jwt.verify(token, "EngWeb2023");
+
   req.body.name = req.file.originalname
-  
+  if(req.body.visibility === 'public') {
+    req.body.groups = [0]
+    req.body.usernames = decodedToken.username
+  }
+  else {
   const filteredUsernames =  req.body.usernames.filter(item => item !== '');
   const filteredGroups =  req.body.groups.filter(item => item !== '');
-  
+  filteredUsernames.push(decodedToken.username)
   req.body.usernames = filteredUsernames
   req.body.groups = filteredGroups
+  }
 
   console.log(req.body)
   //Salvar em fileStorage
@@ -163,11 +175,7 @@ router.post('/uploadForm', upload.single('myFile'),function(req, res){
     if(error) throw error;
   });
 
-  var token = ""
-  if(req.cookies && req.cookies.token)
-    token = req.cookies.token
   
-  var decodedToken = jwt.verify(token, "EngWeb2023");
 
   req.body.creator = decodedToken.username
   axios.post('http://localhost:7777/api/recursos?token=' + token, req.body)
@@ -189,6 +197,7 @@ router.get('/recursos', function(req, res) {
   console.log(token)
   axios.get(env.apiAccessPoint+"/recursos?token=" + token)
     .then(response => {
+      console.log("data: " + response.data)
       res.render('files', { files: response.data, d: data });
     })
     .catch(err => {

@@ -16,6 +16,7 @@ router.get('/api/recursos', async function (req, res, next) {
 
   Recurso.listRecursosUser(decoded.username, groups)
     .then(recursos => {
+      console.log("recursos: " + recursos)
       res.jsonp(recursos)
     })
 
@@ -30,7 +31,7 @@ router.get('/api/recursos/:id', async function (req, res, next) {
   console.log("GET /api/recursos/" + req.params.id)
   var decoded = jwt.verify(req.query.token, "EngWeb2023")
   var groups = await Group.getGroupsUser(decoded.username)
-
+  
   Recurso.getRecurso(req.params.id, decoded.username, groups)
     .then(response => {
       res.jsonp(response)
@@ -42,7 +43,7 @@ router.get('/api/recursos/:id', async function (req, res, next) {
 
 
 router.get('/api/search/groups/:pattern', function (req, res, next) {
-  console.log("ENTREI")
+  
   Group.searchGroup(req.params.pattern)
     .then(recursos => {
       console.log(recursos)
