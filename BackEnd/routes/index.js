@@ -7,7 +7,7 @@ var date = new Date().toISOString().substring(0,16);
 /* GET recursos */
 router.get('/api/recursos', function(req, res, next) {
   console.log("GET /api/recursos")
-  Recurso.listRecursos()
+  Recurso.listRecursosUser(req.user)
     .then(recursos => {
       res.jsonp(recursos)
     })
