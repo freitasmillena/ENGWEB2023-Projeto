@@ -86,17 +86,21 @@ block content
                     .tab-pane.fade#groups(role="tabpanel" aria-labelledby="groups-tab")
                         .groups-header
                             h3.mb-4.group-title My Groups 
-                            a.mb-4.group-button(href='')  New Group
+                            a.mb-4.group-button(href='/formGroup')  New Group
                         if groups.length > 0
                             .header-files 
                                 .header-title Group
                                 .header-details
                                   .header-detail Owner
+                                .header-details
+                                  .header-detail Participants
                             each f in groups
                                 .files-list
                                     .header-title #{f.name}
                                     .header-details
                                       .header-detail #{f.owner}
+                                    .header-details
+                                      .header-detail #{f.participants}
                         else
                             h5 No files
                         

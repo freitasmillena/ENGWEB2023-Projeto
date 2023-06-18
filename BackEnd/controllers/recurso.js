@@ -106,15 +106,16 @@ module.exports.tipos = () => {
             })
 }
 
-//GET /api/recursos/tipos/:id/recursos
-module.exports.recsByTipo = (id) => {
-    return Recurso.aggregate([{$unwind: "$recursos"}, {$match: {"recursos.tipo": id}}, {$project: {"recursos.titulo":1, _id:0}}])
-            .then(resposta => {
-                return resposta
-            })
-            .catch(erro => {
-                return erro
-            })
+//GET /api/recursos/tipos/:tipo/
+module.exports.recsByTipo = (username,groups,tipo) => {
+    return Recurso.find(
+        {   "$or": 
+            [     
+                { "creator": username, "available_for.users": username },     
+                { "available_for.groups": { "$in": groups } }  
+            ],   
+            "type": { $regex: tipo, $options: "i" } }
+        ).sort({ dataCriacao: -1 }).skip(0).limit(10);
 }
 
 //GET /api/users/:id/recursos

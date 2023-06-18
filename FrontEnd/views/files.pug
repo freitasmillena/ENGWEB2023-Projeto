@@ -11,16 +11,16 @@ block content
                       input.search-groups(type='text' placeholder='Search here')
                     .filter-selectors
                         .filter-sort
-                            select(name="sort")
+                            select#sort-by(name="sort")
                               option(value="" selected) Sort by
                               option(value="dateasc") Date Ascending
                               option(value="datedesc") Date Descending
                               option(value="alphasc") Alphabetically Ascending
                               option(value="alphadesc") Alphabetically Descending
                         .filter-sort
-                            select(name="sort")
+                            select#filter-by-type(name="sort")
                               option(value="" selected) Type
-                              option(value="dateasc") PDF
+                              option(value="pdf") PDF
                               option(value="datedesc") JPEG
                               option(value="alphasc") HTML
                               option(value="alphadesc") PNG
@@ -37,8 +37,8 @@ block content
                     .header-title #{f.title}
                     .header-details
                       .header-detail #{f.creator}
-                      .header-detail #{f.created}
-                      .header-detail #{f.type}
+                      .header-detail #{new Date(f.created).toLocaleDateString()}
+                      .header-detail #{getFileExtension(f.type)}
                       .header-detail #{f.size}
         .mycontainer.container-right 
             .title News

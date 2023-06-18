@@ -1,3 +1,5 @@
+const { default: axios } = require("axios");
+
 let selectedResults = [];
 
 // Upload Form

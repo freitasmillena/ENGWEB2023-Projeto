@@ -225,14 +225,21 @@ router.get('/api/tipos', function (req, res) {
 
 
 // GET recurso de um certo tipo 
-router.get('/api/recursos/tipos/:id', function (req, res) {
-  console.log("GET /api/recursos/tipos/" + req.params.id)
-  user.recsByTipo(req.params.id)
-    .then(user => {
-      res.jsonp(user)
+router.get('/api/recursos/tipos/:tipo', async function (req, res) {
+  console.log("GET /api/recursos/tipos/" + req.params.tipo)
+  
+  //decode the token
+  var decoded = jwt.verify(req.query.token, "EngWeb2023");
+  var groups = await Group.getGroupsUser(decoded.username)
+
+  Recurso.recsByTipo(decoded.username, groups, req.params.tipo)
+    .then(recursos => {
+      console.log("recursos: " + recursos)
+      res.jsonp(recursos)
     })
+
     .catch(erro => {
-      res.render('error', { error: erro, message: "Erro na obtenção dos tipos" })
+      res.render('error', { error: erro, message: "Erro na obtenção da user de recursos" })
     })
 });
 

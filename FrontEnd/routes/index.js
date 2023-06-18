@@ -45,12 +45,11 @@ router.get('/formGroup', function(req, res, next) {
 
 router.post('/formGroup', function(req, res){
   
+  console.log(req.body)
   
   const filteredUsernames =  req.body.usernames.filter(item => item !== '');  
   req.body.usernames = filteredUsernames
   
-
-
   var token = ""
   if(req.cookies && req.cookies.token)
     token = req.cookies.token
@@ -189,16 +188,49 @@ router.post('/uploadForm', upload.single('myFile'),function(req, res){
     }) 
 }) 
 
+router.get('/recursos/tipos/:tipo', function(req, res) {
+  console.log(req.params.tipo)
+  var token = ""
+  if(req.cookies && req.cookies.token)
+    token = req.cookies.token
+  console.log(token)
+  var decoded = jwt.verify(token, "EngWeb2023");
+
+  const getFileExtension = (mimeType) => {
+    const parts = mimeType.split('.');
+    if (parts.length > 1) {
+      return parts[parts.length - 1];
+    }
+    return mimeType.split('/')[1];
+  };
+
+  axios.get(env.apiAccessPoint+"/recursos/tipos/" + req.params.tipo + "?token=" + token)
+    .then(response => {
+      res.render('files', { files: response.data, d: data, user: decoded.username, getFileExtension: getFileExtension});
+    })
+    .catch(err => {
+      res.render('error', {error: err})
+    })
+});
 
 router.get('/recursos', function(req, res) {
   var token = ""
   if(req.cookies && req.cookies.token)
     token = req.cookies.token
   console.log(token)
+  var decoded = jwt.verify(token, "EngWeb2023");
+
+  const getFileExtension = (mimeType) => {
+    const parts = mimeType.split('.');
+    if (parts.length > 1) {
+      return parts[parts.length - 1];
+    }
+    return mimeType.split('/')[1];
+  };
+
   axios.get(env.apiAccessPoint+"/recursos?token=" + token)
     .then(response => {
-      console.log("data: " + response.data)
-      res.render('files', { files: response.data, d: data });
+      res.render('files', { files: response.data, d: data, user: decoded.username, getFileExtension: getFileExtension});
     })
     .catch(err => {
       res.render('error', {error: err})

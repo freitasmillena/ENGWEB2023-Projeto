@@ -12,10 +12,10 @@ block content
               input(type='hidden' name='owner' value=user)
             .search-wrapper
                 span.details Add Participants
-                input.search-groups#searchUser(type='text' placeholder='Search users')
+                input.search-groups#searchUser(name='usernames' type='text' placeholder='Search users')
                 #userResult
                 #selectedUsers           
           .button
-            input#groupForm(type='submit' value='Create')
+            input#groupForm(type='submit' value='Create' href='/formGroup')
             
 
