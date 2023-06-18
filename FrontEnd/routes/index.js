@@ -24,7 +24,7 @@ router.get('/uploadForm', function(req, res, next) {
     res.render('formFile');
   }
   else {
-    res.render('index', {error: e, errorMessage: "Permissão negada."});
+    res.render('index', {errorMessage: "Permissão negada."});
   }
 });
 
@@ -46,9 +46,13 @@ router.get('/formGroup', function(req, res, next) {
 router.post('/formGroup', function(req, res){
   
   console.log(req.body)
-  
-  const filteredUsernames =  req.body.usernames.filter(item => item !== '');  
-  req.body.usernames = filteredUsernames
+  if(req.body.usernames) {
+    const filteredUsernames =  req.body.usernames.filter(item => item !== '');  
+    req.body.usernames = filteredUsernames
+  }
+  else {
+    req.body.usernames = []
+  }
   
   var token = ""
   if(req.cookies && req.cookies.token)
