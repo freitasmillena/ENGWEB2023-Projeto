@@ -115,10 +115,13 @@ router.post('/login', passport.authenticate('local'), function(req, res){
 router.put('/:id', auth.verificaAcesso, function(req, res) {
   User.updateUser(req.params.id, req.body)
     .then(dados => {
+      console.log("token: " + req.query.token)
+      dados.token = req.query.token
+      console.log(dados)
       res.jsonp(dados)
     })
     .catch(erro => {
-      res.render('error', {error: erro, message: "Erro na alteração do utilizador"})
+      console.log(erro)
     })
 })
 
@@ -142,13 +145,35 @@ router.put('/:id/ativar', auth.verificaAcesso, function(req, res) {
     })
 })
 
-router.put('/:id/password', auth.verificaAcesso, function(req, res) {
-  User.updateUserPassword(req.params.id, req.body)
-    .then(dados => {
-      res.jsonp(dados)
+router.put('/:id/password', auth.verificaAcesso, async function(req, res) {
+
+  const userId = req.params.id;
+  const { oldPassword, newPassword } = req.body;
+  await User.getUser(userId)
+    .then(user => {
+        // Verify the old password
+        user.authenticate(oldPassword, async (err, result) => {
+        if (err || !result) {
+          console.log("passe errada")
+          return res.status(401).send({ message: 'Old password is incorrect' });
+      }
+      
+        // Set the new password
+        await user.setPassword(newPassword, async (err) => {
+          if (err) {
+            console.log("só jesus sabe")
+            return res.status(500).send({ message: 'An error occurred while setting the new password' });
+          }
+        
+        // Save the user document
+        await user.save();
+        console.log("feito")
+        res.send({ message: 'Password updated successfully', token: req.query.token });
+      });
+    });
     })
-    .catch(erro => {
-      res.render('error', {error: erro, message: "Erro na alteração do utilizador"})
+    .catch(err => {
+      console.log("Erro ao obter user.")
     })
 })
 

@@ -57,11 +57,12 @@ block content
                                   .header-detail Type
                                   .header-detail Size
                             each f in submissions
-                                .files-list
-                                    .header-title #{f.title}
-                                    .header-details
-                                      .header-detail #{f.created}
-                                      .header-detail #{f.type}
-                                      .header-detail #{f.size}
+                                if f != null
+                                    .files-list
+                                        .header-title #{f.title}
+                                        .header-details
+                                          .header-detail #{f.created}
+                                          .header-detail #{f.type}
+                                          .header-detail #{f.size}
                         else
                             h5 No files

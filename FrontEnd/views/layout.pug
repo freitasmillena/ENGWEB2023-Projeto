@@ -14,10 +14,12 @@ html
     script(src='/javascripts/search.js')
   body
     header.topnav#myTopnav
-      a(href='#') Croc Simulator
-      a(href='/profile/' + user) Account
+      a(href='/recursos') Croc Simulator
+      if username
+        a(href='/profile/' + username) Account
       a(href='#about') About
-      a(href='/uploadForm') Upload
+      if level && level != "consumer" 
+        a(href='/uploadForm') Upload
       a(href='/recursos') Home
       a.icon(href='javascript:void(0);' onclick='myFunction()')
         i.fa.fa-bars

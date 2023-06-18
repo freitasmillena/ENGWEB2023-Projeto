@@ -1,6 +1,9 @@
 extends layout
 
 block content
+    if message
+        script.
+            alert("#{message}");
     section.py-5.my-5 
         .container
             h1.title.mb-5 Account Settings 
@@ -24,48 +27,49 @@ block content
                         a.nav-link#myfiles-tab(data-toggle="pill", href="#myfiles", role="tab", aria-controls="myfiles", aria-selected="false")
                             i.fa-solid.fa-file.text-center.mr-1
                             | My Files
-                        a.nav-link(data-toggle="pill", href="#", role="tab", aria-selected="false")
+                        a.nav-link(data-toggle="pill", role="tab", aria-selected="false", onclick="location.href='/logout'")
                             i.fa-solid.fa-arrow-right-from-bracket.text-center.mr-1
                             | Log out
                 .tab-content.p-4.p-md-5#v-pills-tabContent
                     .tab-pane.fade.show.active#account(role="tabpanel", aria-labelledby="account-tab")
                         h3.mb-4 Account Settings 
-                        form 
+                        form(action='/updateUser/'+user.username method='post') 
                             .row 
                                 .col-md-6 
                                     .form-group 
                                         label First Name 
-                                        input.form-control(type="text", value=user.name)
+                                        input.form-control(type="text" name='name' value=user.name)
                                 .col-md-6 
                                     .form-group 
                                         label Last Name 
-                                        input.form-control(type="text", value=user.surname)
+                                        input.form-control(type="text" name='surname' value=user.surname)
                                 .col-md-6 
                                     .form-group 
                                         label E-mail
-                                        input.form-control(type="text", value=user.email)
+                                        input.form-control(type="text" name='email' value=user.email)
                                 .col-md-6 
                                     .form-group 
                                         label Occupation
-                                        input.form-control(type="text", value=user.occupation)
+                                        input.form-control(type="text" name='occupation' value=user.occupation)
                                 .col-md-12
                                     .form-group 
                                         label Bio
-                                        textarea.form-control(rows="4") #{user.bio}
-                                .button
+                                        textarea.form-control(rows="4" name='bio') #{user.bio}
+                                
+                                .button 
                                     input(type="submit" value="Update") 
                     .tab-pane.fade#password(role="tabpanel" aria-labelledby="password-tab")
                         h3.mb-4 Password Settings 
-                        form 
+                        form(action='/updatePassword/'+user.username method='post')  
                             .row 
                                 .col-md-6 
                                     .form-group 
                                         label Old Password
-                                        input.form-control(type="password" required='')
+                                        input.form-control(type="password" required='' name='oldPassword')
                                 .col-md-6 
                                     .form-group 
                                         label New Password 
-                                        input.form-control#passwordInput(type="password" required='')
+                                        input.form-control#passwordInput(type="password" required='' name='newPassword')
                                 .col-md-6 
                                     .form-group 
                                         label Confirm Password

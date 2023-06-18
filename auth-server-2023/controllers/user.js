@@ -99,7 +99,7 @@ module.exports.updateGroups = (user, group) => {
 }
 
 module.exports.updateUser = (user, info) => {
-    return User.updateOne({username:user}, info)
+    return User.updateOne({ username: user }, { $set: info })
             .then(resposta => {
                 return resposta
             })
