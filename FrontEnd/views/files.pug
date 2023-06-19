@@ -1,9 +1,6 @@
 extends layout
 
 block content
-    if errorMessage
-        script.
-            alert("#{errorMessage}");
     .container-wrapper 
         .mycontainer.container-left 
             .title All Files
@@ -18,15 +15,21 @@ block content
                               option(value="" selected) Sort by
                               option(value="dateasc") Date Ascending
                               option(value="datedesc") Date Descending
-                              option(value="alphasc") Alphabetically Ascending
-                              option(value="alphadesc") Alphabetically Descending
+                              option(value="titleasc") Alphabetically Ascending
+                              option(value="titledesc") Alphabetically Descending
+                              option(value="sizeasc") Size Ascending
+                                option(value="sizedesc") Size Descending
                         .filter-sort
-                            select#filter-by-type(name="sort")
-                              option(value="" selected) Type
-                              option(value="pdf") PDF
-                              option(value="datedesc") JPEG
-                              option(value="alphasc") HTML
-                              option(value="alphadesc") PNG
+                            select#filter-by-type(name="sort") 
+                                option(value="" selected) Type
+                                option(value="all") ALL
+                                option(value="pdf") PDF
+                                option(value="jpeg") JPEG
+                                option(value="html") HTML
+                                option(value="png") PNG
+                                option(value="document") DOC
+                                option(value="all") ALL
+
             .header-files 
                 .header-title Title
                 .header-details
@@ -40,7 +43,7 @@ block content
                     .header-title #{f.title}
                     .header-details
                       .header-detail #{f.creator}
-                      .header-detail #{new Date(f.created).toLocaleDateString()}
+                      .header-detail #{new Date(f.created).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}
                       .header-detail #{getFileExtension(f.type)}
                       .header-detail #{f.size}
         .mycontainer.container-right 

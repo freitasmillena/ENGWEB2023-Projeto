@@ -12,7 +12,25 @@ module.exports.listRecursos = () => {
 
 }
 
-module.exports.listRecursosGroup = (group) => {
+module.exports.listRecursosUser = (username,groups, sort) => {
+    if (sort === "dateasc" )
+        sort = {"created": 1}
+    else if (sort === "datedesc")
+        sort = {"created": -1}
+    else if (sort === "titleasc")
+        sort = {"title": 1}
+    else if (sort === "titledesc")
+        sort = {"title": -1}
+    else if (sort === "sizeasc")
+        sort = {"size": 1}
+    else if (sort === "sizedesc")
+        sort = {"size": -1}
+    else
+        sort = {"created": -1}
+
+    return Recurso.find({ "$or": [{ "creator": username, "available_for.users": username }, { "available_for.groups": {"$in":groups} }] }).sort(sort).skip(0).limit(10)
+
+    module.exports.listRecursosGroup = (group) => {
     return Recurso.find({"available_for.groups": {"$in":group} }).sort({created: -1})
       .then((dados) => {
           return dados;
@@ -117,7 +135,22 @@ module.exports.tipos = () => {
 }
 
 //GET /api/recursos/tipos/:tipo/
-module.exports.recsByTipo = (username,groups,tipo) => {
+module.exports.recsByTipo = (username,groups,tipo, sort) => {
+    if (sort === "dateasc" )
+        sort = {"created": 1}
+    else if (sort === "datedesc")
+        sort = {"created": -1}
+    else if (sort === "titleasc")
+        sort = {"title": 1}
+    else if (sort === "titledesc")
+        sort = {"title": -1}
+    else if (sort === "sizeasc")
+        sort = {"size": 1}
+    else if (sort === "sizedesc")
+        sort = {"size": -1}
+    else
+        sort = {"created": -1}
+
     return Recurso.find(
         {   "$or": 
             [     
@@ -125,7 +158,7 @@ module.exports.recsByTipo = (username,groups,tipo) => {
                 { "available_for.groups": { "$in": groups } }  
             ],   
             "type": { $regex: tipo, $options: "i" } }
-        ).sort({ dataCriacao: -1 }).skip(0).limit(10);
+        ).sort(sort).skip(0).limit(10);
 }
 
 //GET /api/users/:id/recursos

@@ -14,7 +14,15 @@ router.get('/api/recursos', async function (req, res, next) {
   var decoded = jwt.verify(req.query.token, "EngWeb2023");
   var groups = await Group.getGroupsUser(decoded.username)
 
-  Recurso.listRecursosUser(decoded.username, groups)
+  // check if there is a sort query
+  if (req.query.sort) {
+    var sort = req.query.sort
+  } else {
+    var sort = "dateasc"
+  }
+  console.log("sort: " + sort)
+
+  Recurso.listRecursosUser(decoded.username, groups, sort)
     .then(recursos => {
       console.log("recursos: " + recursos)
       res.jsonp(recursos)
@@ -232,7 +240,15 @@ router.get('/api/recursos/tipos/:tipo', async function (req, res) {
   var decoded = jwt.verify(req.query.token, "EngWeb2023");
   var groups = await Group.getGroupsUser(decoded.username)
 
-  Recurso.recsByTipo(decoded.username, groups, req.params.tipo)
+  // check if there is a sort query
+  if (req.query.sort) {
+    var sort = req.query.sort
+  } else {
+    var sort = "dateasc"
+  }
+  console.log("sort: " + sort)
+
+  Recurso.recsByTipo(decoded.username, groups, req.params.tipo, sort)
     .then(recursos => {
       console.log("recursos: " + recursos)
       res.jsonp(recursos)
