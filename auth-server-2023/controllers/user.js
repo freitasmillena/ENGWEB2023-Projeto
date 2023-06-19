@@ -137,4 +137,30 @@ module.exports.deleteUser = user => {
                 return erro
             })
 }
+
+//remove group from all users that were on the group (when deleting group)
+module.exports.removeGroupUsers = groupId => {
+    return User.updateMany(
+        { groups: groupId }, 
+        { $pull: { groups: groupId } }
+    )
+    .then(dados => {
+        return dados
+    })
+    .catch(erro => {
+        return erro
+    })
+}
+
+//when removing user from group
+module.exports.removeGroupUser = (user, group) => {
+    return User.updateOne({ username: user }, 
+    { $pull: { groups: group } })
+    .then(dados => {
+        return dados
+    })
+    .catch(erro => {
+        return erro
+    })
+}
  

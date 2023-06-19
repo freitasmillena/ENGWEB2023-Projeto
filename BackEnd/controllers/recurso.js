@@ -12,8 +12,18 @@ module.exports.listRecursos = () => {
 
 }
 
-module.exports.listRecursosUser = (username,groups) => {
-    return Recurso.find({ "$or": [{ "creator": username, "available_for.users": username }, { "available_for.groups": {"$in":groups} }] }).sort({dataCriacao: -1}).skip(0).limit(10)
+module.exports.listRecursosGroup = (group) => {
+    return Recurso.find({"available_for.groups": {"$in":group} }).sort({created: -1})
+      .then((dados) => {
+          return dados;
+        })
+        .catch((erro) => {
+            return erro;
+        });
+  };
+
+  module.exports.listRecursosUser = (username,groups) => {
+    return Recurso.find({ "$or": [{ "creator": username, "available_for.users": username }, { "available_for.groups": {"$in":groups} }] }).sort({created: -1}).skip(0).limit(10)
       .then((dados) => {
         console.log(dados)
           return dados;
@@ -121,6 +131,18 @@ module.exports.recsByTipo = (username,groups,tipo) => {
 //GET /api/users/:id/recursos
 module.exports.getRecursos = id => {
     return Recurso.find({autor: id})
+    .then(dados => {
+        return dados
+    })
+    .catch(erro => {
+        return erro
+    })
+}
+
+
+module.exports.removeGroupAvailable = group => {
+    return Recurso.updateMany({ "available_for.groups": group }, 
+    { $pull: { "available_for.groups": group } })
     .then(dados => {
         return dados
     })

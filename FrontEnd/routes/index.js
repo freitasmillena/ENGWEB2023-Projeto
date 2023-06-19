@@ -130,6 +130,7 @@ router.post('/updatePassword/:username', function(req, res){
 
 
 router.get('/profile/:username', function(req, res, next) {
+  console.log('GET profile')
   var token = ""
   if(req.cookies && req.cookies.token) {
     token = req.cookies.token
@@ -137,6 +138,7 @@ router.get('/profile/:username', function(req, res, next) {
     var message
     if(req.query.passwordUpdated=== "true") message = "Password updated successfully"
     else if(req.query.passwordUpdated=== "false") message = "Could not update password."
+    else if(req.query.groupDeleted === "true") message = "Group deleted successfully."
     
     axios.get('http://localhost:8002/users/'+ req.params.username + "?token=" + token)
       .then(user => {
@@ -333,4 +335,122 @@ router.get('/recursos/:id', function(req, res) {
   }
 });
 
+router.get('/groups/:id', function(req, res) {
+  var token = ""
+  if(req.cookies && req.cookies.token) {
+    token = req.cookies.token
+    console.log(token)
+    var decoded = jwt.verify(token, "EngWeb2023")
+    
+    axios.get(env.apiAccessPoint+"/groups/" + req.params.id +"?token=" + token)
+      .then(group => {
+       console.log(group.data.participants)
+       
+       if(group.data.participants.includes(decoded.username) || group.data.owner == decoded.username) {
+          axios.get(env.apiAccessPoint+'/recursos/group/'+ req.params.id +"?token=" + token)
+            .then(recursos => {
+              res.render('groupPage', {rec: recursos.data, group: group.data, username: decoded.username, level: decoded.level})
+            })
+            .catch(e => {
+              console.log("Erro ao buscar recursos do grupo.")
+            })
+       }
+       else {
+        res.redirect('/recursos?denied=true')
+       }
+       
+       
+        //res.render('filePage', { file: response.data, d: data, username: decoded.username, level: decoded.level });
+      })
+      .catch(err => {
+        res.render('error', {error: err, username: decoded.username, level: decoded.level})
+      })
+  }
+  else {
+    res.render('index', {errorMessage: "You need to log in to access this page."});
+  }
+});
+
+router.get('/deleteGroup/:id', function(req, res) {
+  var token = ""
+  if(req.cookies && req.cookies.token) {
+    token = req.cookies.token
+    console.log(token)
+    var decoded = jwt.verify(token, "EngWeb2023")
+    
+    console.log("group: " + req.params.id)
+    axios.delete(env.apiAccessPoint+"/groups/" + req.params.id +"?token=" + token)
+      .then(response => {
+       console.log("APAGOU")
+       console.log(response.data)
+       res.json({redirect: '/profile/' + decoded.username + '?groupDeleted=true'})
+       
+      })
+      .catch(err => {
+        res.render('error', {error: err, username: decoded.username, level: decoded.level})
+      })
+  }
+  else {
+    res.render('index', {errorMessage: "You need to log in to access this page."});
+  }
+});
+
+router.get('/group/:group/deleteUser/:username', function(req, res) {
+  var token = ""
+  if(req.cookies && req.cookies.token) {
+    token = req.cookies.token
+    console.log(token)
+    var decoded = jwt.verify(token, "EngWeb2023")
+    
+    console.log("group: " + req.params.group)
+    axios.delete(env.apiAccessPoint+"/groups/" + req.params.group + '/user/' + req.params.username +"?token=" + token)
+      .then(response => {
+       console.log("APAGOU")
+       console.log(response.data)
+       res.json({redirect: '/groups/' + req.params.group})
+      })
+      .catch(err => {
+        res.render('error', {error: err, username: decoded.username, level: decoded.level})
+      })
+  }
+  else {
+    res.render('index', {errorMessage: "You need to log in to access this page."});
+  }
+});
+
+router.get('/group/:group/addUsers', async function(req, res) {
+  var token = ""
+  if(req.cookies && req.cookies.token) {
+    token = req.cookies.token
+    console.log(token)
+    var decoded = jwt.verify(token, "EngWeb2023")
+    
+    console.log("group: " + req.params.group)
+    console.log("users: " + req.query.selectedResults)
+    const selectedResults = req.query.selectedResults
+
+    try {
+      for (const user of selectedResults) {
+        axios.put(env.apiAccessPoint+"/groups/" + req.params.group + '/user/' + user +"?token=" + token)
+        .then(response => {
+         console.log("ADICIONOU")
+         console.log(response.data)
+         res.json({redirect: '/groups/' + req.params.group})
+        })
+        .catch(err => {
+          res.render('error', {error: err, username: decoded.username, level: decoded.level})
+        })
+      }
+      
+      
+    } catch (error) {
+      console.error(error);
+      
+    }
+  }
+  else {
+    res.render('index', {errorMessage: "You need to log in to access this page."});
+  }
+
+});
 module.exports = router;

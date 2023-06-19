@@ -100,7 +100,8 @@ block content
                                   .header-detail Participants
                             each f in groups
                                 .files-list
-                                    .header-title #{f.name}
+                                    .header-title 
+                                        a(href='/groups/' + f._id) #{f.name}
                                     .header-details
                                       .header-detail #{f.owner}
                                     .header-details
@@ -121,7 +122,8 @@ block content
                                   .header-detail Size
                             each f in submissions
                                 .files-list
-                                    .header-title #{f.title}
+                                    .header-title 
+                                        a(href='/recursos/' + f._id) #{f.title}
                                     .header-details
                                       .header-detail #{f.creator}
                                       .header-detail #{f.created}
@@ -143,7 +145,8 @@ block content
                                   .header-detail Size
                             each f in submissions
                                 .files-list
-                                    .header-title #{f.title}
+                                    .header-title 
+                                        a(href='/recursos/' + f._id) #{f.title}
                                     .header-details
                                       .header-detail #{f.visibility}
                                       .header-detail #{f.created}

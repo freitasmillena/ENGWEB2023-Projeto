@@ -187,4 +187,25 @@ router.delete('/:id', auth.verificaAcesso, function(req, res) {
     })
 })
 
+router.put('/removeGroup/:group', auth.verificaAcesso, function(req, res){
+  console.log("GRUPO: " + req.params.group)
+  User.removeGroupUsers(req.params.group)
+    .then(dados => {
+      
+      res.status(200).jsonp(dados)
+    })
+    .catch(e => res.status(500).jsonp({error: e}))
+})
+
+router.put('/removeGroup/:group/user/:username', auth.verificaAcesso, function(req, res){
+  console.log("GRUPO: " + req.params.group)
+  console.log("USER: " + req.params.username)
+  User.removeGroupUser(req.params.username, req.params.group)
+    .then(dados => {
+      
+      res.status(200).jsonp(dados)
+    })
+    .catch(e => res.status(500).jsonp({error: e}))
+})
+
 module.exports = router;

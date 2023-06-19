@@ -59,7 +59,8 @@ block content
                             each f in submissions
                                 if f != null
                                     .files-list
-                                        .header-title #{f.title}
+                                        .header-title 
+                                            a(href='/recursos/' + f._id) #{f.title}
                                         .header-details
                                           .header-detail #{f.created}
                                           .header-detail #{f.type}

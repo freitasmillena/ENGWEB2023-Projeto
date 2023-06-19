@@ -793,6 +793,29 @@ form .groups-check {
   border-bottom: 1px solid var(--first-color);
 }
 
+.container-right .result-item {
+  cursor: pointer;
+  margin: 5px 0;
+  padding: 5px;
+  font-size: var(--mb-1);
+}
+
+.container-right .result-item:not(:last-child) {
+  border-bottom: 1px solid var(--first-color);
+}
+
+.container-right .selected-item {
+  cursor: pointer;
+  margin: 5px 0;
+  padding: 5px;
+  font-size: var(--mb-1);
+}
+
+.container-right .selected-item:not(:last-child) {
+  border-bottom: 1px solid var(--first-color);
+}
+
+
 #selectedItems {
   margin-top: 5px;
 }
@@ -1192,6 +1215,11 @@ section .details span{
 .fa-gear {
   margin-left: var(--mb-2);
   font-size: var(--mb-2);
+  color: var(--first-color-light);
+  cursor:pointer;
+}
+
+.fa-gear:hover{
   color: var(--first-color);
 }
 
@@ -1201,11 +1229,50 @@ section .details span{
   justify-items: stretch;
 }
 
+.group-del {
+  display: flex;
+  justify-content: space-between;
+}
+
+.fa-trash{
+  cursor: pointer;
+  color: var(--first-color-light);
+}
+
+.trashIcon{
+  margin-left: var(--mb-0-5);
+}
+
+.fa-trash:hover{
+  color: var(--first-color);
+}
+
 .group-title {
   /* style the left element */
   justify-self: start;
 }
 
+.header-title a {
+  text-decoration: none;
+  color: #455a64;
+  font-size: 22px;
+}
+
+.header-title, a:hover {
+  text-decoration: none;
+  color: #455a64;
+  font-size: 22px;
+}
+
+.comment-author a{
+  text-decoration: none;
+  color: #455a64;
+}
+
+.comment-author a:hover{
+  text-decoration: none;
+  color: #455a64;
+}
 
 .group-button{
   justify-self: end;
@@ -1224,6 +1291,47 @@ section .details span{
   background: linear-gradient(135deg,  var(--first-color), var(--first-color-second));
 }
 .group-button:hover{
+ /* transform: scale(0.99); */
+ background: linear-gradient(-135deg,  var(--first-color), var(--first-color-second));
+ text-decoration: none;
+ color: var(--first-color)
+ }
+
+ #searchContainer {
+  display: none;  
+}
+
+.show-search #searchContainer {
+  display: flex;  
+}
+
+.search-container {
+  display: flex; 
+  margin-bottom: var(--mb-0-5);
+}
+
+.search-container button{
+  margin-left: var(--mb-0-5);
+  font-size: var(--mb-0-75);
+  height: 100%;
+  width: 20%;
+  padding: var(--mb-0-5);
+  border-radius: 5px;
+  border: none;
+  color: #fff;
+  font-size: var(--mb-1);
+  align-content: center;
+  font-weight: 500;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #8c9dad;
+}
+
+.search-container button:enabled{
+  background: linear-gradient(135deg,  var(--first-color), var(--first-color-second));
+}
+.search-container button:enabled:hover{
  /* transform: scale(0.99); */
  background: linear-gradient(-135deg,  var(--first-color), var(--first-color-second));
  text-decoration: none;

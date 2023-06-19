@@ -65,6 +65,41 @@ module.exports.getGroup = id => {
     })
 }
 
+module.exports.deleteGroup = id => {
+    return Group.findByIdAndRemove(id)
+    .then(dados => {
+        return dados
+    })
+    .catch(erro => {
+        return erro
+    })
+}
+
+module.exports.deleteUserFromGroup = (group, username) => {
+    return Group.updateOne(
+        { _id: group },
+        { $pull: { participants: username } }
+      )
+    .then(dados => {
+        return dados
+    })
+    .catch(erro => {
+        return erro
+    })
+}
+
+module.exports.addUserToGroup = (group, username) => {
+    return Group.updateOne(
+        { _id: group },
+        { $push: { participants: username } }
+      )
+    .then(dados => {
+        return dados
+    })
+    .catch(erro => {
+        return erro
+    })
+}
 /* // lista de     
 module.exports.list = () => {
     return User.find().sort({data: -1})
@@ -103,15 +138,7 @@ module.exports.updateUser = l => {
 }
 
 //DELETE /users/:id
-module.exports.deleteUser = id => {
-    return User.collection.deleteOne({_id: id})
-    .then(dados => {
-        return dados
-    })
-    .catch(erro => {
-        return erro
-    })
-}
+
 
 //GET /api/Users/:id/recursos
 module.exports.getRecursos = id => {

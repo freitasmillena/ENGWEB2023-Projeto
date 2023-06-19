@@ -243,6 +243,103 @@ router.get('/api/recursos/tipos/:tipo', async function (req, res) {
     })
 });
 
+/* GET recursos disponíveis a um grupo*/
+router.get('/api/recursos/group/:idGroup', async function (req, res, next) {
+
+  
+  Recurso.listRecursosGroup(req.params.idGroup)
+    .then(recursos => {
+      console.log("recursos: " + recursos)
+      res.jsonp(recursos)
+    })
+
+    .catch(erro => {
+      res.render('error', { error: erro, message: "Erro na obtenção dos recursos do grupo" })
+    })
+});
+
+/* DELETE group */
+router.delete('/api/groups/:id', async function (req, res, next) {
+  console.log("DELETE /api/groups/" + req.params.id)
+  var token = ""
+  if(req.query && req.query.token) {
+    token = req.query.token
+    console.log(token)
+  }
+  try {
+
+    // Remove the group from available resources
+    const removeResult = await Recurso.removeGroupAvailable(req.params.id);
+    console.log("APAGOU DOS RECURSOS", removeResult);
+
+    // Remove the group from users
+    const userResponse = await axios.put('http://localhost:8002/users/removeGroup/' + req.params.id + '?token=' + token);
+    console.log("APAGOU DOS USERS", userResponse.data);
+
+    // Delete the group
+    const deleteResult = await Group.deleteGroup(req.params.id);
+    console.log("APAGOU GRUPO", deleteResult);
+
+    res.jsonp(userResponse.data);
+} catch (error) {
+    console.log("Erro ao remover grupo.");
+     
+}
+
+});
+
+/* DELETE user from a group */
+router.delete('/api/groups/:id/user/:username', async function (req, res, next) {
+  console.log("DELETE /api/groups/" + req.params.id + '/user/' + req.params.username)
+  var token = ""
+  if(req.query && req.query.token) {
+    token = req.query.token
+    console.log(token)
+  }
+  try {
+
+    
+    // Remove the group from user
+    const userResponse = await axios.put('http://localhost:8002/users/removeGroup/' + req.params.id + '/user/' + req.params.username + '?token=' + token);
+    console.log("APAGOU DOS USERS", userResponse.data);
+
+    // Remove user from group
+    const deleteResult = await Group.deleteUserFromGroup(req.params.id, req.params.username);
+    console.log("APAGOU DO GRUPO", deleteResult);
+
+    res.jsonp(userResponse.data);
+} catch (error) {
+    console.log("Erro ao remover grupo.");
+     
+}
+
+});
+
+/* Adicionar users a grupos */
+router.put('/api/groups/:id/user/:username', async function (req, res, next) {
+  console.log("PUT /api/groups/" + req.params.id + '/user/' + req.params.username)
+  var token = ""
+  if(req.query && req.query.token) {
+    token = req.query.token
+    console.log(token)
+  }
+  try {
+    
+    // Remove the group from user
+    const userResponse = await axios.get('http://localhost:8002/users/' + req.params.username + '/addGroup/' + req.params.id + '?token=' + token);
+    console.log("ADICIONOU AO USER", userResponse.data);
+
+    // Remove user from group
+    const deleteResult = await Group.addUserToGroup(req.params.id, req.params.username);
+    console.log("ADICIONOU AO GRUPO", deleteResult);
+
+    res.jsonp(userResponse.data);
+} catch (error) {
+    console.log("Erro ao adicionar ao grupo.");
+     
+}
+
+});
 
 module.exports = router;
 
