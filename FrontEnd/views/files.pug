@@ -1,6 +1,9 @@
 extends layout
 
 block content
+    if errorMessage
+        script.
+            alert("#{errorMessage}");
     .container-wrapper 
         .mycontainer.container-left 
             .title All Files

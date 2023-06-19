@@ -12,6 +12,18 @@ module.exports.listRecursos = () => {
 
 }
 
+
+module.exports.listRecursosGroup = (group) => {
+    return Recurso.find({ "available_for.groups": {"$in":group} })
+    .then((dados) => {
+      console.log(dados)
+        return dados;
+      })
+      .catch((erro) => {
+          return erro;
+      });
+}
+
 module.exports.listRecursosUser = (username,groups, sort) => {
     if (sort === "dateasc" )
         sort = {"created": 1}
@@ -29,19 +41,6 @@ module.exports.listRecursosUser = (username,groups, sort) => {
         sort = {"created": -1}
 
     return Recurso.find({ "$or": [{ "creator": username, "available_for.users": username }, { "available_for.groups": {"$in":groups} }] }).sort(sort).skip(0).limit(10)
-
-    module.exports.listRecursosGroup = (group) => {
-    return Recurso.find({"available_for.groups": {"$in":group} }).sort({created: -1})
-      .then((dados) => {
-          return dados;
-        })
-        .catch((erro) => {
-            return erro;
-        });
-  };
-
-  module.exports.listRecursosUser = (username,groups) => {
-    return Recurso.find({ "$or": [{ "creator": username, "available_for.users": username }, { "available_for.groups": {"$in":groups} }] }).sort({created: -1}).skip(0).limit(10)
       .then((dados) => {
         console.log(dados)
           return dados;
@@ -160,6 +159,7 @@ module.exports.recsByTipo = (username,groups,tipo, sort) => {
             "type": { $regex: tipo, $options: "i" } }
         ).sort(sort).skip(0).limit(10);
 }
+
 
 //GET /api/users/:id/recursos
 module.exports.getRecursos = id => {
