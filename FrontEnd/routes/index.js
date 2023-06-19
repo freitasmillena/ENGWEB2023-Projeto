@@ -274,7 +274,14 @@ router.get('/recursos/tipos/:tipo', function(req, res) {
     return mimeType.split('/')[1];
   };
 
-  axios.get(env.apiAccessPoint+"/recursos/tipos/" + req.params.tipo + "?token=" + token)
+  // check if is there a sort option in the url ?sort=...
+  var sort = ""
+  if(req.query.sort) {
+    sort = req.query.sort
+    console.log(sort)
+  }
+
+  axios.get(env.apiAccessPoint+"/recursos/tipos/" + req.params.tipo + "?sort=" + sort + "&token=" + token)
     .then(response => {
       res.render('files', { files: response.data, d: data, user: decoded.username, getFileExtension: getFileExtension, username: decoded.username, level: decoded.level});
     })
@@ -299,8 +306,15 @@ router.get('/recursos', function(req, res) {
       }
       return mimeType.split('/')[1];
     };
+
+    // check if is there a sort option in the url ?sort=...
+    var sort = ""
+    if(req.query.sort) {
+      sort = req.query.sort
+      console.log(sort)
+    }
   
-    axios.get(env.apiAccessPoint+"/recursos?token=" + token)
+    axios.get(env.apiAccessPoint+"/recursos?sort=" + sort + "&token=" + token)
       .then(response => {
         res.render('files', { files: response.data, d: data, user: decoded.username, getFileExtension: getFileExtension, username: decoded.username, level: decoded.level, errorMessage: message});
       })
