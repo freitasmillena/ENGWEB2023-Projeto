@@ -24,7 +24,7 @@ module.exports.listRecursosGroup = (group) => {
       });
 }
 
-module.exports.listRecursosUser = (username,groups, sort) => {
+module.exports.listRecursosUser = (username,groups, sort,page,max) => {
     if (sort === "dateasc" )
         sort = {"created": 1}
     else if (sort === "datedesc")
@@ -40,7 +40,7 @@ module.exports.listRecursosUser = (username,groups, sort) => {
     else
         sort = {"created": -1}
 
-    return Recurso.find({ "$or": [{ "creator": username, "available_for.users": username }, { "available_for.groups": {"$in":groups} }] }).sort(sort).skip(0).limit(10)
+    return Recurso.find({ "$or": [{ "creator": username, "available_for.users": username }, { "available_for.groups": {"$in":groups} }] }).sort(sort).skip(page*max).limit(max)
       .then((dados) => {
         console.log(dados)
           return dados;
@@ -124,8 +124,12 @@ module.exports.deleteRecurso = (idUser,id) => {
 
 //GET /api/recursos/tipos
 module.exports.tipos = () => {
-    return Recurso.distinct("recursos.tipo")
+    return Recurso.distinct("type")
             .then(resposta => {
+                //filter list to remove all values that contain '/'
+                resposta = resposta.filter(function (el) {
+                    return !el.includes("/");
+                });
                 return resposta
             })
             .catch(erro => {
@@ -156,7 +160,35 @@ module.exports.recsByTipo = (username,groups,tipo, sort) => {
                 { "creator": username, "available_for.users": username },     
                 { "available_for.groups": { "$in": groups } }  
             ],   
-            "type": { $regex: tipo, $options: "i" } }
+            "type": tipo}
+        ).sort(sort).skip(0).limit(10);
+}
+
+
+//GET /api/recursos/categorias/:categ/
+module.exports.recsByCateg = (username,groups,categ, sort) => {
+    if (sort === "dateasc" )
+        sort = {"created": 1}
+    else if (sort === "datedesc")
+        sort = {"created": -1}
+    else if (sort === "titleasc")
+        sort = {"title": 1}
+    else if (sort === "titledesc")
+        sort = {"title": -1}
+    else if (sort === "sizeasc")
+        sort = {"size": 1}
+    else if (sort === "sizedesc")
+        sort = {"size": -1}
+    else
+        sort = {"created": -1}
+
+    return Recurso.find(
+        {   "$or": 
+            [     
+                { "creator": username, "available_for.users": username },     
+                { "available_for.groups": { "$in": groups } }  
+            ],   
+            "category": categ }
         ).sort(sort).skip(0).limit(10);
 }
 

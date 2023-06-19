@@ -12,26 +12,53 @@ block content
                     .search-wrapper
                       i.fa-solid.fa-magnifying-glass
                       input.search-groups(type='text' placeholder='Search here')
-                    .filter-selectors
-                        .filter-sort
-                            select#sort-by(name="sort")
-                              option(value="" selected) Sort by
-                              option(value="dateasc") Date Ascending
-                              option(value="datedesc") Date Descending
-                              option(value="titleasc") Alphabetically Ascending
-                              option(value="titledesc") Alphabetically Descending
-                              option(value="sizeasc") Size Ascending
-                                option(value="sizedesc") Size Descending
-                        .filter-sort
-                            select#filter-by-type(name="sort") 
-                                option(value="" selected) Type
-                                option(value="all") ALL
-                                option(value="pdf") PDF
-                                option(value="jpeg") JPEG
-                                option(value="html") HTML
-                                option(value="png") PNG
-                                option(value="document") DOC
-                                option(value="all") ALL
+                .filter-container
+                    .filter-sort
+                        select#sort-by(name="sort")
+                          option(value="" selected) Sort by
+                          option(value="dateasc") Date Ascending
+                          option(value="datedesc") Date Descending
+                          option(value="titleasc") Alphabetically Ascending
+                          option(value="titledesc") Alphabetically Descending
+                          option(value="sizeasc") Size Ascending
+                          option(value="sizedesc") Size Descending
+                .filter-container
+                    .filter-sort
+                        select#filter-by-type(name="sort") 
+                            option(value="" selected) Type
+                            each t in tipos
+                                option(value=t) #{t}
+                            //- option(value="all") ALL
+                            //- option(value="pdf") PDF
+                            //- option(value="jpeg") JPEG
+                            //- option(value="html") HTML
+                            //- option(value="png") PNG
+                            //- option(value="document") DOC
+                            option(value="all") ALL
+                .filter-container
+                    .filter-sort
+                        select#filter-by-categ(name='category')
+                            option(value='' selected) Category 
+                            each c in cat
+                                option(value=c.name) #{c.name}
+                            option(value='all') ALL
+                .filter-container
+                    .filter-sort
+                        select#filter-by-categ-selected(name='condition')
+                            option(value='' selected) Category
+                            option(value='equals') Ano
+                            option(value='greater') Titulo
+                            option(value='less') Autor
+                .filter-container
+                    .filter-sort
+                        select#filter-by-categ-selected(name='condition')
+                            option(value='' selected) Category
+                            option(value='equals') ==
+                            option(value='greater') >=
+                            option(value='less') <=
+                .filter-container
+                    .search-wrapper
+                        input#filter-categ-selected(type='text' placeholder='Enter value' name='categValue')
 
             .header-files 
                 .header-title Title
@@ -43,49 +70,23 @@ block content
             
             each f in files
                 .files-list
-                    .header-title #{f.title}
+                    .header-title 
+                        a(href='/recursos/' + f._id) #{f.title}
                     .header-details
                       .header-detail #{f.creator}
                       .header-detail #{new Date(f.created).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}
-                      .header-detail #{getFileExtension(f.type)}
+                      .header-detail #{f.type}
                       .header-detail #{f.size}
         .mycontainer.container-right 
             .title News
             .news-list
-                .comment
+                each n in news
+                    .comment
                         .comment-author
                             i.fa-solid.fa-user
-                            span Author Name
+                            span #{n.creator}
                         .comment-content
-                            p Upload a file
+                            p #{n.title}
                         .comment-date
                             i.fa-solid.fa-clock
-                            span 2023-04-25
-                .comment
-                        .comment-author
-                            i.fa-solid.fa-user
-                            span Author Name
-                        .comment-content
-                            p Upload a file
-                        .comment-date
-                            i.fa-solid.fa-clock
-                            span 2023-04-25
-                .comment
-                        .comment-author
-                            i.fa-solid.fa-user
-                            span Author Name
-                        .comment-content
-                            p Upload a file
-                        .comment-date
-                            i.fa-solid.fa-clock
-                            span 2023-04-25
-                .comment
-                        .comment-author
-                            i.fa-solid.fa-user
-                            span Author Name
-                        .comment-content
-                            p Upload a file
-                        .comment-date
-                            i.fa-solid.fa-clock
-                            span 2023-04-25
-            
+                            span #{new Date(n.created).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}

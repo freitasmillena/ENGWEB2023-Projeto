@@ -14,12 +14,20 @@ users = ['Alice', 'Bob', 'Charlie', 'David', 'Eve', 'Frank', 'Grace', 'Hacker', 
 sur_names = ['Smith', 'Johnson', 'Williams', 'Jones', 'Brown', 'Davis', 'Miller', 'Wilson', 'Moore', 'Taylor', 'Anderson', 'Thomas', 'Jackson', 'White', 'Harris', 'Martin', 'Thompson', 'Garcia', 'Martinez', 'Robinson', 'Clark', 'Rodriguez', 'Lewis', 'Lee', 'Walker', 'Hall', 'Allen', 'Young', 'Hernandez', 'King', 'Wright', 'Lopez', 'Hill', 'Scott', 'Green', 'Adams', 'Baker', 'Gonzalez', 'Nelson', 'Carter', 'Mitchell', 'Perez', 'Roberts', 'Turner', 'Phillips', 'Campbell', 'Parker', 'Evans', 'Edwards', 'Collins',
              'Stewart', 'Sanchez', 'Morris', 'Rogers', 'Reed', 'Cook', 'Morgan', 'Bell', 'Murphy', 'Bailey', 'Rivera', 'Cooper', 'Richardson', 'Cox', 'Howard', 'Ward', 'Torres', 'Peterson', 'Gray', 'Ramirez', 'James', 'Watson', 'Brooks', 'Kelly', 'Sanders', 'Price', 'Bennett', 'Wood', 'Barnes', 'Ross', 'Henderson', 'Coleman', 'Jenkins', 'Perry', 'Powell', 'Long', 'Patterson', 'Hughes', 'Flores', 'Washington', 'Butler', 'Simmons', 'Foster', 'Gonzales', 'Bryant', 'Alexander', 'Russell', 'Griffin', 'Diaz', 'Hayes']
 groups = ['public', 'researchers', 'teachers', 'students', 'administration']
-comments = ["Great file post!", "Awesome upload!", "Thanks for sharing!", "Very helpful file!", "Fantastic post!", "Impressive content!", "Well done!", "Love this file!", "Excellent upload!", "Brilliant post!", "Great resource!", "Super useful file!", "Thank you for sharing!", "Incredible work!", "This is gold!", "Amazing contribution!", "This is exactly what I needed!", "High-quality content!", "This is amazing!", "This is outstanding!", "This is exceptional!", "This is top-notch!", "This is superb!", "This is phenomenal!", "This is impressive!", "This is fantastic!", "This is outstanding work!", "This is remarkable!", "This is extraordinary!", "This is excellent work!", "This is exceptional work!", "This is outstanding content!", "This is amazing content!", "This is outstanding quality!", "This is top-level work!", "This is incredible content!", "This is outstanding material!", "This is top-notch content!", "This is a game-changer!", "This is groundbreaking!", "This is top-class work!", "This is top-quality content!", "This is top-notch material!", "This is top-tier material!", "This is top-notch performance!", "This is top-notch execution!", "This is exceptional quality!", "This is top-class performance!", "This is top-notch teamwork!", "This is top-level collaboration!", "This is top-tier collaboration!", "This is outstanding teamwork!", "This is exceptional collaboration!", "This is top-notch collaboration!", "This is top-tier support!"
-            ]
+comments = ["Great file post!", "Awesome upload!", "Thanks for sharing!", "Very helpful file!", "Fantastic post!", "Impressive content!", "Well done!", "Love this file!", "Excellent upload!", "Brilliant post!", "Great resource!", "Super useful file!", "Thank you for sharing!", "Incredible work!", "This is gold!", "Amazing contribution!", "This is exactly what I needed!", "High-quality content!", "This is amazing!", "This is outstanding!", "This is exceptional!", "This is top-notch!", "This is superb!", "This is phenomenal!", "This is impressive!", "This is fantastic!", "This is outstanding work!", "This is remarkable!", "This is extraordinary!", "This is excellent work!", "This is exceptional work!", "This is outstanding content!", "This is amazing content!", "This is outstanding quality!", "This is top-level work!", "This is incredible content!", "This is outstanding material!", "This is top-notch content!", "This is a game-changer!", "This is groundbreaking!", "This is top-class work!", "This is top-quality content!", "This is top-notch material!", "This is top-tier material!", "This is top-notch performance!", "This is top-notch execution!", "This is exceptional quality!", "This is top-class performance!", "This is top-notch teamwork!", "This is top-level collaboration!", "This is top-tier collaboration!", "This is outstanding teamwork!", "This is exceptional collaboration!", "This is top-notch collaboration!", "This is top-tier support!"]
+categorias = ["Report", "Article", "Thesis", "Application", "Slides", "Test/Exam", "Solved Problems", "Other"]
 user_array = []
 group_array = []
 level_array = ['consumer','producer']
 
+def gen_categories():
+    global categorias
+    global cat_id
+    cat_array = []
+    for cat in categorias:
+        cat_array.append({'name': cat.capitalize()})
+        cat_id += 1
+    return cat_array
 
 def gen_groups():
     global g_id
@@ -81,6 +89,7 @@ def gen_entry(file):
     entry['type'] = type
     entry['path'] = os.path.abspath(file)
     entry['title'] = file.split('/')[-1].split('.')[0]
+    entry['category'] = random.sample(categorias, 1)[0]
     if random.randint(0, 1):
         entry['description'] = f"This is a {type} file."
     else:
@@ -105,14 +114,16 @@ def gen_entry(file):
         if entry['creator'] not in entry['available_for']['users']:
             entry['available_for']['users'].append(entry['creator'])
     entry['comments'] = []
-    if 'public' in entry['available_for']['groups']:
+    if 0 in entry['available_for']['groups']:
         how_many = random.randint(0, 50)
         for i in range(how_many):
             picked_id = random.sample(range(0, u_id), 1)[0]
             if entry['_id'] not in user_array[picked_id]['favorites']:
                 user_array[picked_id]['favorites'].append(entry['_id'])
             new_comment = {'user': f"{user_array[picked_id]['username']}",
-                           'comment': random.sample(comments, 1)[0]}
+                           'comment': random.sample(comments, 1)[0],
+                           'created': datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
+                           }
             entry['comments'].append(new_comment)
     f_id += 1
 
@@ -141,6 +152,7 @@ if __name__ == '__main__':
     group_array = gen_groups()
     user_array = gen_users(u_amount)
     entries_array = gen_dict(root)
+    cat_array = gen_categories()
     #out_dict = {"groups": group_array,
     #            "users": user_array, 
     #            "entries": entries_array}
@@ -150,3 +162,5 @@ if __name__ == '__main__':
         json.dump(user_array, f, indent=4)
     with open('entries_'+out, 'w') as f:
         json.dump(entries_array, f, indent=4)
+    with open('categories_'+out, 'w') as f:
+        json.dump(cat_array, f, indent=4)

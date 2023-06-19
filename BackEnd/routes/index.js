@@ -21,9 +21,22 @@ router.get('/api/recursos', async function (req, res, next) {
   } else {
     var sort = "dateasc"
   }
+
+  if (req.query.page) {
+    var page = req.query.page
+  } else {
+    var page = 0
+  }
+
+  if (req.query.limit) {
+    var limit = req.query.limit
+  } else {
+    var limit = 10
+  }
+
   console.log("sort: " + sort)
 
-  Recurso.listRecursosUser(decoded.username, groups, sort)
+  Recurso.listRecursosUser(decoded.username, groups, sort,page,limit)
     .then(recursos => {
       console.log("recursos: " + recursos)
       res.jsonp(recursos)
@@ -224,9 +237,9 @@ router.delete('/api/:idUser/recursos/:id', function (req, res) {
 // GET tipos de recursos
 router.get('/api/tipos', function (req, res) {
   console.log("GET /api/tipos")
-  user.tipos()
-    .then(user => {
-      res.jsonp(user)
+  Recurso.tipos()
+    .then(r => {
+      res.jsonp(r)
     })
     .catch(erro => {
       res.render('error', { error: erro, message: "Erro na obtenção das tipos" })
@@ -370,6 +383,34 @@ router.get('/api/categorias', async function (req, res, next) {
     })
     .catch(e => {
       console.log("Erro na obtenção das categorias.")
+    })
+});
+
+
+// GET recurso de um certo categoria 
+router.get('/api/recursos/categorias/:categ', async function (req, res) {
+  console.log("GET /api/recursos/categorias/:categ" + req.params.tipo)
+  
+  //decode the token
+  var decoded = jwt.verify(req.query.token, "EngWeb2023");
+  var groups = await Group.getGroupsUser(decoded.username)
+
+  // check if there is a sort query
+  if (req.query.sort) {
+    var sort = req.query.sort
+  } else {
+    var sort = "dateasc"
+  }
+  console.log("sort: " + sort)
+
+  Recurso.recsByCateg(decoded.username, groups, req.params.categ, sort)
+    .then(recursos => {
+      console.log("recursos: " + recursos)
+      res.jsonp(recursos)
+    })
+
+    .catch(erro => {
+      res.render('error', { error: erro, message: "Erro na obtenção da user de recursos" })
     })
 });
 

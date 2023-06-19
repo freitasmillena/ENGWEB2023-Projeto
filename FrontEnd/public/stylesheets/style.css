@@ -1166,7 +1166,6 @@ section .details span{
 
 /*==================== FILES PAGE ==================== */
 
-
 .content {
   display: flex;
   margin-top: 10px;
@@ -1174,7 +1173,7 @@ section .details span{
 
 .filter-container {
   display: flex;
-  width: 100%;
+  width: 50%;
   align-items: center;
 }
 
