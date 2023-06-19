@@ -532,6 +532,10 @@ img{
   margin-left: var(--mb-9);
 }
 
+.form-group #error-message{
+  margin-left: var(--mb-0-25);
+}
+
 .login a {
   display: block;
   color: #f2f2f2;
@@ -815,6 +819,51 @@ form .groups-check {
   border-bottom: 1px solid var(--first-color);
 }
 
+
+.title-category
+{
+  font-size: 20px;
+  font-weight: 500;
+  margin-right: var(--mb-1);
+  display: block;
+}
+
+.select-category {
+  margin-top: var(--mb-0-25);
+  padding: var(--mb-0-5);
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: var(--mb-1);
+}
+
+.select-category select,
+.select-category option{
+  outline: none;
+  width: 80%;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: white;
+  border-bottom-width: 2px;
+  transition: all 0.3s ease;
+  color: var(--first-color-light)
+}
+
+.select-category select:active{
+  border-color: var(--first-color-light);
+}
+
+.container-categories {
+  margin-top: var(--mb-1-5);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.cat {
+  border: 1px solid var(--first-color);
+  padding: 10px;
+}
 
 #selectedItems {
   margin-top: 5px;

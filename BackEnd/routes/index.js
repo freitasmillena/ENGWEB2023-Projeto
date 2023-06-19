@@ -3,6 +3,7 @@ const { decode } = require('jsonwebtoken');
 var router = express.Router();
 var Group = require('../controllers/group');
 var Recurso = require('../controllers/recurso');
+var Categoria = require('../controllers/categoria');
 var date = new Date().toISOString().substring(0, 16);
 var jwt = require('jsonwebtoken')
 var axios = require('axios')
@@ -101,7 +102,8 @@ router.post('/api/recursos', function (req, res) {
     path: req.body.path,
     creator: req.body.creator,
     created: date,
-    available_for: available
+    available_for: available,
+    category: req.body.category
   }
 
   Recurso.addRecurso(recurso)
@@ -356,6 +358,48 @@ router.put('/api/groups/:id/user/:username', async function (req, res, next) {
 }
 
 });
+
+/* GET categorias */
+router.get('/api/categorias', async function (req, res, next) {
+  console.log("GET /api/categorias/")
+  
+  Categoria.getCategorias()
+    .then(response => {
+      console.log(response)
+      res.jsonp(response)
+    })
+    .catch(e => {
+      console.log("Erro na obtenção das categorias.")
+    })
+});
+
+router.post('/api/categorias', function (req, res) {
+  console.log("POST /api/categorias")
+  // Create a new file record in the database
+
+  var token = req.query.token
+
+  var categoria = {
+    name: req.body.name,
+  }
+
+  Categoria.addCategoria(categoria)
+    .then(response => {
+
+      // Create a new response object with token included
+      const responseWithToken = {
+        ...response.toObject(),
+        token: token
+      };
+      res.jsonp(responseWithToken);
+      
+
+    })
+    .catch(erro => {
+      console.log("Erro na inserção da categoria")
+    })
+
+})
 
 module.exports = router;
 

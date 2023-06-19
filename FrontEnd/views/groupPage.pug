@@ -5,7 +5,7 @@ block content
         .mycontainer.container-left 
             .group-del
               .title=group.name  
-              if group.owner == username
+              if group.owner == username || level == admin
                 i#openModalButton.fa-solid.fa-trash(onclick='openDeleteModal()') 
             .header-files 
                 .header-title Title

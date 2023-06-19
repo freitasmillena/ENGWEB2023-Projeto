@@ -139,6 +139,7 @@ router.get('/profile/:username', function(req, res, next) {
     if(req.query.passwordUpdated=== "true") message = "Password updated successfully"
     else if(req.query.passwordUpdated=== "false") message = "Could not update password."
     else if(req.query.groupDeleted === "true") message = "Group deleted successfully."
+    else if(req.query.categoryAdded === "true") message = "Category added successfully."
     
     axios.get('http://localhost:8002/users/'+ req.params.username + "?token=" + token)
       .then(user => {
@@ -160,6 +161,8 @@ router.get('/profile/:username', function(req, res, next) {
               .then(response => response.data)
               .catch(err => console.log("Erro ao obter grupos"))
             );
+
+        
             
             return Promise.all([...submissionsPromises, ...favoritesPromises, ...groupsPromises])
             .then(results => {
@@ -170,9 +173,22 @@ router.get('/profile/:username', function(req, res, next) {
               console.log('favorites:', favorites);
               console.log('groups:', groups);
               if(decoded.username === req.params.username){
-
-                res.render('profilePage', {user: user.data.dados, submissions: submissions, favorites: favorites, groups: groups, message: message, username: decoded.username, level: decoded.level});
-              }
+                if(decoded.level === 'admin') {
+                  axios.get(env.apiAccessPoint+"/categorias/?token=" + token)
+                  .then(categorias => {
+                    console.log("CAT:")
+                    console.log(categorias.data);
+                      
+                    res.render('profilePage', {categorias: categorias.data, user: user.data.dados, submissions: submissions, favorites: favorites, groups: groups, message: message, username: decoded.username, level: decoded.level});
+                  }) 
+                  .catch(err => console.log("Erro ao obter categorias"))
+                }
+                else {
+                  res.render('profilePage', {user: user.data.dados, submissions: submissions, favorites: favorites, groups: groups, message: message, username: decoded.username, level: decoded.level});
+                 
+                }
+                
+                }
               else {
                 res.render('userPage', {user: user.data.dados, submissions: submissions, username: decoded.username, level: decoded.level});
               } 
@@ -467,4 +483,22 @@ router.get('/group/:group/addUsers', async function(req, res) {
   }
 
 });
+
+router.post('/addCategory', function(req, res){
+  var token = ""
+  if(req.cookies && req.cookies.token)
+    token = req.cookies.token
+  var decoded = jwt.verify(token, 'EngWeb2023')
+  console.log(req.body)
+     
+  axios.post('http://localhost:7777/api/categorias?token=' + token, req.body)
+    .then(response => {
+      
+      res.cookie('token', response.data.token)
+      res.redirect('/profile/' + decoded.username +'?categoryAdded=true')
+    })
+    .catch(e =>{
+      res.render('error', {error: e, message: "Erro no registo!", username: decodedToken.username, level: decodedToken.level})
+    }) 
+})
 module.exports = router;

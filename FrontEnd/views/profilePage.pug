@@ -27,6 +27,10 @@ block content
                         a.nav-link#myfiles-tab(data-toggle="pill", href="#myfiles", role="tab", aria-controls="myfiles", aria-selected="false")
                             i.fa-solid.fa-file.text-center.mr-1
                             | My Files
+                        if level === 'admin'
+                            a.nav-link#categories-tab(data-toggle="pill", href="#categories", role="tab", aria-controls="categories", aria-selected="false")
+                                i.fa-solid.fa-folder-open.text-center.mr-1
+                                | Categories
                         a.nav-link(data-toggle="pill", role="tab", aria-selected="false", onclick="location.href='/logout'")
                             i.fa-solid.fa-arrow-right-from-bracket.text-center.mr-1
                             | Log out
@@ -154,4 +158,19 @@ block content
                                       .header-detail #{f.size}
                         else
                             h5 No files
+                    .tab-pane.fade#categories(role="tabpanel" aria-labelledby="categories-tab")
+                        h3.mb-4 Categories 
+                        div#categoriesData(data-categories=categorias)
+                        form(action='/addCategory' method='post')  
+                            .form-group 
+                                label Category Name
+                                input#categoryInput.form-control(type="text" required='' name='name' placeholder='Enter a category name')
+                                p#error-message
+                            .button 
+                                    input#submitCategory(type="submit" value="Add") 
+                        .container-categories
+                            if categorias
+                                each cat in categorias
+                                    .cat #{cat.name}
+                                
                         

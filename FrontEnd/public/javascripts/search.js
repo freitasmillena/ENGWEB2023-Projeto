@@ -1,16 +1,32 @@
 
-
-
 let selectedResults = [];
 
 // Upload Form
 
 document.addEventListener("DOMContentLoaded", function() {
+  const token = getCookie('token');
+  
+  //Dropdown Categorias
+
+    
+    $(document).ready(function() {
+      $.get(`http://localhost:7777/api/categorias?token=${token}`, function(data) {
+        for(var i = 0; i < data.length; i++) {
+          var opt = $('<option></option>').val(data[i].name).html(data[i].name);
+          $('#category').append(opt);
+        }
+      })
+      .fail(function(error) {
+        console.error('Error:', error);
+      });
+    });
+    
+
     var searchInput = document.getElementById("searchInput");
     searchInput.addEventListener("keyup", function(e) {
     const keyword = e.target.value
     
-    const token = getCookie('token');
+    
     
     if (keyword.length < 1) {
         $("#searchResult").html('');  // clear the search results
@@ -211,4 +227,30 @@ document.addEventListener("DOMContentLoaded", function() {
     });
     this.appendChild(usernamesInput);
 });
+
+
+});
+
+$(document).ready(function() {
+  var categories = $('#categoriesData').data('categories');
+  var submitButton = $('#submitCategory');
+  var namesArray = categories.map(function(obj) {
+    return obj.name;
+  });
+  
+  console.log(namesArray);
+
+  // add input event listener
+  $('#categoryInput').on('input', function() {
+    var inputVal = $(this).val();
+    if (namesArray.includes(inputVal)) {
+      $('#error-message').text('Category is not available.');
+      $('#error-message').css('color', 'red');
+      submitButton.prop('disabled', true); 
+    } else {
+      $('#error-message').text('Category is available.');
+      $('#error-message').css('color', 'green');
+      submitButton.prop('disabled', false); 
+    }
+  });
 });

@@ -1,0 +1,9 @@
+[
+    {"name": "report"},
+    {"name": "article"},
+    {"name": "thesis"},
+    {"name": "application"},
+    {"name": "slides"},
+    {"name": "test/exam"},
+    {"name": "solved problem"}
+]

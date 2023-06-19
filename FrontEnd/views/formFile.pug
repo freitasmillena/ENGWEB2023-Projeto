@@ -12,6 +12,9 @@ block content
             .input-box
               span.details Description
               input(type='text' name='description' placeholder='Enter a short description' required='')
+            .block-details
+              span.title-category Category
+              select.select-category(name='category' id='category' required='')
           .gender-details
             input#dot-1(type='radio' name='visibility' value='public')
             input#dot-2(type='radio' name='visibility' value='private')
