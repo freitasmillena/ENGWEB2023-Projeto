@@ -4,6 +4,9 @@ block content
     .container-wrapper 
         .mycontainer.container-left 
             .title #{file.title}
+            if username == file.creator || level == 'admin'
+                a(href='#deleteFileModal' data-toggle='modal' data-file=file._id data-creator=file.creator)
+                    i#openDeleteModalButton.fa-solid.fa-trash
             i#bookmarkIcon.fa-regular.fa-bookmark(data-user=username, data-file=file._id)
             .bookmarkPopup Saved
             p Author: #{file.creator}
@@ -33,4 +36,17 @@ block content
                     textarea#commentText(name="commentText", rows="4", placeholder="Write your comment here...")
                     .button
                         input(type="submit" value="Comment") 
+    // Delete File Modal
+    #deleteFileModal.modal.fade(tabindex="-1", role="dialog")
+      .modal-dialog(role="document")
+        .modal-content
+          .modal-header
+            h5.modal-title Are you sure?
+            button.close(type="button", data-dismiss="modal", aria-label="Close")
+              span(aria-hidden="true") ×
+          .modal-body
+            p You are about to permanently remove a file. This action cannot be undone.
+          .modal-footer
+            button.btn.btn-secondary(type="button", data-dismiss="modal") Cancel
+            button.btn.btn-primary(type="button", id="confirmDeleteFile") Confirm
                         

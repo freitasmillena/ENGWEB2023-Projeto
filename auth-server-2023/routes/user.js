@@ -240,4 +240,23 @@ router.get('/:username/favorites', auth.verificaAcesso, function(req, res){
     .catch(e => res.status(500).jsonp({error: e}))
 })
 
+
+router.delete('/:username/removeFile/:file', auth.verificaAcesso , function (req, res, next) {
+  console.log("DELETE /users/" + req.params.username + '/removeFile/' + req.params.file)
+  
+  User.removeSubmission(req.params.username, req.params.file)
+    .then(dados => {
+      console.log("remove sub: " + dados.data)
+      User.removeFavoritesUsers(req.params.file)
+        .then(resp => {
+          console.log("remove fav: " + resp.data)
+          res.status(200).jsonp(resp)
+        })
+        .catch(e => res.status(500).jsonp({error: e}))
+    })
+    .catch(e => res.status(500).jsonp({error: e}))
+  
+
+});
+
 module.exports = router;

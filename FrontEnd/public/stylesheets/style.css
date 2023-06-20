@@ -52,6 +52,7 @@
   --mb-2-5: 2.5rem;
   --mb-3: 3rem;
   --mb-3-125: 3.125rem;
+  --mb-5: 5rem;
   --mb-9: 9rem;
 
   /*========== z index ==========*/
@@ -977,6 +978,16 @@ section .details span{
   position: absolute; 
   top: 0; 
   right: 20px; 
+  margin-top: 25px; 
+  color: var(--first-color-darker); 
+  font-size: var(--mb-2-5);
+  cursor: pointer;
+}
+
+.container-left #openDeleteModalButton{
+  position: absolute; 
+  top: 0; 
+  right: var(--mb-5); 
   margin-top: 25px; 
   color: var(--first-color-darker); 
   font-size: var(--mb-2-5);

@@ -152,6 +152,32 @@ module.exports.removeGroupUsers = groupId => {
     })
 }
 
+
+//Remove file id from favorites - all users
+module.exports.removeFavoritesUsers = file => {
+    return User.updateMany(
+        { favorites: file }, 
+        { $pull: { favorites: file } }
+    )
+    .then(dados => {
+        return dados
+    })
+    .catch(erro => {
+        return erro
+    })
+}
+
+//Remove file from submissions of file's creator
+module.exports.removeSubmission = (user, file) => {
+    return User.updateOne({ username: user }, { $pull: { submissions: file } })
+            .then(resposta => {
+                return resposta
+            })
+            .catch(erro => {
+                return erro
+            })
+}
+
 //when removing user from group
 module.exports.removeGroupUser = (user, group) => {
     return User.updateOne({ username: user }, 

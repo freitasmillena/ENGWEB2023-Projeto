@@ -350,23 +350,32 @@ bookmarkIcon.addEventListener('click', function() {
   }, 2000);
 });
 
-/* 
-bookmarkIcon.addEventListener("click", function() {
-  if (this.classList.contains("fa-regular")) {
-    this.classList.remove("fa-regular");
-    this.classList.add("fa-solid");
-    bookmarkPopup.textContent = "Saved!"; // Set the popup message to "Saved!"
-  } else {
-    this.classList.remove("fa-solid");
-    this.classList.add("fa-regular");
-    bookmarkPopup.textContent = "Removed"; // Set the popup message to "Removed!"
-  }
-  bookmarkPopup.classList.add("active"); // Add the active class to show the popup
-  setTimeout(function() {
-    bookmarkPopup.classList.remove("active"); // Remove the active class after 2 seconds to hide the popup
-  }, 2000);
-}); */
+// Delete File
+let deleteFileModal = document.getElementById('deleteFileModal');
+let confirmDeleteFileButton = document.getElementById('confirmDeleteFile');
+let file = null;
+let creator = null;
 
+// Listen for the modal being shown
+$(deleteFileModal).on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget); // Button that triggered the modal
+    file = button.data('file'); 
+    creator = button.data('creator'); 
+})
+confirmDeleteFileButton.addEventListener('click', function() {
+   console.log("Removing file: " + file);
+   console.log('/recursos/' + file)
+   axios.delete('/recursos/' + file + '/creator/' + creator)
+        .then(function(response) {
+            $('#deleteFileModal').modal('hide');
+            if(response.data.redirect) {
+                window.location.href = response.data.redirect;
+              }
+        })
+        .catch(function(error) {
+            console.error(error);
+        }); 
+});
 
 
 

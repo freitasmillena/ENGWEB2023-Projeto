@@ -40,7 +40,7 @@ module.exports.listRecursosUser = (username,groups, sort,page,max) => {
     else
         sort = {"created": -1}
 
-    return Recurso.find({ "$or": [{ "creator": username, "available_for.users": username }, { "available_for.groups": {"$in":groups} }] }).sort(sort).skip(page*max).limit(max)
+    return Recurso.find({ "$or": [{ "creator": username}, {"available_for.users": {"$in":username} }, { "available_for.groups": {"$in":groups} }] }).sort(sort).skip(page*max).limit(max)
       .then((dados) => {
         console.log(dados)
           return dados;
@@ -52,7 +52,7 @@ module.exports.listRecursosUser = (username,groups, sort,page,max) => {
 
 //GET /api/recursos/:id
 module.exports.getRecurso = (id, username, groups) => {
-    return Recurso.findOne({"$and": [{_id: id},{ "$or": [{ "creator": username, "available_for.users": username }, { "available_for.groups": {"$in":groups} }] }]})
+    return Recurso.findOne({"$and": [{_id: id},{ "$or": [{ "creator": username}, {"available_for.users": {"$in":username} }, { "available_for.groups": {"$in":groups} }] }]})
     .then(dados => {
         return dados
     })
@@ -106,20 +106,16 @@ module.exports.updateRecurso = (idUser,l) => {
 }
 
 //DELETE api/:idUser/recursos/:id
-module.exports.deleteRecurso = (idUser,id) => {
-    if (l._id == idUser) {
-        return Recurso.collection.deleteOne({_id: id})
+module.exports.deleteRecurso = (id) => {
+    
+        return Recurso.deleteOne({_id: id})
         .then(dados => {
             return dados
         })
         .catch(erro => {
             return erro
         })
-    }
-    else{
-        console.log("Não é possivel eliminar o recurso de outro utilizador")
-        return "Não é possivel eliminar o recurso de outro utilizador"
-    }
+    
 }
 
 //GET /api/recursos/tipos

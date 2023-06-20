@@ -223,15 +223,23 @@ router.put('/api/:idUser/recursos/:id', function (req, res) {
 })
 
 // DELETE de um recurso
-router.delete('/api/:idUser/recursos/:id', function (req, res) {
-  console.log("DELETE /api/" + req.params.idUser + "/recursos/" + req.params.id)
-  Lista.deleteRecurso(req.params.idUser, req.params.id)
+router.delete('/api/recursos/:file/creator/:creator', function (req, res) {
+  console.log("DELETE /api/recursos/" + req.params.file + "/creator/" + req.params.creator)
+  var decoded = jwt.verify(req.query.token, "EngWeb2023");
+  if(decoded.username === req.params.creator || decoded.level == 'admin') {
+    Recurso.deleteRecurso(req.params.file)
     .then(dados => {
+      console.log("remove file: " + dados)
       res.jsonp(dados)
     })
     .catch(erro => {
-      res.render('error', { error: erro, message: "Erro na inserção de um produto" })
+      res.render('error', { error: erro, message: "Erro na remoção de um ficheiro" })
     })
+  }
+  else {
+    res.jsonp("You don't have permission to delete this file.")
+  }
+  
 })
 
 // GET tipos de recursos
@@ -356,11 +364,11 @@ router.put('/api/groups/:id/user/:username', async function (req, res, next) {
   }
   try {
     
-    // Remove the group from user
+    
     const userResponse = await axios.get('http://localhost:8002/users/' + req.params.username + '/addGroup/' + req.params.id + '?token=' + token);
     console.log("ADICIONOU AO USER", userResponse.data);
 
-    // Remove user from group
+    
     const deleteResult = await Group.addUserToGroup(req.params.id, req.params.username);
     console.log("ADICIONOU AO GRUPO", deleteResult);
 

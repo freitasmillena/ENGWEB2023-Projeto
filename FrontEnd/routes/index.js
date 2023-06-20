@@ -701,4 +701,38 @@ router.get('/favorites/:username', function(req, res){
     }
   
 })
+
+router.delete('/recursos/:id/creator/:creator', function(req, res) {
+  var token = ""
+  if(req.cookies && req.cookies.token) {
+    token = req.cookies.token
+    console.log(token)
+    var decoded = jwt.verify(token, "EngWeb2023")
+    console.log(req.params.id)
+    console.log(req.params.creator)
+
+    axios.delete(env.apiAccessPoint+"/recursos/" + req.params.id + '/creator/' + req.params.creator +"?token=" + token)
+      .then(response => {
+       console.log("APAGOU RECURSO")
+       console.log(response.data)
+       
+        axios.delete('http://localhost:8002/users/'+ req.params.creator + '/removeFile/' + req.params.id +"?token=" + token)
+          .then(resp => {
+           console.log("APAGOU RECURSO DOS USERS")
+           console.log(resp.data)
+           res.json({redirect: '/recursos?fileDeleted=true'})
+          })
+          .catch(err => {
+            res.render('error', {error: err, username: decoded.username, level: decoded.level})
+          })
+      })
+      .catch(err => {
+        res.render('error', {error: err, username: decoded.username, level: decoded.level})
+      })
+
+  }
+  else {
+    res.render('index', {errorMessage: "You need to log in to access this page."});
+  }
+});
 module.exports = router;
