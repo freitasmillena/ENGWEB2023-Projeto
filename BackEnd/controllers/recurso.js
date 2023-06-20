@@ -24,7 +24,7 @@ module.exports.listRecursosGroup = (group) => {
       });
 }
 
-module.exports.listRecursosUser = (username,groups, sort,page,max) => {
+module.exports.listRecursosUser = (username,groups, sort,page,max, level) => {
     if (sort === "dateasc" )
         sort = {"created": 1}
     else if (sort === "datedesc")
@@ -36,29 +36,54 @@ module.exports.listRecursosUser = (username,groups, sort,page,max) => {
     else if (sort === "sizeasc")
         sort = {"size": 1}
     else if (sort === "sizedesc")
-        sort = {"size": -1}
+        sort = { "size": -1 }
+    else if (sort === "favsasc")
+        sort = { "favs": 1 }
+    else if (sort === "favsdesc")
+        sort = { "favs": -1 }
     else
         sort = {"created": -1}
 
-    return Recurso.find({ "$or": [{ "creator": username}, {"available_for.users": {"$in":username} }, { "available_for.groups": {"$in":groups} }] }).sort(sort).skip(page*max).limit(max)
-      .then((dados) => {
-        console.log(dados)
-          return dados;
-        })
-        .catch((erro) => {
-            return erro;
-        });
+    if (level != 'admin'){
+        return Recurso.find({ "$or": [{ "creator": username}, {"available_for.users": {"$in":username} }, { "available_for.groups": {"$in":groups} }] }).sort(sort).skip(page*max).limit(max)
+          .then((dados) => {
+            console.log(dados)
+              return dados;
+            })
+            .catch((erro) => {
+                return erro;
+            });
+    }else{
+        return Recurso.find().sort(sort).skip(page*max).limit(max)
+          .then((dados) => {
+            console.log(dados)
+              return dados;
+            })
+            .catch((erro) => {
+                return erro;
+            });
+    }
   };
 
 //GET /api/recursos/:id
-module.exports.getRecurso = (id, username, groups) => {
-    return Recurso.findOne({"$and": [{_id: id},{ "$or": [{ "creator": username}, {"available_for.users": {"$in":username} }, { "available_for.groups": {"$in":groups} }] }]})
-    .then(dados => {
-        return dados
-    })
-    .catch(erro => {
-        return erro
-    })
+module.exports.getRecurso = (id, username, groups, level) => {
+    if (level != 'admin'){
+        return Recurso.findOne({"$and": [{_id: id},{ "$or": [{ "creator": username}, {"available_for.users": {"$in":username} }, { "available_for.groups": {"$in":groups} }] }]})
+        .then(dados => {
+            return dados
+        })
+        .catch(erro => {
+            return erro
+        })
+    }else{
+        return Recurso.findOne({_id: id})
+        .then(dados => {
+            return dados
+        })
+        .catch(erro => {
+            return erro
+        })
+    }
 }
 
 //POST /api/recursos
@@ -134,7 +159,7 @@ module.exports.tipos = () => {
 }
 
 //GET /api/recursos/tipos/:tipo/
-module.exports.recsByTipo = (username,groups,tipo, sort) => {
+module.exports.recsByTipo = (username,groups,tipo, sort, level) => {
     if (sort === "dateasc" )
         sort = {"created": 1}
     else if (sort === "datedesc")
@@ -146,23 +171,92 @@ module.exports.recsByTipo = (username,groups,tipo, sort) => {
     else if (sort === "sizeasc")
         sort = {"size": 1}
     else if (sort === "sizedesc")
-        sort = {"size": -1}
+        sort = { "size": -1 }
+    else if (sort === "favsasc")
+        sort = { "favs": 1 }
+    else if (sort === "favsdesc")
+        sort = { "favs": -1 }
     else
         sort = {"created": -1}
 
-    return Recurso.find(
-        {   "$or": 
-            [     
-                { "creator": username, "available_for.users": username },     
-                { "available_for.groups": { "$in": groups } }  
-            ],   
-            "type": tipo}
-        ).sort(sort).skip(0).limit(10);
+    if (level != 'admin'){
+        return Recurso.find(
+            {   "$or": 
+                [     
+                    { "creator": username, "available_for.users": username },     
+                    { "available_for.groups": { "$in": groups } }  
+                ],   
+                "type": tipo}
+            ).sort(sort).skip(0).limit(10);
+    }else{
+        return Recurso.find({"type": tipo}).sort(sort).skip(0).limit(10);
+    }
+}
+
+//GET /api/recursos/:categSelected:condition:categValue
+module.exports.recsCond = (username,groups,categSelected,condition,categValue, sort, level) => {
+    if (sort === "dateasc" )
+        sort = {"created": 1}
+    else if (sort === "datedesc")
+        sort = {"created": -1}
+    else if (sort === "titleasc")
+        sort = {"title": 1}
+    else if (sort === "titledesc")
+        sort = {"title": -1}
+    else if (sort === "sizeasc")
+        sort = {"size": 1}
+    else if (sort === "sizedesc")
+        sort = { "size": -1 }
+    else if (sort === "favsasc")
+        sort = { "favs": 1 }
+    else if (sort === "favsdesc")
+        sort = { "favs": -1 }
+    else
+        sort = {"created": -1}
+
+    if (condition === "equals")
+        category = categSelected
+    else if (condition === "greater")
+        category = { $gt: categValue }
+    else if (condition === "less")
+        category = { $lt: categValue }
+    else if (condition === "greaterOrEqual")
+        category = { $gte: categValue }
+    else if (condition === "lessOrEqual")
+        category = { $lte: categValue }
+    else if (condition === "notEqual")
+        category = { $ne: categValue }
+    else if (condition === "contains")
+        category = { $regex: categValue }
+    else if (condition === "notContains")
+        category = { $not: { $regex: categValue } }
+    else if (condition === "startsWith")
+        category = { $regex: "^" + categValue }
+    else if (condition === "endsWith")
+        category = { $regex: categValue + "$" }
+    else
+        category = categSelected
+    console.log("HERE "+categSelected)
+    console.log(category)
+    console.log("HERE "+username)
+
+    if (level != 'admin'){
+        return Recurso.find(
+            {   "$or": 
+                [     
+                    { "creator": username, "available_for.users": username },     
+                    { "available_for.groups": { "$in": groups } }  
+                ],   
+                categSelected: category}
+            ).sort(sort).skip(0).limit(10);
+    }else{
+        return Recurso.find({categSelected: category}).sort(sort).skip(0).limit(10);
+    }
 }
 
 
 //GET /api/recursos/categorias/:categ/
-module.exports.recsByCateg = (username,groups,categ, sort) => {
+module.exports.recsByCateg = (username,groups,categ, sort, level) => {
     if (sort === "dateasc" )
         sort = {"created": 1}
     else if (sort === "datedesc")
@@ -174,18 +268,27 @@ module.exports.recsByCateg = (username,groups,categ, sort) => {
     else if (sort === "sizeasc")
         sort = {"size": 1}
     else if (sort === "sizedesc")
-        sort = {"size": -1}
+        sort = { "size": -1 }
+    else if (sort === "favsasc")
+        sort = { "favs": 1 }
+    else if (sort === "favsdesc")
+        sort = { "favs": -1 }
     else
         sort = {"created": -1}
 
-    return Recurso.find(
-        {   "$or": 
-            [     
-                { "creator": username, "available_for.users": username },     
-                { "available_for.groups": { "$in": groups } }  
-            ],   
-            "category": categ }
-        ).sort(sort).skip(0).limit(10);
+    if (level != 'admin'){
+        return Recurso.find(
+            {   "$or": 
+                [     
+                    { "creator": username, "available_for.users": username },     
+                    { "available_for.groups": { "$in": groups } }  
+                ],   
+                "category": categ }
+            ).sort(sort).skip(0).limit(10);
+    }else{
+        return Recurso.find({"category": categ}).sort(sort).skip(0).limit(10);
+    }
+
 }
 
 

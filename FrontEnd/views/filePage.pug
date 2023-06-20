@@ -21,7 +21,7 @@ block content
         .mycontainer.container-right 
             .title Comment Section
             .comment-list
-                for c in file.comments
+                for c in file.comments.reverse(true).slice(0,5)
                     .comment
                         .comment-author
                             i.fa-solid.fa-user

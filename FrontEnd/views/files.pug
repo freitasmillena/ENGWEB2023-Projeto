@@ -9,10 +9,6 @@ block content
             .title All Files
             .content
                 .filter-container
-                    .search-wrapper
-                      i.fa-solid.fa-magnifying-glass
-                      input.search-groups(type='text' placeholder='Search here')
-                .filter-container
                     .filter-sort
                         select#sort-by(name="sort")
                           option(value="" selected) Sort by
@@ -22,18 +18,14 @@ block content
                           option(value="titledesc") Alphabetically Descending
                           option(value="sizeasc") Size Ascending
                           option(value="sizedesc") Size Descending
+                          option(value="favsasc") Favorites Ascending
+                          option(value="favsdesc") Favorites Descending
                 .filter-container
                     .filter-sort
                         select#filter-by-type(name="sort") 
                             option(value="" selected) Type
                             each t in tipos
                                 option(value=t) #{t}
-                            //- option(value="all") ALL
-                            //- option(value="pdf") PDF
-                            //- option(value="jpeg") JPEG
-                            //- option(value="html") HTML
-                            //- option(value="png") PNG
-                            //- option(value="document") DOC
                             option(value="all") ALL
                 .filter-container
                     .filter-sort
@@ -44,22 +36,35 @@ block content
                             option(value='all') ALL
                 .filter-container
                     .filter-sort
-                        select#filter-by-categ-selected(name='condition')
-                            option(value='' selected) Category
-                            option(value='equals') Ano
-                            option(value='greater') Titulo
-                            option(value='less') Autor
+                        select#filter-by-categ-selected(name='categSelected')
+                            option(value='' selected) Filter by
+                            option(value='name') Name
+                            option(value='title') Title
+                            option(value='path') Path
+                            option(value='created') Created 
+                            option(value='modified') Modified 
+                            option(value='size') Size
+                            option(value='author') Author
+                            option(value='group') Group
                 .filter-container
                     .filter-sort
-                        select#filter-by-categ-selected(name='condition')
+                        select#filter-by-symb-selected(name='condition')
                             option(value='' selected) Category
                             option(value='equals') ==
-                            option(value='greater') >=
-                            option(value='less') <=
+                            option(value='greater') >
+                            option(value='less') <
+                            option(value='greaterOrEqual') >=
+                            option(value='lessOrEqual') <=
+                            option(value='notEqual') !=
+                            option(value='contains') contains
+                            option(value='notContains') not contains
+                            option(value='startsWith') starts with
+                            option(value='endsWith') ends with
                 .filter-container
                     .search-wrapper
                         input#filter-categ-selected(type='text' placeholder='Enter value' name='categValue')
-
+                .filter-container
+                    button#filter-button Apply
             .header-files 
                 .header-title Title
                 .header-details
@@ -67,6 +72,7 @@ block content
                   .header-detail Date
                   .header-detail Type
                   .header-detail Size
+                  .header-detail ❤
             
             each f in files
                 .files-list
@@ -75,8 +81,9 @@ block content
                     .header-details
                       .header-detail #{f.creator}
                       .header-detail #{new Date(f.created).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}
-                      .header-detail #{f.type}
+                      .header-detail #{(f.type).split('/')[0]}
                       .header-detail #{f.size}
+                      .header-detail #{f.favs}
         .mycontainer.container-right 
             .title News
             .news-list
@@ -85,8 +92,9 @@ block content
                         .comment-author
                             i.fa-solid.fa-user
                             span #{n.creator}
-                        .comment-content
-                            p #{n.title}
+                        .comment-content 
+                            p 
+                                a(href='/recursos/' + n._id) #{n.title}
                         .comment-date
                             i.fa-solid.fa-clock
                             span #{new Date(n.created).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}

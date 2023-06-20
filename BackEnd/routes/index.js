@@ -8,11 +8,42 @@ var date = new Date().toISOString().substring(0, 16);
 var jwt = require('jsonwebtoken')
 var axios = require('axios')
 
+
+// /recursos/:categSelected:condition:categValue'
+router.get('/api/recursos/cond/:val', async function (req, res) {
+  //decode the token
+  var decoded = jwt.verify(req.query.token, "EngWeb2023");
+  var level = decoded.level
+  var groups = await Group.getGroupsUser(decoded.username)
+
+  // check if there is a sort query
+  if (req.query.sort) {
+    var sort = req.query.sort
+  } else {
+    var sort = "dateasc"
+  }
+  console.log("sort: " + sort)
+
+  // split the req.query.val into the 3 parts
+  var vals = req.params.val.split("_")
+
+  Recurso.recsCond(decoded.username, groups, vals[0], vals[1], vals[2] , sort, level)
+    .then(recursos => {
+      console.log("recursos: " + recursos)
+      res.jsonp(recursos)
+    })
+    
+    .catch(erro => {
+      res.render('error', { error: erro, message: "Erro na obtenção da user de recursos" })
+    })
+});
+
 /* GET recursos */
 router.get('/api/recursos', async function (req, res, next) {
 
   //decode the token
   var decoded = jwt.verify(req.query.token, "EngWeb2023");
+  var level = decoded.level
   var groups = await Group.getGroupsUser(decoded.username)
 
   // check if there is a sort query
@@ -35,8 +66,8 @@ router.get('/api/recursos', async function (req, res, next) {
   }
 
   console.log("sort: " + sort)
-
-  Recurso.listRecursosUser(decoded.username, groups, sort,page,limit)
+  
+  Recurso.listRecursosUser(decoded.username, groups, sort,page,limit,level)
     .then(recursos => {
       console.log("recursos: " + recursos)
       res.jsonp(recursos)
@@ -52,9 +83,10 @@ router.get('/api/recursos', async function (req, res, next) {
 router.get('/api/recursos/:id', async function (req, res, next) {
   console.log("GET /api/recursos/" + req.params.id)
   var decoded = jwt.verify(req.query.token, "EngWeb2023")
+  var level = decoded.level
   var groups = await Group.getGroupsUser(decoded.username)
   
-  Recurso.getRecurso(req.params.id, decoded.username, groups)
+  Recurso.getRecurso(req.params.id, decoded.username, groups, level)
     .then(response => {
       res.jsonp(response)
     })  
@@ -261,6 +293,7 @@ router.get('/api/recursos/tipos/:tipo', async function (req, res) {
   
   //decode the token
   var decoded = jwt.verify(req.query.token, "EngWeb2023");
+  var level = decoded.level
   var groups = await Group.getGroupsUser(decoded.username)
 
   // check if there is a sort query
@@ -271,7 +304,7 @@ router.get('/api/recursos/tipos/:tipo', async function (req, res) {
   }
   console.log("sort: " + sort)
 
-  Recurso.recsByTipo(decoded.username, groups, req.params.tipo, sort)
+  Recurso.recsByTipo(decoded.username, groups, req.params.tipo, sort, level)
     .then(recursos => {
       console.log("recursos: " + recursos)
       res.jsonp(recursos)
@@ -401,6 +434,7 @@ router.get('/api/recursos/categorias/:categ', async function (req, res) {
   
   //decode the token
   var decoded = jwt.verify(req.query.token, "EngWeb2023");
+  var level = decoded.level
   var groups = await Group.getGroupsUser(decoded.username)
 
   // check if there is a sort query
@@ -411,7 +445,7 @@ router.get('/api/recursos/categorias/:categ', async function (req, res) {
   }
   console.log("sort: " + sort)
 
-  Recurso.recsByCateg(decoded.username, groups, req.params.categ, sort)
+  Recurso.recsByCateg(decoded.username, groups, req.params.categ, sort, level)
     .then(recursos => {
       console.log("recursos: " + recursos)
       res.jsonp(recursos)
@@ -450,6 +484,7 @@ router.post('/api/categorias', function (req, res) {
 
 })
 
+
 router.post('/api/recursos/:file/addComment', async function (req, res) {
   console.log("POST /api/recursos/"+req.params.file +"/addComment")
   
@@ -461,10 +496,12 @@ router.post('/api/recursos/:file/addComment', async function (req, res) {
     created: date
   }
   var groups = await Group.getGroupsUser(req.body.user)
+  var decoded = jwt.verify(req.query.token, "EngWeb2023");
+  var level = decoded.level
 
   
 
-  Recurso.getRecurso(req.params.file, req.body.user, groups)
+  Recurso.getRecurso(req.params.file, req.body.user, groups,level)
     .then(response => {
       console.log("peguei recurso")
       if(response != null){

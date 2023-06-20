@@ -9,6 +9,8 @@ from datetime import datetime
 f_id = 0
 u_id = 0
 g_id = 0
+c_id = 0
+cat_id = 0
 users = ['Alice', 'Bob', 'Charlie', 'David', 'Eve', 'Frank', 'Grace', 'Hacker', 'Ingrid', 'Judy', 'Karl', 'Linda', 'Mallory',
          'Nancy', 'Oscar', 'Peggy', 'Quinn', 'Robert', 'Sally', 'Trent', 'Ursula', 'Victor', 'Wendy', 'Xavier', 'Yvonne', 'Zoe']
 sur_names = ['Smith', 'Johnson', 'Williams', 'Jones', 'Brown', 'Davis', 'Miller', 'Wilson', 'Moore', 'Taylor', 'Anderson', 'Thomas', 'Jackson', 'White', 'Harris', 'Martin', 'Thompson', 'Garcia', 'Martinez', 'Robinson', 'Clark', 'Rodriguez', 'Lewis', 'Lee', 'Walker', 'Hall', 'Allen', 'Young', 'Hernandez', 'King', 'Wright', 'Lopez', 'Hill', 'Scott', 'Green', 'Adams', 'Baker', 'Gonzalez', 'Nelson', 'Carter', 'Mitchell', 'Perez', 'Roberts', 'Turner', 'Phillips', 'Campbell', 'Parker', 'Evans', 'Edwards', 'Collins',
@@ -69,6 +71,7 @@ def gen_users(amount):
                     g['participants'].append(user['username'])
         user['submissions'] = []
         user['favorites'] = []
+        user['comments'] = []
         u_id += 1
         user_array.append(user)
     return user_array
@@ -79,6 +82,7 @@ def gen_entry(file):
     global f_id
     global u_id
     global g_id
+    global c_id
     global groups
     global u_array
     type = 'unknown'
@@ -90,6 +94,7 @@ def gen_entry(file):
     entry['path'] = os.path.abspath(file)
     entry['title'] = file.split('/')[-1].split('.')[0]
     entry['category'] = random.sample(categorias, 1)[0]
+    entry['favs'] = 0
     if random.randint(0, 1):
         entry['description'] = f"This is a {type} file."
     else:
@@ -120,11 +125,14 @@ def gen_entry(file):
             picked_id = random.sample(range(0, u_id), 1)[0]
             if entry['_id'] not in user_array[picked_id]['favorites']:
                 user_array[picked_id]['favorites'].append(entry['_id'])
-            new_comment = {'user': f"{user_array[picked_id]['username']}",
-                           'comment': random.sample(comments, 1)[0],
-                           'created': datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
-                           }
+            new_comment = { '_id': c_id,
+                            'user': f"{user_array[picked_id]['username']}",
+                            'comment': random.sample(comments, 1)[0],
+                            'created': datetime.now().strftime('%Y-%m-%dT%H:%M:%S')}
+            c_id += 1
             entry['comments'].append(new_comment)
+            user_array[picked_id]['comments'].append(new_comment['_id'])
+        entry['favs'] = how_many
     f_id += 1
 
     return entry

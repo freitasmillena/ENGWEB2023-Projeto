@@ -29,7 +29,8 @@ var recursoSchema = new mongoose.Schema({
     visibility: String,
     available_for: availableSchema,
     comments: [commentSchema],
-    category: String
+    category: String,
+    favs: Number
 });
 
 module.exports = mongoose.model('recurso',recursoSchema)
