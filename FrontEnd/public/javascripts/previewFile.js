@@ -407,5 +407,19 @@ confirmDeleteCommentButton.addEventListener('click', function() {
 });
 
 
+// Update comment
+var toggleIcons = document.getElementsByClassName("toggleIcon");
 
+Array.from(toggleIcons).forEach(function(icon) {
+  icon.addEventListener("click", function() {
+    var commentId = this.getAttribute("data-comment-id");
+    var commentForm = document.querySelector(`form[data-comment-id="${commentId}"]`);
+
+    if (commentForm.style.display === "none") {
+      commentForm.style.display = "block";
+    } else {
+      commentForm.style.display = "none";
+    }
+  });
+});
 

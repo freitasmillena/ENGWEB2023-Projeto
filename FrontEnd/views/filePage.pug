@@ -32,10 +32,15 @@ block content
                             i.fa-solid.fa-clock
                             span #{c.created}
                             if c.user == username
-                                i.fa-solid.fa-pen-to-square
+                                i.fa-solid.fa-pen-to-square(class="toggleIcon" data-comment-id=c._id)
                             if c.user == username || level == 'admin'
                                 a(href='#deleteCommentModal' data-toggle='modal' data-file=file._id data-user=c.user data-comment=c._id)    
                                     i.fa-solid.fa-trash
+                        form#commentForm(data-comment-id=c._id style="display: none;" action='/recurso/'+file._id +'/updateComment' method='post')
+                            textarea#commentInput(name="comment" rows="4" cols="50") 
+                            input(type="hidden" name='_id' value=c._id)
+                            .button
+                                input(type="submit" value="Submit") 
             .comment-form
                 form(action='/recurso/'+file._id +'/addComment' method='post')
                     input(type="hidden" name='user' value=username)

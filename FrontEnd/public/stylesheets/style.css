@@ -1005,6 +1005,7 @@ section .details span{
 .comment-date .fa-pen-to-square:hover{
   color: var(--first-color);
   cursor: pointer;
+  font-size: x-large;
 }
 
 .bookmarkPopup {

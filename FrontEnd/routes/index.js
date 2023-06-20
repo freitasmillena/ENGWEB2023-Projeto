@@ -780,8 +780,7 @@ router.delete('/recursos/:id/removeComment/:comment/user/:user', function(req, r
     if(req.params.user == decoded.username){
       axios.delete(env.apiAccessPoint+"/recursos/" + req.params.id + '/removeComment/' + req.params.comment +"?token=" + token)
       .then(response => {
-       console.log("APAGOU COMMENTÁRIO")
-       console.log(response.data)
+       
        res.json({redirect: '/recursos/' + req.params.id})
        
       })
@@ -800,4 +799,30 @@ router.delete('/recursos/:id/removeComment/:comment/user/:user', function(req, r
   }
 });
 
+router.post('/recurso/:file/updateComment', function(req, res){
+
+    
+  var token = ""
+  if(req.cookies && req.cookies.token)
+    token = req.cookies.token
+  
+  var decoded = jwt.verify(token, 'EngWeb2023')
+
+  axios.put('http://localhost:7777/api/recursos/'+ req.params.file +'/editComment?token=' + token, req.body)
+    .then(response => {
+      
+      if(response.data.comments){
+        res.cookie('token', response.data.token)
+        res.redirect('/recursos/' + req.params.file)
+      }
+      else {
+        res.cookie('token', response.data.token)
+        res.redirect('/recursos?denied=true')
+      }
+      
+    })
+    .catch(e =>{
+      res.render('error', {error: e, message: "Erro na atualização do comentário!", username: decoded.username, level: decoded.level})
+    }) 
+})
 module.exports = router;
