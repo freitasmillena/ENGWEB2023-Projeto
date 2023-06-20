@@ -383,3 +383,31 @@ module.exports.updateComment = (file, comment) => {
     })
 }
 
+module.exports.addFavorite = (file) => {
+    return Recurso.findOneAndUpdate(
+        { _id: file },
+        { $inc: { favs: 1 } },
+        { new: true }
+      )
+    .then(dados => {
+        return dados
+    })
+    .catch(erro => {
+        return erro
+    })
+}
+
+module.exports.removeFavorite = (file) => {
+    return Recurso.findOneAndUpdate(
+        { _id: file },
+        { $inc: { favs: -1 } },
+        { new: true }
+      )
+    .then(dados => {
+        return dados
+    })
+    .catch(erro => {
+        return erro
+    })
+}
+

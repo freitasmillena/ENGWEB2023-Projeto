@@ -718,7 +718,14 @@ router.get('/addfavorites/:file/user/:username', function(req, res){
 
     axios.put('http://localhost:8002/users/' + req.params.username + '/addFavorites/' + req.params.file + '?token=' + token)
       .then(response => {
-        res.send('Added to favorites.')
+        axios.put(env.apiAccessPoint + '/recursos/' + req.params.file + '/addFavorites/' + "?token=" + token)
+          .then(resp => {
+            res.send('Added to favorites.')
+          })
+          .catch(err => {
+            res.render('error', {error: err, username: decoded.username, level: decoded.level})
+          })
+        
         
       })
       .catch(e =>{
@@ -739,8 +746,14 @@ router.get('/removefavorites/:file/user/:username', function(req, res){
 
     axios.put('http://localhost:8002/users/' + req.params.username + '/removeFavorites/' + req.params.file + '?token=' + token)
       .then(response => {
-        res.send('Removed from favorites.')
-        
+        axios.put(env.apiAccessPoint + '/recursos/' + req.params.file + '/removeFavorites/' + "?token=" + token)
+          .then(resp => {
+            res.send('Removed from favorites.')
+          })
+          .catch(err => {
+            res.render('error', {error: err, username: decoded.username, level: decoded.level})
+          })
+       
       })
       .catch(e =>{
         res.render('error', {error: e, message: "Error removing from favorites!", username: decodedToken.username, level: decodedToken.level})

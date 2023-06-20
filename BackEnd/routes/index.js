@@ -599,5 +599,49 @@ router.put('/api/recursos/:id/editComment', function (req, res, next) {
     })
 
 });
+
+router.put('/api/recursos/:id/addFavorites', function (req, res, next) {
+  console.log("PUT /api/recursos/" + req.params.id + '/addFavorites')
+  var token = ""
+  if(req.query && req.query.token) {
+    token = req.query.token
+    console.log(token)
+  }
+
+  
+  Recurso.addFavorite(req.params.id)
+    .then(response => {
+
+      res.jsonp(response);
+      
+
+    })
+    .catch(erro => {
+      console.log("Erro na atualizar favoritos")
+    })
+
+});
+
+router.put('/api/recursos/:id/removeFavorites', function (req, res, next) {
+  console.log("PUT /api/recursos/" + req.params.id + '/removeFavorites')
+  var token = ""
+  if(req.query && req.query.token) {
+    token = req.query.token
+    console.log(token)
+  }
+
+  
+  Recurso.removeFavorite(req.params.id)
+    .then(response => {
+
+      res.jsonp(response);
+      
+
+    })
+    .catch(erro => {
+      console.log("Erro na atualizar favoritos")
+    })
+
+});
 module.exports = router;
 
