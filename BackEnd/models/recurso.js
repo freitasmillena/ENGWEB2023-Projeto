@@ -9,8 +9,10 @@ var availableSchema = new mongoose.Schema(
   );
 
 var commentSchema = new mongoose.Schema({
+    _id: Number,
     user: String,
-    comment: String
+    comment: String,
+    created: String
 });
 
 var recursoSchema = new mongoose.Schema({

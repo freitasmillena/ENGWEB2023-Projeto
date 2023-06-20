@@ -31,9 +31,15 @@ block content
                         .comment-date
                             i.fa-solid.fa-clock
                             span #{c.created}
+                            if c.user == username
+                                i.fa-solid.fa-pen-to-square
+                            if c.user == username || level == 'admin'
+                                a(href='#deleteCommentModal' data-toggle='modal' data-file=file._id data-user=c.user data-comment=c._id)    
+                                    i.fa-solid.fa-trash
             .comment-form
-                form
-                    textarea#commentText(name="commentText", rows="4", placeholder="Write your comment here...")
+                form(action='/recurso/'+file._id +'/addComment' method='post')
+                    input(type="hidden" name='user' value=username)
+                    textarea#commentText(name="comment", rows="4", placeholder="Write your comment here...")
                     .button
                         input(type="submit" value="Comment") 
     // Delete File Modal
@@ -49,4 +55,17 @@ block content
           .modal-footer
             button.btn.btn-secondary(type="button", data-dismiss="modal") Cancel
             button.btn.btn-primary(type="button", id="confirmDeleteFile") Confirm
+    // Delete Comment Modal
+    #deleteCommentModal.modal.fade(tabindex="-1", role="dialog")
+      .modal-dialog(role="document")
+        .modal-content
+          .modal-header
+            h5.modal-title Are you sure?
+            button.close(type="button", data-dismiss="modal", aria-label="Close")
+              span(aria-hidden="true") ×
+          .modal-body
+            p You are about to permanently remove a comment. This action cannot be undone.
+          .modal-footer
+            button.btn.btn-secondary(type="button", data-dismiss="modal") Cancel
+            button.btn.btn-primary(type="button", id="confirmDeleteComment") Confirm
                         

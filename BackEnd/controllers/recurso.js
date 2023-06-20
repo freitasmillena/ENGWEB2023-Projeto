@@ -211,3 +211,72 @@ module.exports.removeGroupAvailable = group => {
         return erro
     })
 }
+
+module.exports.addComment = (file, comment) => {
+    return Recurso.findOne({_id: file}, {comments: 1})
+        .then(recurso => {
+           var commentsList = recurso.comments
+           console.log("comments: " + commentsList)
+           var maxId
+           if(commentsList.length > 0){
+            var idList = commentsList.map(item => item._id);
+            idList.sort((a, b) => b - a);
+            maxId = idList[0]
+           }
+           else {
+            maxId = 0
+           }
+
+           console.log("maxId: " + maxId)
+           comment._id = maxId + 1
+
+           return Recurso.findOneAndUpdate(
+            { _id: file },
+            { $push: { comments: comment } },
+            { new: true }
+          )
+                    .then(resposta => {
+                        return resposta
+                    })
+                    .catch(erro => {
+                        return erro
+                    })
+        })
+        .catch(erro => {
+            return erro
+        })
+       
+    
+        
+} 
+
+
+  
+module.exports.removeComment = (file, comment) => {
+    return Recurso.findOneAndUpdate(
+        { _id: file },
+        { $pull: { comments: { _id: comment } } },
+        { new: true }
+      )
+    .then(dados => {
+        return dados
+    })
+    .catch(erro => {
+        return erro
+    })
+}
+
+module.exports.updateComment = (file, comment) => {
+    return Recurso.findOneAndUpdate(
+        { _id: file, 'comments._id': comment._id },
+        { $set: { 'comments.$.comment': comment.comment, 'comments.$.created': comment.created  } },
+        { new: true }
+      )
+    .then(dados => {
+        return dados
+    })
+    .catch(erro => {
+        return erro
+    })
+}
+

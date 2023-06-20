@@ -993,6 +993,19 @@ section .details span{
   font-size: var(--mb-2-5);
   cursor: pointer;
 }
+.comment-date .fa-trash .fa-pen-to-square{
+  color: var(--first-color-light);
+  
+}
+
+.comment-date .fa-pen-to-square{
+  margin-left: var(--mb-0-5);
+}
+
+.comment-date .fa-pen-to-square:hover{
+  color: var(--first-color);
+  cursor: pointer;
+}
 
 .bookmarkPopup {
   /* Styles for the bookmark popup */
@@ -1108,9 +1121,11 @@ section .details span{
   display: flex;
   align-items: center;
   font-size: 12px;
-  color: #888;
 }
 
+.comment-date span, .comment-date .fa-clock{
+  color: #888;
+}
 .comment-date i {
   margin-right: 5px;
 }
@@ -1457,3 +1472,5 @@ body {
 .row .button {
   width: 100%;
 }
+
+

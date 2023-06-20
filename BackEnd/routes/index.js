@@ -57,9 +57,9 @@ router.get('/api/recursos/:id', async function (req, res, next) {
   Recurso.getRecurso(req.params.id, decoded.username, groups)
     .then(response => {
       res.jsonp(response)
-    })
+    })  
     .catch(e => {
-      res.render('error', { error: erro, message: "Erro na obtenção do recurso" })
+      console.log("Erro na obtenção do recurso" )
     })
 });
 
@@ -450,5 +450,117 @@ router.post('/api/categorias', function (req, res) {
 
 })
 
+router.post('/api/recursos/:file/addComment', async function (req, res) {
+  console.log("POST /api/recursos/"+req.params.file +"/addComment")
+  
+  var token = req.query.token
+
+  var comment = {
+    comment: req.body.comment,
+    user: req.body.user,
+    created: date
+  }
+  var groups = await Group.getGroupsUser(req.body.user)
+
+  
+
+  Recurso.getRecurso(req.params.file, req.body.user, groups)
+    .then(response => {
+      console.log("peguei recurso")
+      if(response != null){
+        console.log("dentro")
+        Recurso.addComment(req.params.file, comment)
+        .then(resp => {
+          console.log("add")
+          console.log(resp)
+          // Create a new response object with token included
+          const responseWithToken = {
+            ...resp.toObject(),
+            token: token
+          };
+          res.jsonp(responseWithToken);
+          
+    
+        })
+        .catch(erro => {
+          console.log("Erro na inserção do comentário: " + erro)
+        })
+      }
+      else {
+        // Create a new response object with token included
+        const responseWithToken = {
+          token: token
+        };
+        
+        res.jsonp(responseWithToken);
+        
+      }
+    })  
+    .catch(e => {
+      console.log("Erro na obtenção do recursooo: " + e )
+    })
+  
+  
+
+}) 
+
+
+router.delete('/api/recursos/:id/removeComment/:comment', function (req, res, next) {
+  console.log("DELETE /api/recursos/" + req.params.id + '/removeComment/' + req.params.comment)
+  var token = ""
+  if(req.query && req.query.token) {
+    token = req.query.token
+    console.log(token)
+  }
+  
+  Recurso.removeComment(req.params.id, req.params.comment)
+    .then(response => {
+
+      // Create a new response object with token included
+      const responseWithToken = {
+        ...response.toObject(),
+        token: token
+      };
+      res.jsonp(responseWithToken);
+      
+
+    })
+    .catch(erro => {
+      console.log("Erro na remoção do comentário")
+    })
+
+});
+
+router.put('/api/recursos/:id/editComment', function (req, res, next) {
+  console.log("PUT /api/recursos/" + req.params.id + '/editComment')
+  var token = ""
+  if(req.query && req.query.token) {
+    token = req.query.token
+    console.log(token)
+  }
+
+  var comment = {
+    _id: req.body._id,
+    comment: req.body.comment,
+    created: date
+  }
+  
+  Recurso.updateComment(req.params.id, comment)
+    .then(response => {
+
+      // Create a new response object with token included
+      const responseWithToken = {
+        ...response.toObject(),
+        token: token
+      };
+      res.jsonp(responseWithToken);
+      
+
+    })
+    .catch(erro => {
+      console.log("Erro na atualização do comentário")
+    })
+
+});
 module.exports = router;
 

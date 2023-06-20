@@ -377,6 +377,35 @@ confirmDeleteFileButton.addEventListener('click', function() {
         }); 
 });
 
+// Delete Comment
+let deleteCommentModal = document.getElementById('deleteCommentModal');
+let confirmDeleteCommentButton = document.getElementById('confirmDeleteComment');
+let fileComment = null;
+let user = null;
+let commentId = null;
+
+// Listen for the modal being shown
+$(deleteCommentModal).on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget); // Button that triggered the modal
+    fileComment = button.data('file'); 
+    user = button.data('user');
+    commentId = button.data('comment'); 
+})
+confirmDeleteCommentButton.addEventListener('click', function() {
+   console.log("Removing comment: " + commentId);
+   
+   axios.delete('/recursos/' + fileComment + '/removeComment/' + commentId + '/user/' + user)
+        .then(function(response) {
+            $('#deleteCommentModal').modal('hide');
+            if(response.data.redirect) {
+                window.location.href = response.data.redirect;
+              }
+        })
+        .catch(function(error) {
+            console.error(error);
+        }); 
+});
+
 
 
 

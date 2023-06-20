@@ -489,7 +489,13 @@ router.get('/recursos/:id', function(req, res) {
     var decoded = jwt.verify(token, "EngWeb2023")
     axios.get(env.apiAccessPoint+"/recursos/" + req.params.id + "?token=" + token)
       .then(response => {
-        res.render('filePage', { file: response.data, d: data, username: decoded.username, level: decoded.level });
+        if(response.data != null) {
+          res.render('filePage', { file: response.data, d: data, username: decoded.username, level: decoded.level });
+        }
+        else {
+          res.redirect('/recursos?denied=true')
+         }
+        
       })
       .catch(err => {
         res.render('error', {error: err, username: decoded.username, level: decoded.level})
@@ -735,4 +741,63 @@ router.delete('/recursos/:id/creator/:creator', function(req, res) {
     res.render('index', {errorMessage: "You need to log in to access this page."});
   }
 });
+
+router.post('/recurso/:file/addComment', function(req, res){
+  
+  console.log(req.body)
+    
+  var token = ""
+  if(req.cookies && req.cookies.token)
+    token = req.cookies.token
+  
+  var decoded = jwt.verify(token, 'EngWeb2023')
+
+  axios.post('http://localhost:7777/api/recursos/'+ req.params.file +'/addComment?token=' + token, req.body)
+    .then(response => {
+      console.log(response.data)
+      if(response.data.comments){
+        res.cookie('token', response.data.token)
+        res.redirect('/recursos/' + req.params.file)
+      }
+      else {
+        res.cookie('token', response.data.token)
+        res.redirect('/recursos?denied=true')
+      }
+      
+    })
+    .catch(e =>{
+      res.render('error', {error: e, message: "Erro no registo do comentário!", username: decoded.username, level: decoded.level})
+    }) 
+})
+
+router.delete('/recursos/:id/removeComment/:comment/user/:user', function(req, res) {
+  var token = ""
+  if(req.cookies && req.cookies.token) {
+    token = req.cookies.token
+    console.log(token)
+    var decoded = jwt.verify(token, "EngWeb2023")
+    
+    if(req.params.user == decoded.username){
+      axios.delete(env.apiAccessPoint+"/recursos/" + req.params.id + '/removeComment/' + req.params.comment +"?token=" + token)
+      .then(response => {
+       console.log("APAGOU COMMENTÁRIO")
+       console.log(response.data)
+       res.json({redirect: '/recursos/' + req.params.id})
+       
+      })
+      .catch(err => {
+        res.render('error', {error: err, username: decoded.username, level: decoded.level})
+      })
+    }
+    
+    else {
+      res.redirect('/recursos?denied=true')
+    }
+
+  }
+  else {
+    res.render('index', {errorMessage: "You need to log in to access this page."});
+  }
+});
+
 module.exports = router;
