@@ -277,6 +277,80 @@ document.addEventListener('DOMContentLoaded', () => {
 var bookmarkIcon = document.getElementById("bookmarkIcon");
 var bookmarkPopup = document.querySelector(".bookmarkPopup");
 
+// Check if file is already in favorites
+function checkIfFavorite(userId, fileId) {
+  axios
+    .get('/favorites/' + userId)
+    .then(response => {
+      
+      var favorites = response.data
+      
+
+      if (favorites.includes(fileId)) {
+       
+        bookmarkIcon.classList.remove('fa-regular');
+        bookmarkIcon.classList.add('fa-solid');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
+
+
+
+// Add or remove from favorites
+function toggleFavorite(userId, fileId) {
+  if (bookmarkIcon.classList.contains('fa-regular')) {
+    
+    // Add to favorites
+    bookmarkIcon.classList.remove('fa-regular');
+    bookmarkIcon.classList.add('fa-solid');
+    bookmarkPopup.textContent = 'Saved!';
+
+    axios
+      .get('/addfavorites/' + fileId + '/user/' + userId)
+      .then(response => {
+        console.log(response.data); // Added to favorites
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  } else {
+    // Remove from favorites
+    bookmarkIcon.classList.remove('fa-solid');
+    bookmarkIcon.classList.add('fa-regular');
+    bookmarkPopup.textContent = 'Removed';
+
+    axios
+      .get('/removefavorites/' + fileId + '/user/' + userId, { userId, fileId })
+      .then(response => {
+        console.log(response.data); // Removed from favorites
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }
+}
+
+// Usage example
+const userId = bookmarkIcon.dataset.user
+const fileId = parseInt(bookmarkIcon.dataset.file)
+
+console.log(userId, fileId)
+
+checkIfFavorite(userId, fileId);
+
+bookmarkIcon.addEventListener('click', function() {
+  toggleFavorite(userId, fileId);
+
+  bookmarkPopup.classList.add('active');
+  setTimeout(function() {
+    bookmarkPopup.classList.remove('active');
+  }, 2000);
+});
+
+/* 
 bookmarkIcon.addEventListener("click", function() {
   if (this.classList.contains("fa-regular")) {
     this.classList.remove("fa-regular");
@@ -291,7 +365,7 @@ bookmarkIcon.addEventListener("click", function() {
   setTimeout(function() {
     bookmarkPopup.classList.remove("active"); // Remove the active class after 2 seconds to hide the popup
   }, 2000);
-});
+}); */
 
 
 

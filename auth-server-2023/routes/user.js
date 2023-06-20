@@ -208,4 +208,36 @@ router.put('/removeGroup/:group/user/:username', auth.verificaAcesso, function(r
     .catch(e => res.status(500).jsonp({error: e}))
 })
 
+router.put('/:username/addFavorites/:file', auth.verificaAcesso, function(req, res){
+  console.log("FILE: " + req.params.file)
+  console.log("USER: " + req.params.username)
+  User.addFavorite(req.params.username, req.params.file)
+    .then(dados => {
+      
+      res.status(200).jsonp(dados)
+    })
+    .catch(e => res.status(500).jsonp({error: e}))
+})
+
+router.put('/:username/removeFavorites/:file', auth.verificaAcesso, function(req, res){
+  console.log("FILE: " + req.params.file)
+  console.log("USER: " + req.params.username)
+  User.removeFavorite(req.params.username, req.params.file)
+    .then(dados => {
+      
+      res.status(200).jsonp(dados)
+    })
+    .catch(e => res.status(500).jsonp({error: e}))
+})
+
+router.get('/:username/favorites', auth.verificaAcesso, function(req, res){
+  console.log("USER: " + req.params.username)
+  User.getFavorites(req.params.username)
+    .then(dados => {
+      
+      res.status(200).jsonp(dados)
+    })
+    .catch(e => res.status(500).jsonp({error: e}))
+})
+
 module.exports = router;

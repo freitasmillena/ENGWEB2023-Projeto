@@ -163,4 +163,41 @@ module.exports.removeGroupUser = (user, group) => {
         return erro
     })
 }
+
+//add to favorites
+module.exports.addFavorite= (user, file) => {
+    return User.updateOne({ username: user }, 
+    { $push: { favorites: file } })
+    .then(dados => {
+        return dados
+    })
+    .catch(erro => {
+        return erro
+    })
+}
+
+// remove from favorites
+module.exports.removeFavorite = (user, file) => {
+    return User.updateOne({ username: user }, 
+    { $pull: { favorites: file } })
+    .then(dados => {
+        return dados
+    })
+    .catch(erro => {
+        return erro
+    })
+}
+
+//get favorites
+module.exports.getFavorites = (user) => {
+    return User.findOne({ username: user }, 
+    { favorites: 1 })
+    .then(dados => {
+        return dados.favorites
+    })
+    .catch(erro => {
+        return erro
+    })
+}
+
  

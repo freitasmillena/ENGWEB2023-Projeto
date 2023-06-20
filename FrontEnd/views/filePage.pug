@@ -4,7 +4,7 @@ block content
     .container-wrapper 
         .mycontainer.container-left 
             .title #{file.title}
-            i#bookmarkIcon.fa-regular.fa-bookmark
+            i#bookmarkIcon.fa-regular.fa-bookmark(data-user=username, data-file=file._id)
             .bookmarkPopup Saved
             p Author: #{file.creator}
             p Date: #{file.created}

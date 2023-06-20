@@ -623,17 +623,82 @@ router.post('/addCategory', function(req, res){
   var token = ""
   if(req.cookies && req.cookies.token)
     token = req.cookies.token
-  var decoded = jwt.verify(token, 'EngWeb2023')
+  var decodedToken = jwt.verify(token, 'EngWeb2023')
   console.log(req.body)
      
   axios.post('http://localhost:7777/api/categorias?token=' + token, req.body)
     .then(response => {
       
       res.cookie('token', response.data.token)
-      res.redirect('/profile/' + decoded.username +'?categoryAdded=true')
+      res.redirect('/profile/' + decodedToken.username +'?categoryAdded=true')
     })
     .catch(e =>{
       res.render('error', {error: e, message: "Erro no registo!", username: decodedToken.username, level: decodedToken.level})
     }) 
+})
+
+
+router.get('/addfavorites/:file/user/:username', function(req, res){
+  var token = ""
+  if(req.cookies && req.cookies.token) {
+    token = req.cookies.token
+    var decodedToken = jwt.verify(token, 'EngWeb2023')
+
+    axios.put('http://localhost:8002/users/' + req.params.username + '/addFavorites/' + req.params.file + '?token=' + token)
+      .then(response => {
+        res.send('Added to favorites.')
+        
+      })
+      .catch(e =>{
+        res.render('error', {error: e, message: "Error adding to favorites!", username: decodedToken.username, level: decodedToken.level})
+      }) 
+  }
+    else {
+      res.render('index', {errorMessage: "You need to log in to access this page."});
+    }
+  
+})
+
+router.get('/removefavorites/:file/user/:username', function(req, res){
+  var token = ""
+  if(req.cookies && req.cookies.token) {
+    token = req.cookies.token
+    var decodedToken = jwt.verify(token, 'EngWeb2023')
+
+    axios.put('http://localhost:8002/users/' + req.params.username + '/removeFavorites/' + req.params.file + '?token=' + token)
+      .then(response => {
+        res.send('Removed from favorites.')
+        
+      })
+      .catch(e =>{
+        res.render('error', {error: e, message: "Error removing from favorites!", username: decodedToken.username, level: decodedToken.level})
+      }) 
+  }
+    else {
+      res.render('index', {errorMessage: "You need to log in to access this page."});
+    }
+  
+})
+
+router.get('/favorites/:username', function(req, res){
+  var token = ""
+  if(req.cookies && req.cookies.token) {
+    token = req.cookies.token
+    var decodedToken = jwt.verify(token, 'EngWeb2023')
+
+    axios.get('http://localhost:8002/users/' + req.params.username + '/favorites?token=' + token)
+      .then(response => {
+        
+        res.json(response.data);
+        
+      })
+      .catch(e =>{
+        res.render('error', {error: e, message: "Error retrieving favorites!", username: decodedToken.username, level: decodedToken.level})
+      }) 
+  }
+    else {
+      res.render('index', {errorMessage: "You need to log in to access this page."});
+    }
+  
 })
 module.exports = router;
