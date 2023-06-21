@@ -8,6 +8,9 @@ var data = new Date().toISOString().substring(0,16);
 var axios = require('axios')
 var env = require('../config/env.js')
 var path = require('path')
+var CloudmersiveConvertApiClient = require('cloudmersive-convert-api-client');
+var ExcelJS = require('exceljs');
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -958,4 +961,34 @@ router.get('/fileContents/pdf.html', function(req, res) {
     }
   });
 });
+
+router.get('/fileContents/ppt.html', async function(req, res) {
+  console.log('GET/fileContents/ppt')
+
+  var fileName = req.query.file; // Get the file name from the query parameter
+
+  const filePath = path.join(__dirname, '/../public/fileStorage/', fileName);  
+  var defaultClient = CloudmersiveConvertApiClient.ApiClient.instance;
+  // Configure API key authorization: Apikey
+  var Apikey = defaultClient.authentications['Apikey'];
+  Apikey.apiKey = '97c71407-e18d-47a9-be5f-3efbc5854026';
+  var apiInstance = new CloudmersiveConvertApiClient.ConvertDocumentApi();
+  var inputFile = Buffer.from(fs.readFileSync(filePath).buffer); // File | Input file to perform the operation on.
+  var callback = function(error, data, response) {
+    if (error) {
+      console.error(error);
+    } else {
+      console.log('API called successfully. Returned data: ' + data);
+      res.render('pdfViewer', {fileContent: data});
+    }
+  };
+  apiInstance.convertDocumentPptxToPdf(inputFile, callback);
+
+  
+  
+});
+
+
+
 module.exports = router;
+

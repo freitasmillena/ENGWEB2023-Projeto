@@ -473,6 +473,8 @@ function isPresentationFile(extension) {
 function renderImagePreview(resourceName, path) {
   var previewImage = document.createElement('img');
   previewImage.src = '/fileStorage/' + resourceName;
+  previewImage.style.display = 'block';
+  previewImage.style.margin = '0 auto';
   previewContainer.appendChild(previewImage);
   
 }
@@ -481,19 +483,25 @@ function renderImagePreview(resourceName, path) {
 function renderPDFPreview(resourceName) {
   var previewIframe = document.createElement('iframe');
   previewIframe.src = '/fileContents/pdf.html?file=' + encodeURIComponent(resourceName);
+  previewIframe.style.display = 'block';
+  previewIframe.style.margin = '0 auto';
   previewContainer.appendChild(previewIframe);
 }
 
 function renderTextPreview(resourceName) {
   var previewIframe = document.createElement('iframe');
   previewIframe.src = '/fileContents/text.html?file=' + encodeURIComponent(resourceName);
+  previewIframe.style.display = 'block';
+  previewIframe.style.margin = '0 auto';
   previewContainer.appendChild(previewIframe);
 }
 
 
 function renderPresentationPreview(resourceName) {
   var previewIframe = document.createElement('iframe');
-  previewIframe.src = '/path/to/presentation-viewer.html?file=' + encodeURIComponent(resourceName);
+  previewIframe.src = '/fileContents/ppt.html?file=' + encodeURIComponent(resourceName);
+  previewIframe.style.display = 'block';
+  previewIframe.style.margin = '0 auto';
   previewContainer.appendChild(previewIframe);
 }
 

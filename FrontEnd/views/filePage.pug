@@ -13,7 +13,7 @@ block content
             p #[b Date:] #{file.created}
             p #[b Type:] #{file.type}
             p #[b Size:] #{file.size}
-            p #[b Category:] app
+            p #[b Category:] #{file.category}
             p #[b Description] #{file.description}
             .preview-file#previewContainer(data-resource=file.name data-path=file.path)
                 
