@@ -423,3 +423,90 @@ Array.from(toggleIcons).forEach(function(icon) {
   });
 });
 
+
+document.addEventListener('DOMContentLoaded', function() {
+  var previewContainer = document.getElementById('previewContainer');
+  var resourceName = previewContainer.getAttribute('data-resource');
+  var filePath = previewContainer.getAttribute('data-path');
+  
+  // Extract the file extension
+  var fileExtension = resourceName.split('.').pop().toLowerCase();
+  console.log("path: " + filePath)
+  
+  // Check the file type and render the appropriate preview or message
+  if (isImageFile(fileExtension)) {
+    renderImagePreview(resourceName, filePath);
+  } else if (isPDFFile(fileExtension)) {
+    renderPDFPreview(resourceName);
+  } else if (isTextFile(fileExtension)) {
+    renderTextPreview(resourceName);
+  } else if (isCodeFile(fileExtension)) {
+    renderCodePreview(resourceName);
+  } else if (isPresentationFile(fileExtension)) {
+    renderPresentationPreview(resourceName);
+  } else {
+    displayUnsupportedMessage();
+  }
+});
+
+// Functions to check file types
+
+function isImageFile(extension) {
+  return ['jpg', 'jpeg', 'png', 'gif'].includes(extension);
+}
+
+function isPDFFile(extension) {
+  return ['pdf'].includes(extension);
+}
+
+function isTextFile(extension) {
+  return ['txt'].includes(extension);
+}
+
+function isCodeFile(extension) {
+  return ['c', 'py', 'java', 'cpp'].includes(extension);
+}
+
+function isPresentationFile(extension) {
+  return ['ppt', 'pptx'].includes(extension);
+}
+
+// Functions to render previews or display messages
+
+function renderImagePreview(resourceName, path) {
+  var previewImage = document.createElement('img');
+  previewImage.src = '/fileStorage/' + resourceName;
+  previewContainer.appendChild(previewImage);
+  
+}
+
+
+function renderPDFPreview(resourceName) {
+  var previewIframe = document.createElement('iframe');
+  previewIframe.src = '/path/to/pdf-viewer.html?file=' + encodeURIComponent(resourceName);
+  previewContainer.appendChild(previewIframe);
+}
+
+function renderTextPreview(resourceName) {
+  var previewIframe = document.createElement('iframe');
+  previewIframe.src = '/path/to/text-viewer.html?file=' + encodeURIComponent(resourceName);
+  previewContainer.appendChild(previewIframe);
+}
+
+function renderCodePreview(resourceName) {
+  var previewIframe = document.createElement('iframe');
+  previewIframe.src = '/path/to/code-viewer.html?file=' + encodeURIComponent(resourceName);
+  previewContainer.appendChild(previewIframe);
+}
+
+function renderPresentationPreview(resourceName) {
+  var previewIframe = document.createElement('iframe');
+  previewIframe.src = '/path/to/presentation-viewer.html?file=' + encodeURIComponent(resourceName);
+  previewContainer.appendChild(previewIframe);
+}
+
+function displayUnsupportedMessage() {
+  var messageElement = document.createElement('p');
+  messageElement.textContent = 'Preview is not available for this file type.';
+  previewContainer.appendChild(messageElement);
+}

@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var multer = require('multer');
-var upload = multer({dest: '../BackEnd/uploads'});
+var upload = multer({dest: 'uploads'});
 var fs = require('fs');
 var jwt = require("jsonwebtoken")
 var data = new Date().toISOString().substring(0,16);
@@ -256,7 +256,7 @@ router.post('/uploadForm', upload.single('myFile'),function(req, res){
   console.log('cdir: ' + __dirname);
   let oldPath = __dirname + '/../' + req.file.path;
   console.log('oldPath: ' + oldPath);
-  let newPath = __dirname + '/../../BackEnd/fileStorage/' + req.file.originalname;
+  let newPath = __dirname + '/../public/fileStorage/' + req.file.originalname;
   console.log('newPath: ' + newPath);
   req.body.path = newPath
   fs.rename(oldPath, newPath, error => {
@@ -912,7 +912,7 @@ router.get('/download/:fileName', function(req, res) {
   console.log(req.params.fileName)
  
   var fileName = req.params.fileName.trim()
-  const filePath = path.join(__dirname, '/../../BackEnd/fileStorage/', fileName);
+  const filePath = path.join(__dirname, '/../public/fileStorage/', fileName);
   console.log("filePath: " + filePath)
   res.download(filePath)  
   res.on('error', function(err) {

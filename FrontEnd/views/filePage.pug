@@ -9,13 +9,14 @@ block content
                     i#openDeleteModalButton.fa-solid.fa-trash
             i#bookmarkIcon.fa-regular.fa-bookmark(data-user=username, data-file=file._id)
             .bookmarkPopup Saved
-            p Author: #{file.creator}
-            p Date: #{file.created}
-            p Type: #{file.type}
-            p Size: #{file.size} kb
-            p Description #{file.description}
-            //- .preview-file
-                //- p Preview aqui
+            p #[b Author:] #{file.creator}
+            p #[b Date:] #{file.created}
+            p #[b Type:] #{file.type}
+            p #[b Size:] #{file.size}
+            p #[b Category:] app
+            p #[b Description] #{file.description}
+            .preview-file#previewContainer(data-resource=file.name data-path=file.path)
+                
             .button
                 a(href='/download/' + file.name) Download 
                   i.fa-solid.fa-download
