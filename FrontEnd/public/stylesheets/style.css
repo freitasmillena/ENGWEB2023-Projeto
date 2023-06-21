@@ -1156,7 +1156,7 @@ section .details span{
 
 #previewContainer iframe {
   width: 100%;
-  min-height: 40vh; /* Adjust the height as desired */
+  min-height: 80vh; /* Adjust the height as desired */
 }
 
 

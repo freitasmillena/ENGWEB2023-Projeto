@@ -440,8 +440,6 @@ document.addEventListener('DOMContentLoaded', function() {
     renderPDFPreview(resourceName);
   } else if (isTextFile(fileExtension)) {
     renderTextPreview(resourceName);
-  } else if (isCodeFile(fileExtension)) {
-    renderCodePreview(resourceName);
   } else if (isPresentationFile(fileExtension)) {
     renderPresentationPreview(resourceName);
   } else {
@@ -461,7 +459,7 @@ function isPDFFile(extension) {
 
 
 function isTextFile(extension) {
-  return ['txt', 'c', 'py', 'java', 'cpp', 'js', 'pug', 'hs', 'json', 'html', 'css'].includes(extension);
+  return ['txt', 'c', 'py', 'java', 'cpp', 'js', 'pug', 'hs', 'json', 'html', 'css', 'csv'].includes(extension);
 }
 
 
@@ -482,7 +480,7 @@ function renderImagePreview(resourceName, path) {
 
 function renderPDFPreview(resourceName) {
   var previewIframe = document.createElement('iframe');
-  previewIframe.src = '/path/to/pdf-viewer.html?file=' + encodeURIComponent(resourceName);
+  previewIframe.src = '/fileContents/pdf.html?file=' + encodeURIComponent(resourceName);
   previewContainer.appendChild(previewIframe);
 }
 

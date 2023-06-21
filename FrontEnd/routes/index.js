@@ -939,4 +939,23 @@ router.get('/fileContents/text.html', function(req, res) {
     }
   });
 });
+
+router.get('/fileContents/pdf.html', function(req, res) {
+  console.log('GET/fileContents/pdf')
+
+  var fileName = req.query.file; // Get the file name from the query parameter
+
+  const filePath = path.join(__dirname, '/../public/fileStorage/', fileName);
+  console.log("filePath: " + filePath)
+
+  fs.readFile(filePath, (err, fileContent) => {
+    if (err) {
+      // Handle the error appropriately
+      console.error(err);
+      res.sendStatus(500);
+    } else {
+      res.render('pdfViewer', { fileContent: fileContent });
+    }
+  });
+});
 module.exports = router;

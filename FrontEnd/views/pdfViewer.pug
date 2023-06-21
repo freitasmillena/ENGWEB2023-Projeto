@@ -1,0 +1,87 @@
+doctype html
+html
+  head
+    style. 
+        button {
+        width: 40%;
+        height: 100%;
+        margin-right: auto;
+        margin-left: auto;
+        border-radius: 5px;
+        position: relative;
+        border: none;
+        color: #fff;
+        padding: 10px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: linear-gradient(135deg,  hsl(201, 100%, 50%), hsl(201, 100%, 85%));
+        } 
+  
+  
+        button:hover{
+          background: linear-gradient(-135deg,  hsl(201, 100%, 50%), hsl(201, 100%, 85%));
+         }
+        #pageNavigation {
+            display: flex;
+            justify-content: space-between;
+        }
+  body
+    
+
+    div#pageNavigation
+      button#prevPageButton Previous
+      button#nextPageButton Next
+
+    div#pdfContainer
+      canvas#pdfCanvas
+
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js")
+    script.
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var pdfData = new Uint8Array(#{JSON.stringify([...fileContent])});
+        var currentPage = 1;
+        var totalNumPages = 0;
+        var pdfInstance = null;
+
+        function renderPage(pageNumber) {
+          pdfInstance.getPage(pageNumber).then(function(page) {
+            var canvas = document.getElementById('pdfCanvas');
+            var context = canvas.getContext('2d');
+            var viewport = page.getViewport({ scale: 1 });
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            page.render({
+              canvasContext: context,
+              viewport: viewport
+            });
+          });
+        }
+
+        // Load and render the PDF using PDF.js
+        pdfjsLib.getDocument({ data: pdfData }).promise.then(function(pdf) {
+          pdfInstance = pdf;
+          totalNumPages = pdf.numPages;
+          renderPage(currentPage);
+        });
+
+        document.getElementById('prevPageButton').addEventListener('click', function() {
+          if (currentPage > 1) {
+            currentPage--;
+            renderPage(currentPage);
+          }
+        });
+
+        document.getElementById('nextPageButton').addEventListener('click', function() {
+          if (currentPage < totalNumPages) {
+            currentPage++;
+            renderPage(currentPage);
+          }
+        });
+      });
