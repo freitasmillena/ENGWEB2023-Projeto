@@ -459,13 +459,12 @@ function isPDFFile(extension) {
   return ['pdf'].includes(extension);
 }
 
+
 function isTextFile(extension) {
-  return ['txt'].includes(extension);
+  return ['txt', 'c', 'py', 'java', 'cpp', 'js', 'pug', 'hs', 'json', 'html', 'css'].includes(extension);
 }
 
-function isCodeFile(extension) {
-  return ['c', 'py', 'java', 'cpp'].includes(extension);
-}
+
 
 function isPresentationFile(extension) {
   return ['ppt', 'pptx'].includes(extension);
@@ -489,15 +488,10 @@ function renderPDFPreview(resourceName) {
 
 function renderTextPreview(resourceName) {
   var previewIframe = document.createElement('iframe');
-  previewIframe.src = '/path/to/text-viewer.html?file=' + encodeURIComponent(resourceName);
+  previewIframe.src = '/fileContents/text.html?file=' + encodeURIComponent(resourceName);
   previewContainer.appendChild(previewIframe);
 }
 
-function renderCodePreview(resourceName) {
-  var previewIframe = document.createElement('iframe');
-  previewIframe.src = '/path/to/code-viewer.html?file=' + encodeURIComponent(resourceName);
-  previewContainer.appendChild(previewIframe);
-}
 
 function renderPresentationPreview(resourceName) {
   var previewIframe = document.createElement('iframe');

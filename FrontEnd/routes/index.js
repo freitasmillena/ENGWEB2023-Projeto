@@ -920,4 +920,23 @@ router.get('/download/:fileName', function(req, res) {
   });
 });
 
+
+router.get('/fileContents/text.html', function(req, res) {
+  console.log('GET/fileContents/text')
+   
+  var fileName = req.query.file
+  const filePath = path.join(__dirname, '/../public/fileStorage/', fileName);
+  console.log("filePath: " + filePath)
+  
+  fs.readFile(filePath, 'utf8', (err, fileContent) => {
+    if (err) {
+      // Handle the error appropriately
+      console.error(err);
+      res.sendStatus(500);
+    } else {
+      
+      res.render('textViewer', { fileContent: fileContent });
+    }
+  });
+});
 module.exports = router;

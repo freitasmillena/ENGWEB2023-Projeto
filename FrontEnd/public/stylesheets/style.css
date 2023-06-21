@@ -1154,6 +1154,12 @@ section .details span{
   border-color: var(--first-color);
 }
 
+#previewContainer iframe {
+  width: 100%;
+  min-height: 40vh; /* Adjust the height as desired */
+}
+
+
 @media (max-width: 1060px) {
   .container-left,
   .container-right {
