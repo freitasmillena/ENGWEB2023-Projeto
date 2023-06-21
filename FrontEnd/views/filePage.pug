@@ -16,8 +16,9 @@ block content
             p Description #{file.description}
             //- .preview-file
                 //- p Preview aqui
-            .button Download 
-                i.fa-solid.fa-download
+            .button
+                a(href='/download/' + file.name) Download 
+                  i.fa-solid.fa-download
         .mycontainer.container-right 
             .title Comment Section
             .comment-list

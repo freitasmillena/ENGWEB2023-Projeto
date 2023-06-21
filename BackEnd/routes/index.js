@@ -643,5 +643,8 @@ router.put('/api/recursos/:id/removeFavorites', function (req, res, next) {
     })
 
 });
+
+
+
 module.exports = router;
 

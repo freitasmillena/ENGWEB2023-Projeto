@@ -7,6 +7,7 @@ var jwt = require("jsonwebtoken")
 var data = new Date().toISOString().substring(0,16);
 var axios = require('axios')
 var env = require('../config/env.js')
+var path = require('path')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -904,4 +905,19 @@ router.post('/recurso/:file/updateComment', function(req, res){
       res.render('error', {error: e, message: "Erro na atualização do comentário!", username: decoded.username, level: decoded.level})
     }) 
 })
+
+router.get('/download/:fileName', function(req, res) {
+  console.log('GET /download/' + req.params.fileName)
+  console.log(__dirname)
+  console.log(req.params.fileName)
+ 
+  var fileName = req.params.fileName.trim()
+  const filePath = path.join(__dirname, '/../../BackEnd/fileStorage/', fileName);
+  console.log("filePath: " + filePath)
+  res.download(filePath)  
+  res.on('error', function(err) {
+    console.error('Error during file download:', err);
+  });
+});
+
 module.exports = router;
