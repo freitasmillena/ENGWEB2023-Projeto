@@ -289,7 +289,8 @@ router.get('/api/tipos', function (req, res) {
 // GET tipos de recursos
 router.get('/api/user_groups', function (req, res) {
   console.log("GET /api/user_groups")
-  Group.getUserGroups
+  var decoded = jwt.verify(req.query.token, "EngWeb2023");
+  Group.getUserGroups(decoded.username)
     .then(r => {
       res.jsonp(r)
     })
