@@ -928,6 +928,9 @@ section .details span{
   cursor: pointer;
 }
 
+.comment-date .fa-trash{
+  margin-left: var(--mb-0-25);
+}
 @media(max-width: 1060px){
 
  .mycontainer{

@@ -1108,7 +1108,7 @@ router.delete('/recursos/:id/removeComment/:comment/user/:user', function(req, r
         }
       }
     
-    if(req.params.user == decoded.username){
+    if(req.params.user == decoded.username || decoded.level == 'admin'){
       axios.delete(env.apiAccessPoint+"/recursos/" + req.params.id + '/removeComment/' + req.params.comment +"?token=" + token)
       .then(response => {
        
