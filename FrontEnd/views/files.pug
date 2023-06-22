@@ -20,21 +20,21 @@ block content
                           option(value="sizedesc") Size Descending
                           option(value="favsasc") Favorites Ascending
                           option(value="favsdesc") Favorites Descending
-                .filter-container
+                .filter-container-type-cat
                     .filter-sort
                         select#filter-by-type(name="sort") 
                             option(value="" selected) Type
                             each t in tipos
                                 option(value=t) #{t}
                             option(value="all") ALL
-                .filter-container
+                
                     .filter-sort
                         select#filter-by-categ(name='category')
                             option(value='' selected) Category 
                             each c in cat
                                 option(value=c.name) #{c.name}
                             option(value='all') ALL
-                .filter-container
+                .filter-container-last
                     .filter-sort
                         select#filter-by-categ-selected(name='categSelected')
                             option(value='' selected) Filter by
@@ -46,7 +46,7 @@ block content
                             option(value='size') Size
                             option(value='author') Author
                             option(value='group') Group
-                .filter-container
+                
                     .filter-sort
                         select#filter-by-symb-selected(name='condition')
                             option(value='' selected) Category
@@ -60,11 +60,10 @@ block content
                             option(value='notContains') not contains
                             option(value='startsWith') starts with
                             option(value='endsWith') ends with
-                .filter-container
+                
                     .search-wrapper
                         input#filter-categ-selected(type='text' placeholder='Enter value' name='categValue')
-                .filter-container
-                    button#filter-button Apply
+                        button#filter-button Apply
             .header-files 
                 .header-title Title
                 .header-details

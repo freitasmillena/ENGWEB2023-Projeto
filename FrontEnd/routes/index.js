@@ -9,7 +9,7 @@ var axios = require('axios')
 var env = require('../config/env.js')
 var path = require('path')
 var CloudmersiveConvertApiClient = require('cloudmersive-convert-api-client');
-var ExcelJS = require('exceljs');
+
 
 
 /* GET home page. */
@@ -27,7 +27,14 @@ router.get('/uploadForm', function(req, res, next) {
   var token = ""
   if(req.cookies && req.cookies.token){
     token = req.cookies.token
-    var decoded = jwt.verify(token, "EngWeb2023");
+    try {
+      var decoded = jwt.verify(token, "EngWeb2023");
+      } catch (e) {
+        if(e.name === 'TokenExpiredError') {
+          // Here redirect to your login page
+          return res.redirect('/');
+        }
+      }
     console.log(decoded.level);
     if(decoded.level === "producer" || decoded.level === "admin"){
       console.log(token)
@@ -47,7 +54,14 @@ router.get('/formGroup', function(req, res, next) {
   var token = ""
   if(req.cookies && req.cookies.token) {
     token = req.cookies.token
-    var decoded = jwt.verify(token, "EngWeb2023");
+    try {
+      var decoded = jwt.verify(token, "EngWeb2023");
+      } catch (e) {
+        if(e.name === 'TokenExpiredError') {
+          // Here redirect to your login page
+          return res.redirect('/');
+        }
+      }
     console.log(decoded.level);
     if(decoded.level === "producer" || decoded.level === "admin"){
       console.log(token)
@@ -77,7 +91,14 @@ router.post('/formGroup', function(req, res){
   if(req.cookies && req.cookies.token)
     token = req.cookies.token
   
-  var decoded = jwt.verify(token, 'EngWeb2023')
+    try {
+      var decoded = jwt.verify(token, "EngWeb2023");
+      } catch (e) {
+        if(e.name === 'TokenExpiredError') {
+          // Here redirect to your login page
+          return res.redirect('/');
+        }
+      }
   axios.post('http://localhost:7777/api/groups?token=' + token, req.body)
     .then(response => {
       
@@ -97,7 +118,14 @@ router.post('/updateUser/:username', function(req, res){
   if(req.cookies && req.cookies.token)
     token = req.cookies.token
   
-  var decoded = jwt.verify(token, 'EngWeb2023')
+    try {
+      var decoded = jwt.verify(token, "EngWeb2023");
+      } catch (e) {
+        if(e.name === 'TokenExpiredError') {
+          // Here redirect to your login page
+          return res.redirect('/');
+        }
+      }
     
   axios.put('http://localhost:8002/users/' + req.params.username + '?token=' + token, req.body)
     .then(response => {
@@ -118,7 +146,14 @@ router.post('/updatePassword/:username', function(req, res){
   if(req.cookies && req.cookies.token)
     token = req.cookies.token
   
-  
+    try {
+      var decoded = jwt.verify(token, "EngWeb2023");
+      } catch (e) {
+        if(e.name === 'TokenExpiredError') {
+          // Here redirect to your login page
+          return res.redirect('/');
+        }
+      }
     
   axios.put('http://localhost:8002/users/' + req.params.username + '/password' +'?token=' + token, req.body)
     .then(response => {
@@ -138,7 +173,14 @@ router.get('/profile/:username', function(req, res, next) {
   var token = ""
   if(req.cookies && req.cookies.token) {
     token = req.cookies.token
-    var decoded = jwt.verify(token, "EngWeb2023");
+    try {
+      var decoded = jwt.verify(token, "EngWeb2023");
+      } catch (e) {
+        if(e.name === 'TokenExpiredError') {
+          // Here redirect to your login page
+          return res.redirect('/');
+        }
+      }
     var message
     if(req.query.passwordUpdated=== "true") message = "Password updated successfully"
     else if(req.query.passwordUpdated=== "false") message = "Could not update password."
@@ -239,7 +281,14 @@ router.post('/uploadForm', upload.single('myFile'),function(req, res){
   if(req.cookies && req.cookies.token)
     token = req.cookies.token
   
-  var decodedToken = jwt.verify(token, "EngWeb2023");
+    try {
+      var decodedToken = jwt.verify(token, "EngWeb2023");
+      } catch (e) {
+        if(e.name === 'TokenExpiredError') {
+          // Here redirect to your login page
+          return res.redirect('/');
+        }
+      }
 
   req.body.name = req.file.originalname
   if(req.body.visibility === 'public') {
@@ -286,7 +335,14 @@ router.get('/recursos/tipos/:tipo', function(req, res) {
   if(req.cookies && req.cookies.token)
     token = req.cookies.token
   console.log(token)
-  var decoded = jwt.verify(token, "EngWeb2023");
+  try {
+    var decoded = jwt.verify(token, "EngWeb2023");
+    } catch (e) {
+      if(e.name === 'TokenExpiredError') {
+        // Here redirect to your login page
+        return res.redirect('/');
+      }
+    }
 
   const getFileExtension = (mimeType) => {
     const parts = mimeType.split('.');
@@ -354,7 +410,14 @@ router.get('/recursos/categorias/:categ', function(req, res) {
   if(req.cookies && req.cookies.token)
     token = req.cookies.token
   console.log(token)
-  var decoded = jwt.verify(token, "EngWeb2023");
+  try {
+    var decoded = jwt.verify(token, "EngWeb2023");
+    } catch (e) {
+      if(e.name === 'TokenExpiredError') {
+        // Here redirect to your login page
+        return res.redirect('/');
+      }
+    }
 
   const getFileExtension = (mimeType) => {
     const parts = mimeType.split('.');
@@ -419,7 +482,14 @@ router.get('/recursos', function(req, res) {
   if(req.cookies && req.cookies.token) {
     token = req.cookies.token
     console.log(token)
+    try {
     var decoded = jwt.verify(token, "EngWeb2023");
+    } catch (e) {
+      if(e.name === 'TokenExpiredError') {
+        // Here redirect to your login page
+        return res.redirect('/');
+      }
+    }
     var message
     if(req.query.denied) message = "Permission denied."
 
@@ -460,22 +530,26 @@ router.get('/recursos', function(req, res) {
                     res.render('files', { tipos: tipos, cat: categorias, files: response.data, news: news, d: data, user: decoded.username, getFileExtension: getFileExtension, username: decoded.username, level: decoded.level, errorMessage: message });
                   })
                   .catch(err => {
+                    console.log("inside: " + err)
                     res.render('error', { error: err, username: decoded.username, level: decoded.level })
                   })
 
               })
               .catch(err => {
+                console.log("outside: " + err)
                 res.render('error', { error: err, username: decoded.username, level: decoded.level })
               })
 
           })
           .catch(err => {
+            
             res.render('error', { error: err, username: decoded.username, level: decoded.level })
           })
 
 
       })
       .catch(err => {
+        
         res.render('error', { error: err, username: decoded.username, level: decoded.level })
       })
   }
@@ -490,7 +564,14 @@ router.get('/recursos/:id', function(req, res) {
   if(req.cookies && req.cookies.token) {
     token = req.cookies.token
     console.log(token)
-    var decoded = jwt.verify(token, "EngWeb2023")
+    try {
+      var decoded = jwt.verify(token, "EngWeb2023");
+      } catch (e) {
+        if(e.name === 'TokenExpiredError') {
+          // Here redirect to your login page
+          return res.redirect('/');
+        }
+      }
     axios.get(env.apiAccessPoint+"/recursos/" + req.params.id + "?token=" + token)
       .then(response => {
         if(response.data != null) {
@@ -515,7 +596,14 @@ router.get('/recursos/cond/:categ', function(req, res) {
     if(req.cookies && req.cookies.token)
       token = req.cookies.token
     console.log(token)
-    var decoded = jwt.verify(token, "EngWeb2023");
+    try {
+      var decoded = jwt.verify(token, "EngWeb2023");
+      } catch (e) {
+        if(e.name === 'TokenExpiredError') {
+          // Here redirect to your login page
+          return res.redirect('/');
+        }
+      }
   
     const getFileExtension = (mimeType) => {
       const parts = mimeType.split('.');
@@ -581,7 +669,14 @@ router.get('/groups/:id', function(req, res) {
   if(req.cookies && req.cookies.token) {
     token = req.cookies.token
     console.log(token)
-    var decoded = jwt.verify(token, "EngWeb2023")
+    try {
+      var decoded = jwt.verify(token, "EngWeb2023");
+      } catch (e) {
+        if(e.name === 'TokenExpiredError') {
+          // Here redirect to your login page
+          return res.redirect('/');
+        }
+      }
     
     axios.get(env.apiAccessPoint+"/groups/" + req.params.id +"?token=" + token)
       .then(group => {
@@ -617,7 +712,14 @@ router.get('/deleteGroup/:id', function(req, res) {
   if(req.cookies && req.cookies.token) {
     token = req.cookies.token
     console.log(token)
-    var decoded = jwt.verify(token, "EngWeb2023")
+    try {
+      var decoded = jwt.verify(token, "EngWeb2023");
+      } catch (e) {
+        if(e.name === 'TokenExpiredError') {
+          // Here redirect to your login page
+          return res.redirect('/');
+        }
+      }
     
     console.log("group: " + req.params.id)
     axios.delete(env.apiAccessPoint+"/groups/" + req.params.id +"?token=" + token)
@@ -641,7 +743,14 @@ router.get('/group/:group/deleteUser/:username', function(req, res) {
   if(req.cookies && req.cookies.token) {
     token = req.cookies.token
     console.log(token)
-    var decoded = jwt.verify(token, "EngWeb2023")
+    try {
+      var decoded = jwt.verify(token, "EngWeb2023");
+      } catch (e) {
+        if(e.name === 'TokenExpiredError') {
+          // Here redirect to your login page
+          return res.redirect('/');
+        }
+      }
     
     console.log("group: " + req.params.group)
     axios.delete(env.apiAccessPoint+"/groups/" + req.params.group + '/user/' + req.params.username +"?token=" + token)
@@ -664,7 +773,14 @@ router.get('/group/:group/addUsers', async function(req, res) {
   if(req.cookies && req.cookies.token) {
     token = req.cookies.token
     console.log(token)
-    var decoded = jwt.verify(token, "EngWeb2023")
+    try {
+      var decoded = jwt.verify(token, "EngWeb2023");
+      } catch (e) {
+        if(e.name === 'TokenExpiredError') {
+          // Here redirect to your login page
+          return res.redirect('/');
+        }
+      }
     
     console.log("group: " + req.params.group)
     console.log("users: " + req.query.selectedResults)
@@ -699,7 +815,14 @@ router.post('/addCategory', function(req, res){
   var token = ""
   if(req.cookies && req.cookies.token)
     token = req.cookies.token
-  var decodedToken = jwt.verify(token, 'EngWeb2023')
+    try {
+      var decodedToken = jwt.verify(token, "EngWeb2023");
+      } catch (e) {
+        if(e.name === 'TokenExpiredError') {
+          // Here redirect to your login page
+          return res.redirect('/');
+        }
+      }
   console.log(req.body)
      
   axios.post('http://localhost:7777/api/categorias?token=' + token, req.body)
@@ -718,7 +841,14 @@ router.get('/addfavorites/:file/user/:username', function(req, res){
   var token = ""
   if(req.cookies && req.cookies.token) {
     token = req.cookies.token
-    var decodedToken = jwt.verify(token, 'EngWeb2023')
+    try {
+      var decodedToken = jwt.verify(token, "EngWeb2023");
+      } catch (e) {
+        if(e.name === 'TokenExpiredError') {
+          // Here redirect to your login page
+          return res.redirect('/');
+        }
+      }
 
     axios.put('http://localhost:8002/users/' + req.params.username + '/addFavorites/' + req.params.file + '?token=' + token)
       .then(response => {
@@ -746,7 +876,14 @@ router.get('/removefavorites/:file/user/:username', function(req, res){
   var token = ""
   if(req.cookies && req.cookies.token) {
     token = req.cookies.token
-    var decodedToken = jwt.verify(token, 'EngWeb2023')
+    try {
+      var decodedToken = jwt.verify(token, "EngWeb2023");
+      } catch (e) {
+        if(e.name === 'TokenExpiredError') {
+          // Here redirect to your login page
+          return res.redirect('/');
+        }
+      }
 
     axios.put('http://localhost:8002/users/' + req.params.username + '/removeFavorites/' + req.params.file + '?token=' + token)
       .then(response => {
@@ -773,7 +910,14 @@ router.get('/favorites/:username', function(req, res){
   var token = ""
   if(req.cookies && req.cookies.token) {
     token = req.cookies.token
-    var decodedToken = jwt.verify(token, 'EngWeb2023')
+    try {
+      var decodedToken = jwt.verify(token, "EngWeb2023");
+      } catch (e) {
+        if(e.name === 'TokenExpiredError') {
+          // Here redirect to your login page
+          return res.redirect('/');
+        }
+      }
 
     axios.get('http://localhost:8002/users/' + req.params.username + '/favorites?token=' + token)
       .then(response => {
@@ -796,7 +940,14 @@ router.delete('/recursos/:id/creator/:creator', function(req, res) {
   if(req.cookies && req.cookies.token) {
     token = req.cookies.token
     console.log(token)
-    var decoded = jwt.verify(token, "EngWeb2023")
+    try {
+      var decoded = jwt.verify(token, "EngWeb2023");
+      } catch (e) {
+        if(e.name === 'TokenExpiredError') {
+          // Here redirect to your login page
+          return res.redirect('/');
+        }
+      }
     console.log(req.params.id)
     console.log(req.params.creator)
 
@@ -833,7 +984,14 @@ router.post('/recurso/:file/addComment', function(req, res){
   if(req.cookies && req.cookies.token)
     token = req.cookies.token
   
-  var decoded = jwt.verify(token, 'EngWeb2023')
+    try {
+      var decoded = jwt.verify(token, "EngWeb2023");
+      } catch (e) {
+        if(e.name === 'TokenExpiredError') {
+          // Here redirect to your login page
+          return res.redirect('/');
+        }
+      }
 
   axios.post('http://localhost:7777/api/recursos/'+ req.params.file +'/addComment?token=' + token, req.body)
     .then(response => {
@@ -858,7 +1016,14 @@ router.delete('/recursos/:id/removeComment/:comment/user/:user', function(req, r
   if(req.cookies && req.cookies.token) {
     token = req.cookies.token
     console.log(token)
-    var decoded = jwt.verify(token, "EngWeb2023")
+    try {
+      var decoded = jwt.verify(token, "EngWeb2023");
+      } catch (e) {
+        if(e.name === 'TokenExpiredError') {
+          // Here redirect to your login page
+          return res.redirect('/');
+        }
+      }
     
     if(req.params.user == decoded.username){
       axios.delete(env.apiAccessPoint+"/recursos/" + req.params.id + '/removeComment/' + req.params.comment +"?token=" + token)
@@ -889,7 +1054,14 @@ router.post('/recurso/:file/updateComment', function(req, res){
   if(req.cookies && req.cookies.token)
     token = req.cookies.token
   
-  var decoded = jwt.verify(token, 'EngWeb2023')
+    try {
+      var decoded = jwt.verify(token, "EngWeb2023");
+      } catch (e) {
+        if(e.name === 'TokenExpiredError') {
+          // Here redirect to your login page
+          return res.redirect('/');
+        }
+      }
 
   axios.put('http://localhost:7777/api/recursos/'+ req.params.file +'/editComment?token=' + token, req.body)
     .then(response => {
@@ -913,7 +1085,20 @@ router.get('/download/:fileName', function(req, res) {
   console.log('GET /download/' + req.params.fileName)
   console.log(__dirname)
   console.log(req.params.fileName)
- 
+  
+  var token = ""
+  if(req.cookies && req.cookies.token)
+    token = req.cookies.token
+  
+    try {
+      var decoded = jwt.verify(token, "EngWeb2023");
+      } catch (e) {
+        if(e.name === 'TokenExpiredError') {
+          // Here redirect to your login page
+          return res.redirect('/');
+        }
+      }
+
   var fileName = req.params.fileName.trim()
   const filePath = path.join(__dirname, '/../public/fileStorage/', fileName);
   console.log("filePath: " + filePath)
@@ -927,6 +1112,20 @@ router.get('/download/:fileName', function(req, res) {
 router.get('/fileContents/text.html', function(req, res) {
   console.log('GET/fileContents/text')
    
+  var token = ""
+  if(req.cookies && req.cookies.token)
+    token = req.cookies.token
+  
+    try {
+      var decoded = jwt.verify(token, "EngWeb2023");
+      } catch (e) {
+        if(e.name === 'TokenExpiredError') {
+          // Here redirect to your login page
+          return res.redirect('/');
+        }
+      }
+
+
   var fileName = req.query.file
   const filePath = path.join(__dirname, '/../public/fileStorage/', fileName);
   console.log("filePath: " + filePath)
@@ -945,6 +1144,20 @@ router.get('/fileContents/text.html', function(req, res) {
 
 router.get('/fileContents/pdf.html', function(req, res) {
   console.log('GET/fileContents/pdf')
+
+  var token = ""
+  if(req.cookies && req.cookies.token)
+    token = req.cookies.token
+  
+    try {
+      var decoded = jwt.verify(token, "EngWeb2023");
+      } catch (e) {
+        if(e.name === 'TokenExpiredError') {
+          // Here redirect to your login page
+          return res.redirect('/');
+        }
+      }
+
 
   var fileName = req.query.file; // Get the file name from the query parameter
 
@@ -965,6 +1178,20 @@ router.get('/fileContents/pdf.html', function(req, res) {
 router.get('/fileContents/ppt.html', async function(req, res) {
   console.log('GET/fileContents/ppt')
 
+  var token = ""
+  if(req.cookies && req.cookies.token)
+    token = req.cookies.token
+  
+    try {
+      var decoded = jwt.verify(token, "EngWeb2023");
+      } catch (e) {
+        if(e.name === 'TokenExpiredError') {
+          // Here redirect to your login page
+          return res.redirect('/');
+        }
+      }
+
+      
   var fileName = req.query.file; // Get the file name from the query parameter
 
   const filePath = path.join(__dirname, '/../public/fileStorage/', fileName);  

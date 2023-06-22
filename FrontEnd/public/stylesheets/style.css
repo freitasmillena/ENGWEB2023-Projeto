@@ -847,11 +847,11 @@ form .groups-check {
   background-color: white;
   border-bottom-width: 2px;
   transition: all 0.3s ease;
-  color: var(--first-color-light)
+  color: var(--first-color-darker)
 }
 
 .select-category select:active{
-  border-color: var(--first-color-light);
+  border-color: var(--first-color-darker);
 }
 
 .container-categories {
@@ -878,7 +878,7 @@ form .groups-check {
 section .row{
   margin-top: 15px;
   margin-bottom: 10px;
-  background: var(--first-color-light);
+  background: var(--first-color-darker);
   list-style: none;
   padding: 15px 20px;
   border-radius: 5px;
@@ -994,7 +994,7 @@ section .details span{
   cursor: pointer;
 }
 .comment-date .fa-trash .fa-pen-to-square{
-  color: var(--first-color-light);
+  color: var(--first-color-darker);
   
 }
 
@@ -1210,8 +1210,36 @@ section .details span{
   align-items: center;
 }
 
+.filter-container-type-cat{
+  display: flex;
+  width: 50%;
+  align-items: center;
+  margin-left: var(--mb-1-5);
+}
+
+.filter-container-last{
+  display: flex;
+  width: 100%;
+  align-items: center;
+  margin-left: var(--mb-1-5);
+}
+
 .filter-container .search-wrapper{
   position: relative;
+}
+
+.search-wrapper button{
+  margin-left: var(--mb-0-5);
+  border-radius: 5px;
+  border: none;
+  padding: var(--mb-0-5);
+  background: var(--first-color-darker);
+  color: whitesmoke;
+
+}
+
+.search-wrapper button:hover{
+  background: var(--first-color);
 }
 
 .filter-container .search-groups{
@@ -1225,7 +1253,7 @@ section .details span{
 }
 
 .filter-sort {
-  margin-right: 15px;
+  margin-right: var(--mb-0-5);
 }
 
 .filter-sort select,
@@ -1296,7 +1324,7 @@ section .details span{
 .fa-gear {
   margin-left: var(--mb-2);
   font-size: var(--mb-2);
-  color: var(--first-color-light);
+  color: var(--first-color-darker);
   cursor:pointer;
 }
 
@@ -1317,7 +1345,7 @@ section .details span{
 
 .fa-trash{
   cursor: pointer;
-  color: var(--first-color-light);
+  color: var(--first-color-darker);
 }
 
 .trashIcon{
