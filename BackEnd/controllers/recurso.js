@@ -214,40 +214,45 @@ module.exports.recsCond = (username,groups,categSelected,condition,categValue, s
     else
         sort = {"created": -1}
 
+    // db.recursos.find({"title": { "$regex": "READM" }}).sort({"created": -1}).skip(0).limit(10);
+
     if (condition === "equals")
-        category = categSelected
+        category = categValue
     else if (condition === "greater")
-        category = { $gt: categValue }
+        category = { "$gt": categValue}
     else if (condition === "less")
-        category = { $lt: categValue }
+        category = { "$lt": categValue}
     else if (condition === "greaterOrEqual")
-        category = { $gte: categValue }
+        category = { "$gte": categValue }
     else if (condition === "lessOrEqual")
-        category = { $lte: categValue }
+        category = { "$lte": categValue }
     else if (condition === "notEqual")
-        category = { $ne: categValue }
+        category = { "$ne": categValue}
     else if (condition === "contains")
-        category = { $regex: categValue }
+        category = { "$regex": categValue}
     else if (condition === "notContains")
-        category = { $not: { $regex: categValue } }
+        category = { "$not": { "$regex": categValue } }
     else if (condition === "startsWith")
-        category = { $regex: "^" + categValue }
+        category = { "$regex": "^" + categValue}
     else if (condition === "endsWith")
-        category = { $regex: categValue + "$" }
+        category = { "$regex": categValue + "$" }
     else
         category = categSelected
     console.log("HERE "+categSelected)
     console.log(category)
     console.log("HERE "+username)
 
+    categSelected = categSelected
+
     if (level != 'admin'){
+        console.log("{   \"$or\": [     { \"creator\": "+username+", \"available_for.users\": "+username+" },     { \"available_for.groups\": { \"$in\": "+groups+" } }   ],   "+categSelected+": "+ JSON.stringify(category)+"}")
         return Recurso.find(
             {   "$or": 
                 [     
                     { "creator": username, "available_for.users": username },     
                     { "available_for.groups": { "$in": groups } }  
                 ],   
-                categSelected: category}
+                [categSelected]: category}
             ).sort(sort).skip(0).limit(10);
     }else{
         return Recurso.find({categSelected: category}).sort(sort).skip(0).limit(10);
