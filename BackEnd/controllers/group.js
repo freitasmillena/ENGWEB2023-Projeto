@@ -27,6 +27,17 @@ module.exports.getGroupsUser = username => {
             return erro
         })
 }
+
+module.exports.getUserGroups = username => {
+    //return the id of all groups that the user is in participants or owner
+    return Group.find({ "$or": [{ "owner": username }, { "participants": { "$in": username } }, {"_id":0}] })
+        .then(resposta => {
+            return resposta
+        })
+        .catch(erro => {
+            return erro
+        })
+}
             
 module.exports.addGroup = l => {
     return Group.find({}, {_id: 1})

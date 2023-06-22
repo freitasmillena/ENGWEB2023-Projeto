@@ -34,6 +34,12 @@ block content
                             each c in cat
                                 option(value=c.name) #{c.name}
                             option(value='all') ALL
+
+                    .filter-sort
+                        select#filter-by-categ(name='groups')
+                            option(value='' selected) Group 
+                            each g in groups
+                                option(value=g.name) #{g.name}
                 .filter-container-last
                     .filter-sort
                         select#filter-by-categ-selected(name='categSelected')
