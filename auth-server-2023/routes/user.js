@@ -4,7 +4,8 @@ var jwt = require('jsonwebtoken')
 var passport = require('passport')
 var userModel = require('../models/user')
 var auth = require('../auth/auth')
-
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
 var User = require('../controllers/user')
 
 router.get('/', auth.verificaAcesso, function(req, res){
@@ -111,6 +112,99 @@ router.post('/login', passport.authenticate('local'), function(req, res){
       else res.status(201).jsonp({token: token})
 });
 })
+
+router.post('/forgotPass', function(req, res) {
+  const resetPasswordToken = crypto.randomBytes(20).toString('hex');
+  const resetPasswordExpires = Date.now() + 3600000; // 1 hour from now
+  console.log(req.body.email)
+  // Assume User is your User model
+  User.getUserEmail(req.body.email)
+    .then(user => {
+      if (!user) {
+        // No user found with that email
+        console.log("No user found with that email")
+        return res.json({ message: 'An email has been sent to ' + req.body.email + ' with further instructions.' });
+      }
+
+      User.updateUserReset(req.body.email, resetPasswordToken, resetPasswordExpires)
+        .then(response => {
+          
+            // Email the user
+            const sgMail = require('@sendgrid/mail')
+            sgMail.setApiKey("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")
+            const msg = {
+              to: user.email, // Change to your recipient
+              from: 'crocshare@gmail.com', // Change to your verified sender
+              subject: 'Password Reset',
+              text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+                'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+                'http://localhost:7778/reset/' + resetPasswordToken + '\n\n' +
+                'If you did not request this, please ignore this email and your password will remain unchanged.\n',
+            }
+            sgMail
+              .send(msg)
+              .then(() => {
+                console.log('Email sent')
+                res.cookie('resetToken', resetPasswordToken, { httpOnly: true, secure: true, maxAge: 3600000 });
+                res.json({ message: 'An email has been sent to ' + req.body.email + ' with further instructions.' });
+              
+              })
+              .catch((error) => {
+                console.error(error)
+              })
+        })
+        .catch(err => {
+          console.log("Could not update user")
+        })
+      
+      
+      
+  })
+    .catch(err => {
+      console.log(err)
+    })
+
+  
+})
+
+
+
+router.post('/reset/:token', function(req, res) {
+  const token = req.params.token;
+
+  User.getUserReset(token)
+    .then(user => {
+      if (!user) {
+        return res.status(404).json({ message: 'Password reset token is invalid or has expired.' });
+      }
+
+      // Set the new password using Passport's setPassword method
+      user.setPassword(req.body.password, function(err) {
+        if (err) {
+          console.log("Error setting password: ", err);
+          return res.status(500).json({ message: 'Error resetting password.' });
+        }
+
+        // Update the user's reset token and expiration
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+
+        user.save()
+          .then(() => {
+            res.status(200).json({ message: 'Password has been reset.' });
+          })
+          .catch(err => {
+            console.log("Error saving user: ", err);
+            res.status(500).json({ message: 'Error resetting password.' });
+          });
+      });
+    })
+    .catch(err => {
+      console.log("Error finding user: ", err);
+      res.status(500).json({ message: 'Error finding user.' });
+    });
+});
+
 
 router.put('/:id', auth.verificaAcesso, function(req, res) {
   User.updateUser(req.params.id, req.body)

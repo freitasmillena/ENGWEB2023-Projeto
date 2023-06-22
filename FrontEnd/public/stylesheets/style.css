@@ -1228,7 +1228,7 @@ section .details span{
   position: relative;
 }
 
-.search-wrapper button{
+.filter-container .search-wrapper button{
   margin-left: var(--mb-0-5);
   border-radius: 5px;
   border: none;
@@ -1238,7 +1238,7 @@ section .details span{
 
 }
 
-.search-wrapper button:hover{
+.filter-container .search-wrapper button:hover{
   background: var(--first-color);
 }
 

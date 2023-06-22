@@ -14,7 +14,9 @@ var userSchema = new mongoose.Schema({
     groups: [Number], //id groups
     submissions: [Number], //id files
     favorites: [Number], //id files
-    dataRegisto: String
+    dataRegisto: String,
+    resetPasswordToken: String,
+    resetPasswordExpires: Date
   });
 
 userSchema.plugin(passportLocalMongoose);

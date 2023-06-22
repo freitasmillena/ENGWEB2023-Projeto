@@ -1,0 +1,17 @@
+extends layout
+
+block content
+    .mycontainer
+        .title Forgot Password
+        .content
+          if message 
+            p=message
+          else
+            form(action='/forgotPassword'  method='post')
+              .input-box
+                span.details E-mail
+                input.form-control(type='text' name='email' placeholder='Enter your e-mail' required='')                      
+              .button
+                input(type='submit' value='Send')
+            
+

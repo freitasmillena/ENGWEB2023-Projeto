@@ -226,4 +226,33 @@ module.exports.getFavorites = (user) => {
     })
 }
 
+
+module.exports.getUserReset = (token) => {
+    return User.findOne({ resetPasswordToken: token, resetPasswordExpires: { $gt: Date.now() } })
+    .then(dados => {
+        return dados
+    })
+    .catch(erro => {
+        return erro
+    })
+}
+
+module.exports.updateUserReset = (email, resetPasswordToken, resetPasswordExpires) => {
+    return User.findOneAndUpdate(
+        { email: email },
+        { 
+          resetPasswordToken: resetPasswordToken, 
+          resetPasswordExpires: resetPasswordExpires 
+        },
+        { new: true } // This option returns the updated document
+      )
+    .then(dados => {
+        return dados
+    })
+    .catch(erro => {
+        return erro
+    })
+}
+
+
  

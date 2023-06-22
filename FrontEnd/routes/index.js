@@ -23,6 +23,48 @@ router.get('/logout', function(req, res, next) {
   res.redirect('/')
 });
 
+router.get('/forgotPassword', function(req, res, next) {
+  res.render('forgotPass');
+});
+
+router.post('/forgotPassword', function(req, res) {
+  console.log(req.body.email)
+  axios.post('http://localhost:8002/users/forgotPass', {
+    email: req.body.email,
+  })
+    .then(function(response) {
+      // Redirect to reset password page
+      res.render('forgotPass', { message: 'If an account exists for ' + req.body.email + ', an email has been sent with further instructions.' });
+    })
+    .catch(function(err) {
+      // Handle error - maybe the user entered a non-existent email
+      res.render('error', { message: 'An error occurred. Please try again.' });
+    });
+})
+
+router.get('/reset/:token', function(req, res) {
+  // The reset token is stored in a cookie, so we don't need to pass it in the URL
+  res.render('resetPass', {token: req.params.token});
+});
+
+router.post('/reset', function(req, res) {
+    
+  axios.post('http://localhost:8002/users/reset/' + req.body.token, {
+    password: req.body.password,
+  }, { 
+    // Send the reset token as a cookie in the request
+    withCredentials: true 
+  })
+    .then(function(response) {
+      // Redirect to login page after successful password reset
+      res.redirect('/');
+    })
+    .catch(function(err) {
+      // Handle error - maybe the token expired or was invalid
+      res.render('error', { message: 'An error occurred. Please try again.' });
+    });
+});
+
 router.get('/uploadForm', function(req, res, next) {
   var token = ""
   if(req.cookies && req.cookies.token){
@@ -1191,7 +1233,7 @@ router.get('/fileContents/ppt.html', async function(req, res) {
         }
       }
 
-      
+
   var fileName = req.query.file; // Get the file name from the query parameter
 
   const filePath = path.join(__dirname, '/../public/fileStorage/', fileName);  
