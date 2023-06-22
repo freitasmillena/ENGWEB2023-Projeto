@@ -286,6 +286,18 @@ router.get('/api/tipos', function (req, res) {
     })
 });
 
+// GET tipos de recursos
+router.get('/api/user_groups', function (req, res) {
+  console.log("GET /api/user_groups")
+  Group.getUserGroups
+    .then(r => {
+      res.jsonp(r)
+    })
+    .catch(erro => {
+      res.render('error', { error: erro, message: "Erro na obtenção dos grupos" })
+    })
+});
+
 
 // GET recurso de um certo tipo 
 router.get('/api/recursos/tipos/:tipo', async function (req, res) {
