@@ -596,7 +596,7 @@ router.get('/recursos', function(req, res) {
                     axios.get(env.apiAccessPoint + "/user_groups?token=" + token)
                       .then(response => {
                         g_full = response.data
-                        res.render('files', { groups: g_full, tipos: tipos, cat: categorias, files: files, d: data, user: decoded.username, getFileExtension: getFileExtension, username: decoded.username, level: decoded.level, news: news });
+                        res.render('files', { errorMessage: message, groups: g_full, tipos: tipos, cat: categorias, files: files, d: data, user: decoded.username, getFileExtension: getFileExtension, username: decoded.username, level: decoded.level, news: news });
                       })
                       .catch(err => {
                         res.render('error', { error: err, username: decoded.username, level: decoded.level })
