@@ -412,26 +412,28 @@ router.get('/recursos/tipos/:tipo', function(req, res) {
         .then(response => {
           categorias = response.data
 
+          
+          var g_full=null
+          axios.get(env.apiAccessPoint+"/user_groups?token="+token)
+            .then( response =>{
+              g_full=response.data
 
 
-          var news = null
-          axios.get(env.apiAccessPoint + "/recursos?sort=datedesc&token=" + token + "&page=0&limit=5")
-            .then(response => {
-              news = response.data
 
-              axios.get(env.apiAccessPoint + "/recursos/tipos/" + req.params.tipo + "?sort=" + sort + "&token=" + token + "&page=0&limit=10")
+              var news = null
+              axios.get(env.apiAccessPoint + "/recursos?sort=datedesc&token=" + token + "&page=0&limit=5")
                 .then(response => {
+                  news = response.data
 
-                  files=response.data
-                  var g_full=null
-                  axios.get(env.apiAccessPoint+"/user_groups&token="+token)
-                    .then( response =>{
-                      g_full=response.data
-                      res.render('files', { groups: g_full, tipos: tipos, cat: categorias, files: files, d: data, user: decoded.username, getFileExtension: getFileExtension, username: decoded.username, level: decoded.level, news: news });
-                    })
-                    .catch(err => {
-                      res.render('error', { error: err, username: decoded.username, level: decoded.level })
-                    })
+                    axios.get(env.apiAccessPoint + "/recursos/tipos/" + req.params.tipo + "?sort=" + sort + "&token=" + token + "&page=0&limit=10")
+                      .then(response => {
+
+                        files=response.data
+                        res.render('files', { groups: g_full, tipos: tipos, cat: categorias, files: files, d: data, user: decoded.username, getFileExtension: getFileExtension, username: decoded.username, level: decoded.level, news: news });
+                      })
+                      .catch(err => {
+                        res.render('error', { error: err, username: decoded.username, level: decoded.level })
+                      })
 
                 })
                 .catch(err => {
@@ -492,27 +494,106 @@ router.get('/recursos/categorias/:categ', function(req, res) {
     .then(response => {
       tipos = response.data
 
+      var categorias = null
+      axios.get(env.apiAccessPoint + "/categorias?token=" + token)
+        .then(response => {
+          categorias = response.data
+
+          var g_full = null
+          axios.get(env.apiAccessPoint + "/user_groups?token=" + token)
+            .then(response => {
+              g_full = response.data
+
+              var news = null
+              axios.get(env.apiAccessPoint + "/recursos?sort=datedesc&token=" + token + "&page=0&limit=5")
+                .then(response => {
+                  news = response.data
+
+                  axios.get(env.apiAccessPoint + "/recursos/categorias/" + req.params.categ + "?sort=" + sort + "&token=" + token + "&page=0&limit=10")
+                    .then(response => {
+                      files = response.data
+                      res.render('files', { groups: g_full, tipos: tipos, cat: categorias, files: files, d: data, user: decoded.username, getFileExtension: getFileExtension, username: decoded.username, level: decoded.level, news: news });
+                    })
+                    .catch(err => {
+                      res.render('error', { error: err, username: decoded.username, level: decoded.level })
+                    })
+                })
+                .catch(err => {
+                  res.render('error', { error: err, username: decoded.username, level: decoded.level })
+                })
+
+            })
+            .catch(err => {
+              res.render('error', { error: err, username: decoded.username, level: decoded.level })
+            })
+
+        })
+        .catch(err => {
+          res.render('error', { error: err, username: decoded.username, level: decoded.level })
+        })
+
+    })
+    .catch(err => {
+      res.render('error', { error: err, username: decoded.username, level: decoded.level })
+    })
+
+});
+
+
+
+router.get('/recursos/grupos/:g', function(req, res) {
+  console.log(req.params.g)
+  var token = ""
+  if(req.cookies && req.cookies.token)
+    token = req.cookies.token
+  console.log(token)
+  try {
+    var decoded = jwt.verify(token, "EngWeb2023");
+    } catch (e) {
+      if(e.name === 'TokenExpiredError') {
+        // Here redirect to your login page
+        return res.redirect('/');
+      }
+    }
+
+  const getFileExtension = (mimeType) => {
+    const parts = mimeType.split('.');
+    if (parts.length > 1) {
+      return parts[parts.length - 1];
+    }
+    return mimeType.split('/')[1];
+  };
+
+  // check if is there a sort option in the url ?sort=...
+  var sort = ""
+  if(req.query.sort) {
+    sort = req.query.sort
+    console.log(sort)
+  }
+
+  var tipos = null
+  axios.get(env.apiAccessPoint+"/tipos?token=" + token)
+    .then(response => {
+      tipos = response.data
 
       var categorias = null
       axios.get(env.apiAccessPoint + "/categorias?token=" + token)
         .then(response => {
           categorias = response.data
 
-
-
-          var news = null
-          axios.get(env.apiAccessPoint + "/recursos?sort=datedesc&token=" + token + "&page=0&limit=5")
+          var g_full = null
+          axios.get(env.apiAccessPoint + "/user_groups?token=" + token)
             .then(response => {
-              news = response.data
+              g_full = response.data
 
-              axios.get(env.apiAccessPoint + "/recursos/categorias/" + req.params.categ + "?sort=" + sort + "&token=" + token + "&page=0&limit=10")
+              var news = null
+              axios.get(env.apiAccessPoint + "/recursos?sort=datedesc&token=" + token + "&page=0&limit=5")
                 .then(response => {
+                  news = response.data
 
-                  files = response.data
-                  var g_full = null
-                  axios.get(env.apiAccessPoint + "/user_groups&token=" + token)
+                  axios.get(env.apiAccessPoint + "/recursos/grupos/" + req.params.g + "?sort=" + sort + "&token=" + token + "&page=0&limit=10")
                     .then(response => {
-                      g_full = response.data
+                      files = response.data
                       res.render('files', { groups: g_full, tipos: tipos, cat: categorias, files: files, d: data, user: decoded.username, getFileExtension: getFileExtension, username: decoded.username, level: decoded.level, news: news });
                     })
                     .catch(err => {
@@ -698,41 +779,38 @@ router.get('/recursos/cond/:categ', function(req, res) {
       .then(response => {
         tipos = response.data
   
-  
         var categorias = null
         axios.get(env.apiAccessPoint + "/categorias?token=" + token)
           .then(response => {
             categorias = response.data
-  
-  
-  
-            var news = null
-            axios.get(env.apiAccessPoint + "/recursos?sort=datedesc&token=" + token + "&page=0&limit=5")
-              .then(response => {
-                news = response.data
-  
-                axios.get(env.apiAccessPoint + "/recursos/cond/" + req.params.categ + "?sort=" + sort + "&token=" + token + "&page=0&limit=10")
-                  .then(response => {
 
-                    files = response.data
-                    var g_full = null
-                    axios.get(env.apiAccessPoint + "/user_groups&token=" + token)
+            var g_full = null
+              axios.get(env.apiAccessPoint + "/user_groups?token=" + token)
+                .then(response => {
+                  g_full = response.data
+  
+                    var news = null
+                    axios.get(env.apiAccessPoint + "/recursos?sort=datedesc&token=" + token + "&page=0&limit=5")
                       .then(response => {
-                        g_full = response.data
-                        res.render('files', { groups: g_full, tipos: tipos, cat: categorias, files: files, d: data, user: decoded.username, getFileExtension: getFileExtension, username: decoded.username, level: decoded.level, news: news });
+                        news = response.data
+  
+                        axios.get(env.apiAccessPoint + "/recursos/cond/" + req.params.categ + "?sort=" + sort + "&token=" + token + "&page=0&limit=10")
+                          .then(response => {
+                            files = response.data
+                            res.render('files', { groups: g_full, tipos: tipos, cat: categorias, files: files, d: data, user: decoded.username, getFileExtension: getFileExtension, username: decoded.username, level: decoded.level, news: news });
+                          })
+                          .catch(err => {
+                            res.render('error', { error: err, username: decoded.username, level: decoded.level })
+                          })
                       })
                       .catch(err => {
                         res.render('error', { error: err, username: decoded.username, level: decoded.level })
                       })
-                  })
-                  .catch(err => {
-                    res.render('error', { error: err, username: decoded.username, level: decoded.level })
-                  })
-  
-              })
-              .catch(err => {
-                res.render('error', { error: err, username: decoded.username, level: decoded.level })
-              })
+
+                })
+                .catch(err => {
+                  res.render('error', { error: err, username: decoded.username, level: decoded.level })
+                })
   
           })
           .catch(err => {

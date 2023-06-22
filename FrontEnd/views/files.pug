@@ -36,7 +36,7 @@ block content
                             option(value='all') ALL
 
                     .filter-sort
-                        select#filter-by-categ(name='groups')
+                        select#filter-by-group(name='groups')
                             option(value='' selected) Group 
                             each g in groups
                                 option(value=g.name) #{g.name}

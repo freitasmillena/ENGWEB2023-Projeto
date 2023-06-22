@@ -9,6 +9,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Get the filter-by-type select element
     const filterByCategSelect = document.getElementById('filter-by-categ');
 
+    // Get the filter-by-group select element
+    const filterByGroupSelect = document.getElementById('filter-by-group');
+
     const categSelectedSelect = document.getElementById('filter-by-categ-selected');
     const conditionSelect = document.getElementById('filter-by-symb-selected');
     const categValueInput = document.getElementById('filter-categ-selected');
@@ -67,6 +70,25 @@ document.addEventListener('DOMContentLoaded', function() {
           window.location.href = url;
         }
       });
+    
+    // Add an event listener to the select element
+    filterByGroupSelect.addEventListener('change', function() {
+      // Get the selected option value
+      const selectedGroup = this.value;
+
+      if ( selectedGroup === "all") {
+        // Go to the url without the filter
+        window.location.href = '/recursos';
+      }
+
+      else {
+        // Construct the URL based on the selected option
+        const url = `/recursos/grupos/${selectedGroup}`;
+
+        // Navigate to the constructed URL
+        window.location.href = url;
+      }
+    });
 
   
     // Add an event listener to the select element

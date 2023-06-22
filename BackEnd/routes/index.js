@@ -469,6 +469,36 @@ router.get('/api/recursos/categorias/:categ', async function (req, res) {
     })
 });
 
+
+
+// GET recurso de um certo user_group 
+router.get('/api/recursos/grupos/:g', async function (req, res) {
+  console.log("GET /api/recursos/grupos/:g" + req.params.tipo)
+  
+  //decode the token
+  var decoded = jwt.verify(req.query.token, "EngWeb2023");
+  var level = decoded.level
+  var groups = await Group.getGroupsUser(decoded.username)
+
+  // check if there is a sort query
+  if (req.query.sort) {
+    var sort = req.query.sort
+  } else {
+    var sort = "dateasc"
+  }
+  console.log("sort: " + sort)
+
+  Recurso.recsByGroups(decoded.username, groups, req.params.categ, sort, level)
+    .then(recursos => {
+      console.log("recursos: " + recursos)
+      res.jsonp(recursos)
+    })
+
+    .catch(erro => {
+      res.render('error', { error: erro, message: "Erro na obtenção da user de recursos" })
+    })
+});
+
 router.post('/api/categorias', function (req, res) {
   console.log("POST /api/categorias")
   // Create a new file record in the database
