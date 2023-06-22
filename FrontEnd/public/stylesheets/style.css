@@ -878,7 +878,7 @@ form .groups-check {
 section .row{
   margin-top: 15px;
   margin-bottom: 10px;
-  background: var(--first-color-darker);
+  background: white;
   list-style: none;
   padding: 15px 20px;
   border-radius: 5px;

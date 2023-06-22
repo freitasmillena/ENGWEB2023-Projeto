@@ -7,6 +7,7 @@ function getCookie(name) {
 
 document.addEventListener('DOMContentLoaded', function() {
     function openDeleteModal() {
+      console.log("open modal")
         $('#deleteModal').modal('show');
     }
 
