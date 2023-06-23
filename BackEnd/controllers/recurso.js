@@ -12,6 +12,29 @@ module.exports.listRecursos = () => {
 
 }
 
+module.exports.recsByGroups = (groups, sort,) => {
+    if (sort === "dateasc")
+        sort = { "created": 1 }
+    else if (sort === "datedesc")
+        sort = { "created": -1 }
+    else if (sort === "titleasc")
+        sort = { "title": 1 }
+    else if (sort === "titledesc")
+        sort = { "title": -1 }
+    else if (sort === "sizeasc")
+        sort = { "size": 1 }
+    else if (sort === "sizedesc")
+        sort = { "size": -1 }
+    else if (sort === "favsasc")
+        sort = { "favs": 1 }
+    else if (sort === "favsdesc")
+        sort = { "favs": -1 }
+    else
+        sort = { "created": -1 }
+
+    return Recurso.find({ "available_for.groups": { "$in": groups } }).sort(sort)
+}
+
 
 module.exports.listRecursosGroup = (group) => {
     return Recurso.find({ "available_for.groups": {"$in":group} })

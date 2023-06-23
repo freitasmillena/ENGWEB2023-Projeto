@@ -488,9 +488,10 @@ router.get('/api/recursos/grupos/:g', async function (req, res) {
   }
   console.log("sort: " + sort)
 
-  Recurso.recsByGroups(decoded.username, groups, req.params.categ, sort, level)
+  console.log("groups: " + groups)
+
+  Recurso.recsByGroups(groups,sort)
     .then(recursos => {
-      console.log("recursos: " + recursos)
       res.jsonp(recursos)
     })
 
