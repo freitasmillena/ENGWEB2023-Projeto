@@ -11,7 +11,7 @@ block content
             .bookmarkPopup Saved
             p #[b Author:] #{file.creator}
             p #[b Date:] #{file.created}
-            p #[b Type:] #{file.type}
+            p #[b Type:] #{file.name.split('.').pop()}
             p #[b Size:] #{file.size}
             p #[b Category:] #{file.category}
             p #[b Description] #{file.description}

@@ -125,16 +125,16 @@ block content
                                   .header-detail Author
                                   .header-detail Date
                                   .header-detail Type
-                                  .header-detail Size
+                                  .header-detail Category
                             each f in favorites
                                 .files-list
                                     .header-title 
                                         a(href='/recursos/' + f._id) #{f.title}
                                     .header-details
                                       .header-detail #{f.creator}
-                                      .header-detail #{f.created}
-                                      .header-detail #{f.type}
-                                      .header-detail #{f.size}
+                                      .header-detail-date #{f.created.split('T')[0]}
+                                      .header-detail #{f.name.split('.').pop()}
+                                      .header-detail #{f.category}
                         else
                             h5 No files
                         
@@ -145,7 +145,7 @@ block content
                             .header-files 
                                 .header-title Title
                                 .header-details
-                                  .header-detail Visibility
+                                  .header-detail Category
                                   .header-detail Date
                                   .header-detail Type
                                   .header-detail Size
@@ -154,9 +154,9 @@ block content
                                     .header-title 
                                         a(href='/recursos/' + f._id) #{f.title}
                                     .header-details
-                                      .header-detail #{f.visibility}
-                                      .header-detail #{f.created}
-                                      .header-detail #{f.type}
+                                      .header-detail #{f.category}
+                                      .header-detail-date #{f.created.split('T')[0]}
+                                      .header-detail #{f.name.split('.').pop()}
                                       .header-detail #{f.size}
                         else
                             h5 No files

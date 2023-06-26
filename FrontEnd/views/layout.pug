@@ -1,7 +1,7 @@
 doctype html
 html
   head
-    title Croc Simulator
+    title CrocShare
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css")
     link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css")
@@ -18,10 +18,10 @@ html
     
   body
     header.topnav#myTopnav
-      a(href='/recursos') Croc Simulator
+      a(href='/recursos') CrocShare
       if username
         a(href='/profile/' + username) Account
-      a(href='#about') About
+      a(href='/about') About
       if level && level != "consumer" 
         a(href='/uploadForm') Upload
       a(href='/recursos') Home
@@ -31,36 +31,36 @@ html
   footer.footer 
     .footer-left.col-md-4.col-sm-6
       p.about 
-        h3 Projeto de Engenharia Web
-        p Plataforma de Gestão e Disponibilização de Recursos Educativos
+        h3 Web Engineering Course Project
+        p Educational Resources Management and Provision Platform
     .footer-center.col-md-4.col-sm-6
       h3 Useful links
       div
         p
-          a(href='#') Terms and Conditions
+          a(href='https://www.w3.org/Provider/Style/dummy.html') Terms and Conditions
       div
         p  
-          a(href='#') SOS
+          a(href='https://www.w3.org/Provider/Style/dummy.html') Culture and Recreation
       div
         p
-          a(href='#')  manuelinho2002@company.com
+          a(href='https://www.w3.org/Provider/Style/dummy.html')  Business
       div
         p
-          a(href='#')  Não sei
+          a(href='https://www.w3.org/Provider/Style/dummy.html')  Privacy Policy
     .footer-right.col-md-4.col-sm-6
       h1 
-        | Croc Simulator 
+        | CrocShare 
       p.menu
-        a(href='#')   Home
+        a(href='/recursos')   Home
         |  |
-        a(href='#')   &nbsp About
+        a(href='/about')   &nbsp About
         |  |
-        a(href='#')   &nbsp Services
+        a(href='https://www.w3.org/Provider/Style/dummy.html')   &nbsp Services
         |  |
-        a(href='#')   &nbsp Portfolio
+        a(href='https://www.w3.org/Provider/Style/dummy.html')   &nbsp Portfolio
         |  |
-        a(href='#')   &nbsp News
+        a(href='https://www.w3.org/Provider/Style/dummy.html')   &nbsp News
         |  |
-        a(href='#')   &nbsp Contact
-      p.name  Croc Simulator &copy; 2023
+        a(href='https://www.w3.org/Provider/Style/dummy.html')   &nbsp Contact
+      p.name  CrocShare &copy; 2023
 

@@ -561,6 +561,11 @@ form .category-type label{
   margin: 20px;
 }
 
+.about {
+  margin-top: var(--mb-0-5);
+  font-size: var(--mb-1);
+}
+
 form .category-type label .dot{
   height: 8px;
   width: 8px;
@@ -1298,23 +1303,30 @@ section .details span{
 }
 
 .header-title{
-  width: 60%;
+  width: 50%;
   font-size: 22px;
 
 }
 
 .header-details{
   margin-left:var(--mb-1-5);
-  width: 60%;
+  width: 70%;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+}
+
+.header-detail-date{
+  width: 20%;
+  font-size: 15px;
+  text-align: center;
 }
 
 .header-detail{
   width: 20%;
   font-size: 18px;
   text-align: center;
+  margin-right: var(--mb-1);
 }
 
 .news-list .comment {

@@ -17,6 +17,29 @@ router.get('/', function(req, res, next) {
   res.render('index');
 });
 
+router.get('/about', function(req, res, next) {
+  var token = ""
+  var decoded
+  if(req.cookies && req.cookies.token) {
+    token = req.cookies.token
+    console.log("TOKEN")
+    try {
+      decoded = jwt.verify(token, "EngWeb2023");
+      } catch (e) {
+        if(e.name === 'TokenExpiredError') {
+          // Here redirect to your login page
+          return res.redirect('/');
+        }
+      }
+    
+      res.render('aboutPage', {username: decoded.username, level: decoded.level});
+    
+  }
+  else {
+    res.render('aboutPage');
+  }
+});
+
 router.get('/logout', function(req, res, next) {
   console.log("LOGOUT")
   res.clearCookie('token');
@@ -257,15 +280,12 @@ router.get('/profile/:username', function(req, res, next) {
               var submissions = results.slice(0, user.data.dados.submissions.length);
               var favorites = results.slice(user.data.dados.submissions.length, user.data.dados.submissions.length + user.data.dados.favorites.length);
               var groups = results.slice(user.data.dados.submissions.length + user.data.dados.favorites.length);
-              console.log('submissions:', submissions);
-              console.log('favorites:', favorites);
-              console.log('groups:', groups);
+              
               if(decoded.username === req.params.username){
                 if(decoded.level === 'admin') {
                   axios.get(env.apiAccessPoint+"/categorias/?token=" + token)
                   .then(categorias => {
-                    console.log("CAT:")
-                    console.log(categorias.data);
+                    
                       
                     res.render('profilePage', {categorias: categorias.data, user: user.data.dados, submissions: submissions, favorites: favorites, groups: groups, message: message, username: decoded.username, level: decoded.level});
                   }) 
