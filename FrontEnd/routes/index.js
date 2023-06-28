@@ -1396,7 +1396,102 @@ router.get('/fileContents/ppt.html', async function(req, res) {
   
 });
 
+//update 
+router.get('/updateFile/:creator/:id', function(req, res) {
+  var token = ""
+  if(req.cookies && req.cookies.token) {
+    token = req.cookies.token
+    console.log(token)
+    try {
+      var decoded = jwt.verify(token, "EngWeb2023");
+      } catch (e) {
+        if(e.name === 'TokenExpiredError') {
+          // Here redirect to your login page
+          return res.redirect('/');
+        }
+      }  
+    if(decoded.username === req.params.creator){
+      axios.get(env.apiAccessPoint+"/recursos/" + req.params.id + "?token=" + token)
+      .then(response => {
+        if(response.data != null) {
+          res.render('updateFile', { file: response.data, d: data, username: decoded.username, level: decoded.level });
+        }
+        else {
+          res.redirect('/recursos?denied=true')
+         }
+        
+      })
+      .catch(err => {
+        res.render('error', {error: err, username: decoded.username, level: decoded.level})
+      })
+    }
+    else {
+      res.redirect('/recursos?denied=true')
+    }
+  
+  }
+  else {
+    res.render('index', {errorMessage: "You need to log in to access this page."});
+  }
+});
 
+router.post('/updateFile/:creator/:id', function(req, res) {
+  var token = ""
+  if(req.cookies && req.cookies.token) {
+    token = req.cookies.token
+    console.log(token)
+    try {
+      var decoded = jwt.verify(token, "EngWeb2023");
+      } catch (e) {
+        if(e.name === 'TokenExpiredError') {
+          // Here redirect to your login page
+          return res.redirect('/');
+        }
+      }  
+    if(decoded.username === req.params.creator){
+      console.log(req.body)
+      if(req.body.visibility === 'public') {
+        req.body.groups = [0]
+        
+      }
+      else {
+        
+      if(req.body.groups){
+        const filteredGroups =  req.body.groups.filter(item => item !== '');
+        req.body.groups = filteredGroups
+      }
+      if(req.body.usernames){
+        const filteredUsernames =  req.body.usernames.filter(item => item !== '');
+        req.body.usernames = filteredUsernames
+      }
+      
+      
+      
+      
+      
+      }
+
+      axios.put('http://localhost:7777/api/updateFile/'+ req.params.id +'?token=' + token, req.body)
+        .then(response => {
+
+          
+            res.cookie('token', response.data.token)
+            res.redirect('/recursos/' + req.params.id)
+          
+    
+      
+    })
+    .catch(e =>{
+      res.render('error', {error: e, message: "Erro na atualização do recurso!", username: decoded.username, level: decoded.level})
+    }) 
+    }
+    
+  
+  }
+  else {
+    res.render('index', {errorMessage: "You need to log in to access this page."});
+  }
+});
 
 module.exports = router;
 

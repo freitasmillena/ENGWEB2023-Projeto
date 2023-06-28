@@ -700,6 +700,12 @@ form .groups-check {
    border-color: var(--first-color);
  }
 
+ #dot-1-update:checked ~ .category label .one,
+ #dot-2-update:checked ~ .category label .two{
+   background: var(--first-color);
+   border-color: var(--first-color);
+ }
+
  form input[type="radio"]{
    display: none;
  }
@@ -1001,6 +1007,17 @@ section .details span{
   font-size: var(--mb-2-5);
   cursor: pointer;
 }
+
+.container-left #updateFile{
+  position: absolute; 
+  top: 0; 
+  right: var(--mb-9); 
+  margin-top: 25px; 
+  color: var(--first-color-darker); 
+  font-size: var(--mb-2-5);
+  cursor: pointer;
+}
+
 .comment-date .fa-trash .fa-pen-to-square{
   color: var(--first-color-darker);
   

@@ -439,3 +439,17 @@ module.exports.removeFavorite = (file) => {
     })
 }
 
+module.exports.updateFile = (file, updates) => {
+    return Recurso.updateOne(
+        { _id: file },
+        { $set: updates }
+      )
+    .then(dados => {
+        return dados
+    })
+    .catch(erro => {
+        return erro
+    })
+}
+
+

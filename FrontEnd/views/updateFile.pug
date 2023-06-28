@@ -1,0 +1,44 @@
+extends layout
+
+block content
+    .mycontainer
+        .title Update File
+        .content
+        form(action='/updateFile/' + file.creator +'/' + file._id method='post')
+          .user-details
+            .input-box
+              span.details Title
+              input(type='text' name='title' placeholder='Enter a title' required='' value=file.title)
+            .input-box
+              span.details Description
+              input(type='text' name='description' placeholder='Enter a short description' value=file.description required='')
+              input(type='hidden' name='creator' value=file.creator)
+            
+            .block-details
+              span.title-category Category
+              select.select-category(name='category' id='categoryUpdate' required='' data-file-category=file.category)
+          .gender-details
+            input#dot-1-update(type='radio' name='visibility' value='public' checked=(file.visibility === 'public'))
+            input#dot-2-update(type='radio' name='visibility' value='private' checked=(file.visibility === 'private') data-creator=file.creator data-groups=file.available_for.groups data-users=file.available_for.users data-visibility=file.visibility)
+            span.gender-title Visibility
+            .category
+              label(for='dot-1-update')
+                span.dot.one
+                span.gender Public
+              label(for='dot-2-update')
+                span.dot.two
+                span.gender Private
+              .hidden#groupsHidden
+                .search-wrapper
+                  i.fa-solid.fa-magnifying-glass
+                  input.search-groups#searchInput(type='text' placeholder='Search here')
+                #searchResultUpdate
+                #selectedItemsUpdate
+                  
+          
+
+             
+          .button
+            input#myFormUpdate(type='submit' value='Update')
+            
+

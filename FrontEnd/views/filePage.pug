@@ -4,6 +4,9 @@ block content
     .container-wrapper 
         .mycontainer.container-left 
             .title #{file.title}
+            if username == file.creator 
+              a(href='/updateFile/' + file.creator + '/' + file._id) 
+                i#updateFile.fa-solid.fa-pen-to-square
             if username == file.creator || level == 'admin'
                 a(href='#deleteFileModal' data-toggle='modal' data-file=file._id data-creator=file.creator)
                     i#openDeleteModalButton.fa-solid.fa-trash
