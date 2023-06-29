@@ -1018,6 +1018,25 @@ section .details span{
   cursor: pointer;
 }
 
+.container-left .header-title{
+  width: 40%;
+  font-size: 22px;
+}
+
+.container-left .header-details{
+  margin-left:var(--mb-1);
+  width: 90%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.container-left .header-detail{
+  width: 17%;
+  font-size: 18px;
+  text-align: center;
+}
+
 .comment-date .fa-trash .fa-pen-to-square{
   color: var(--first-color-darker);
   
