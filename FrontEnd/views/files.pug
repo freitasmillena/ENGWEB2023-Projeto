@@ -85,7 +85,7 @@ block content
                     .header-details
                       .header-detail #{f.creator}
                       .header-detail #{new Date(f.created).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}
-                      .header-detail #{f.name.split('/').pop()}
+                      .header-detail #{f.type.split('/').pop()}
                       .header-detail #{f.size}
                       .header-detail #{f.favs}
         .mycontainer.container-right 
