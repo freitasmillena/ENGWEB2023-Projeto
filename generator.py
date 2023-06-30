@@ -93,6 +93,7 @@ def gen_entry(file):
     entry['type'] = type
     entry['path'] = os.path.abspath(file)
     entry['title'] = file.split('/')[-1].split('.')[0]
+    entry['name'] = file.split('/')[-1]
     entry['category'] = random.sample(categorias, 1)[0]
     entry['favs'] = 0
     if random.randint(0, 1):
@@ -109,9 +110,11 @@ def gen_entry(file):
     entry['available_for'] = {}
     entry['available_for']['groups'] = random.sample( [0,1,2,3,4], random.randint(0, 5))
     if 0 in entry['available_for']['groups']:
+        entry['visibility'] = 'public'
         entry['available_for']['groups'] = [0]
         entry['available_for']['users'] = []
     else:
+        entry['visibility'] = 'private'
         users = random.sample(range(0, u_id), random.randint(0, 10))
         entry['available_for']['users'] = []
         for user in users:
