@@ -87,11 +87,14 @@ def gen_entry(file):
     global u_array
     type = 'unknown'
     if len(file.split('.')) > 1:
-        type = file.split('.')[-1]
+         type = file.split('.')[-1]
+    else:
+         type = '?'
     entry['_id'] = f_id
     entry['size'] = os.path.getsize(file)
     entry['type'] = type
-    entry['path'] = os.path.abspath(file)
+    entry['path'] = os.path.abspath(file)     
+    entry['name'] = file.split('/')[-1]
     entry['title'] = file.split('/')[-1].split('.')[0]
     entry['category'] = random.sample(categorias, 1)[0]
     entry['favs'] = 0
