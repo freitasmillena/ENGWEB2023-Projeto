@@ -254,7 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
                           </li>
             `
             fileInfo.classList.remove('hidden');
-            fileSizeInput.value = fileSize;
+            fileSizeInput.value = file.size;
             fileTypeInput.value = file.type;
 
             const removeFileButton = document.getElementById('removeFileButton');

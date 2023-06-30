@@ -17,7 +17,7 @@ var commentSchema = new mongoose.Schema({
 
 var recursoSchema = new mongoose.Schema({
     _id: Number,
-    size: String,
+    size: Number,
     name: String,
     type: String,
     path: String,

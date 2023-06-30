@@ -51,7 +51,6 @@ block content
                             option(value='modified') Modified 
                             option(value='size') Size
                             option(value='author') Author
-                            option(value='group') Group
                 
                     .filter-sort
                         select#filter-by-symb-selected(name='condition')
@@ -86,7 +85,7 @@ block content
                     .header-details
                       .header-detail #{f.creator}
                       .header-detail #{new Date(f.created).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}
-                      .header-detail #{f.name.split('.').pop()}
+                      .header-detail #{f.name.split('/').pop()}
                       .header-detail #{f.size}
                       .header-detail #{f.favs}
         .mycontainer.container-right 

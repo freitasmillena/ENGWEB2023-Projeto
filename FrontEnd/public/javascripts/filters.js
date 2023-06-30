@@ -24,9 +24,25 @@ document.addEventListener('DOMContentLoaded', function() {
       const categSelected = categSelectedSelect.value;
       const condition = conditionSelect.value;
       const categValue = categValueInput.value;
+
+      var url = ""
+
+      // if the filter-by-categ-selected is equals to created or modified
+      // then we need to change the url to /recursos/cond/created_cond_value
+      if (categSelected === "created" || categSelected === "modified") {
+        const parts = categValue.split('/');
+        const day = parseInt(parts[0], 10);
+        const month = parseInt(parts[1], 10) - 1;
+        const year = parseInt(parts[2], 10);
+        const date = day + '-' + month + '-' + year;
+
+        url = `/recursos/cond/${categSelected}_${condition}_${date}`;
+      }
+      else
+        url = `/recursos/cond/${categSelected}_${condition}_${categValue}`;
     
       if (categSelected && condition && categValue) {
-        const url = `/recursos/cond/${categSelected}_${condition}_${categValue}`;
+        console.log(url);
         window.location.href = url;
       }
     });
