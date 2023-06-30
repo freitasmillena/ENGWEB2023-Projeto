@@ -16,17 +16,74 @@ document.addEventListener('DOMContentLoaded', function() {
     const conditionSelect = document.getElementById('filter-by-symb-selected');
     const categValueInput = document.getElementById('filter-categ-selected');
     const applyButton = document.getElementById('filter-button');
-  
 
-    console.log(applyButton);
+    const optionsForSize = [
+      { value: 'greater', text: '>' },
+      { value: 'less', text: '<' },
+      { value: 'greaterOrEqual', text: '>=' },
+      { value: 'lessOrEqual', text: '<=' },
+      { value: 'equals', text: '==' },
+      { value: 'notEqual', text: '!=' },
+    ];
+  
+    const optionsForOther = [
+      { value: 'equals', text: '==' },
+      { value: 'notEqual', text: '!=' },
+      { value: 'contains', text: 'contains' },
+      { value: 'notContains', text: 'not contains' },
+      { value: 'startsWith', text: 'starts with' },
+      { value: 'endsWith', text: 'ends with' },
+    ];
+    
+
+    $('#filter-by-categ-selected').change(function() {
+      const selectedValue = $(this).val();
+      let optionsToUse = [];
+
+      // show the correct options
+  
+      if (selectedValue === 'size' || selectedValue === 'created' || selectedValue === 'modified') {
+        optionsToUse = optionsForSize;
+      } else if (selectedValue !== '') {
+        optionsToUse = optionsForOther;
+      }
+  
+      const symbSelect = $('#filter-by-symb-selected');
+      symbSelect.empty();
+  
+      $.each(optionsToUse, function(index, option) {
+        symbSelect.append($('<option></option>').attr('value', option.value).text(option.text));
+      });
+    });
+
   
     applyButton.addEventListener('click', function () {
       const categSelected = categSelectedSelect.value;
       const condition = conditionSelect.value;
       const categValue = categValueInput.value;
+
+      var url = ""
+
+      // if the filter-by-categ-selected is equals to created or modified
+      // then we need to change the url to /recursos/cond/created_cond_value
+      if (categSelected === "created" || categSelected === "modified") {
+        const parts = categValue.split('/');
+        const year = parseInt(parts[0], 10);
+        const month = parseInt(parts[1], 10);
+        const day = parseInt(parts[2], 10);
+        var date = ""
+        if (month < 10)
+          date = year + '-0' + month + '-' + day;
+        else
+          date = year + '-' + month + '-' + day;          
+
+        url = `/recursos/cond/${categSelected}_${condition}_${date}`;
+      }
+      else
+        url = `/recursos/cond/${categSelected}_${condition}_${categValue}`;
     
       if (categSelected && condition && categValue) {
-        const url = `/recursos/cond/${categSelected}_${condition}_${categValue}`;
+        console.log(url);
         window.location.href = url;
       }
     });

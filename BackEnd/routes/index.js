@@ -688,7 +688,44 @@ router.put('/api/recursos/:id/removeFavorites', function (req, res, next) {
 
 });
 
+router.put('/api/updateFile/:id', function (req, res) {
+  console.log("PUT /api/updateFile/" + req.params.id)
+  
+  var token = req.query.token
+  var decoded = jwt.verify(token, 'EngWeb2023')
+console.log(req.body)
+  var available = {
+    groups: req.body.groups,
+    users: req.body.usernames
+  };
 
+  var recurso = {
+    title: req.body.title,
+    description: req.body.description,
+    visibility: req.body.visibility,
+    modified: date,
+    available_for: available,
+    category: req.body.category
+  }
+  if(decoded.username === req.body.creator) {
+  Recurso.updateFile(req.params.id, recurso)
+    .then(response => {
+      console.log("response")
+      const responseWithToken = {
+        token: token
+      };
+      res.jsonp(responseWithToken);
+    })
+    .catch(erro => {
+      console.log("Erro na atualização do recurso: " + erro.message); 
+    })
+  }
+  else {
+    console.log("message")
+    res.jsonp({message: "permission denied."});
+  }
+
+})
 
 module.exports = router;
 
