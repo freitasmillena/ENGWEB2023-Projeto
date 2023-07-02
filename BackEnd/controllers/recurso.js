@@ -32,7 +32,7 @@ module.exports.recsByGroups = (groups, sort,) => {
     else
         sort = { "created": -1 }
 
-    return Recurso.find({ "available_for.groups": { "$in": groups } }).sort(sort)
+    return Recurso.find({ "available_for.groups": { "$in": groups } }).sort(sort).limit(10)
 }
 
 

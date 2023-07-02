@@ -43,7 +43,7 @@ app.use(function(req, res, next){
     
       jwt.verify(myToken, "EngWeb2023", function(e, payload){
         if(e){
-          console.log("erro token")
+          console.error("Error on token")
           res.status(401).jsonp({error: e})
         }
         else{
@@ -53,7 +53,7 @@ app.use(function(req, res, next){
       })
     }
     else{
-      console.log("erro token n existe")
+      console.error("erro token n existe")
       res.status(401).jsonp({error: "Token inexistente!"})
     }
 })

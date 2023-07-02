@@ -10,6 +10,17 @@ module.exports.searchGroup = pattern => {
         })
 }
 
+
+module.exports.searchGroupId = pattern => {
+    return Group.find({ name: { $regex: pattern, $options: 'i' } }, {_id: 1})
+        .then(resposta => {
+            return resposta.map(obj => obj._id)
+        })
+        .catch(erro => {
+            return erro
+        })
+}
+
 module.exports.getGroupsUser = username => {
     //return the id of all groups that the user is in participants or owner
     return Group.find({ "$or": [{ "owner": username }, {"participants" :{"$in": username }}] })

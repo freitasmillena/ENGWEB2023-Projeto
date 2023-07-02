@@ -3,7 +3,7 @@ extends layout
 block content
     section.py-5.my-5 
         .container
-            h1.title.mb-5 Account  
+            h1.title.mb-5 Profile  
             .bg-white.shadow.rounded-lg.d-block.d-sm-flex
                 .profile-tab-nav.border-right
                     .p-4 
@@ -12,9 +12,10 @@ block content
                         a.nav-link.active#account-tab(data-toggle="pill", href="#account", role="tab", aria-controls="account", aria-selected="true")
                             i.fa.fa-home.text-center.mr-1
                             | Account
-                        a.nav-link#myfiles-tab(data-toggle="pill", href="#myfiles", role="tab", aria-controls="myfiles", aria-selected="false")
-                            i.fa-solid.fa-file.text-center.mr-1
-                            | Files
+                        if user.level != 'consumer'
+                            a.nav-link#myfiles-tab(data-toggle="pill", href="#myfiles", role="tab", aria-controls="myfiles", aria-selected="false")
+                                i.fa-solid.fa-file.text-center.mr-1
+                                | Files
                 .tab-content.p-4.p-md-5#v-pills-tabContent
                     .tab-pane.fade.show.active#account(role="tabpanel", aria-labelledby="account-tab")
                         h3.mb-4 Account  

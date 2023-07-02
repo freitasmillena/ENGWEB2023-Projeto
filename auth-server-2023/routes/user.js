@@ -154,14 +154,14 @@ router.post('/forgotPass', function(req, res) {
               })
         })
         .catch(err => {
-          console.log("Could not update user")
+          console.error(err)
         })
       
       
       
   })
     .catch(err => {
-      console.log(err)
+      console.error(err)
     })
 
   
@@ -181,7 +181,7 @@ router.post('/reset/:token', function(req, res) {
       // Set the new password using Passport's setPassword method
       user.setPassword(req.body.password, function(err) {
         if (err) {
-          console.log("Error setting password: ", err);
+          console.error(erro)
           return res.status(500).json({ message: 'Error resetting password.' });
         }
 
@@ -194,13 +194,13 @@ router.post('/reset/:token', function(req, res) {
             res.status(200).json({ message: 'Password has been reset.' });
           })
           .catch(err => {
-            console.log("Error saving user: ", err);
+            console.error(erro)
             res.status(500).json({ message: 'Error resetting password.' });
           });
       });
     })
     .catch(err => {
-      console.log("Error finding user: ", err);
+      console.error(erro)
       res.status(500).json({ message: 'Error finding user.' });
     });
 });
@@ -215,7 +215,7 @@ router.put('/:id', auth.verificaAcesso, function(req, res) {
       res.jsonp(dados)
     })
     .catch(erro => {
-      console.log(erro)
+      console.error(erro)
     })
 })
 
@@ -225,7 +225,7 @@ router.put('/:id/desativar', auth.verificaAcesso, function(req, res) {
       res.jsonp(dados)
     })
     .catch(erro => {
-      res.render('error', {error: erro, message: "Erro na alteração do utilizador"})
+      console.error(erro)
     })
 })
 
@@ -235,7 +235,7 @@ router.put('/:id/ativar', auth.verificaAcesso, function(req, res) {
       res.jsonp(dados)
     })
     .catch(erro => {
-      res.render('error', {error: erro, message: "Erro na alteração do utilizador"})
+      console.error(erro)
     })
 })
 
@@ -247,27 +247,26 @@ router.put('/:id/password', auth.verificaAcesso, async function(req, res) {
     .then(user => {
         // Verify the old password
         user.authenticate(oldPassword, async (err, result) => {
-        if (err || !result) {
-          console.log("passe errada")
+          if (err || !result) {
+            console.error(err)
           return res.status(401).send({ message: 'Old password is incorrect' });
       }
       
         // Set the new password
         await user.setPassword(newPassword, async (err) => {
           if (err) {
-            console.log("só jesus sabe")
+            console.error(err)
             return res.status(500).send({ message: 'An error occurred while setting the new password' });
           }
         
         // Save the user document
         await user.save();
-        console.log("feito")
         res.send({ message: 'Password updated successfully', token: req.query.token });
       });
     });
     })
     .catch(err => {
-      console.log("Erro ao obter user.")
+      console.error(err)
     })
 })
 
@@ -277,7 +276,7 @@ router.delete('/:id', auth.verificaAcesso, function(req, res) {
       res.jsonp(dados)
     })
     .catch(erro => {
-      res.render('error', {error: erro, message: "Erro na remoção do utilizador"})
+      console.error(erro)
     })
 })
 

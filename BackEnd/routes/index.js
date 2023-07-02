@@ -1,4 +1,4 @@
-var express = require('express');
+  var express = require('express');
 const { decode } = require('jsonwebtoken');
 var router = express.Router();
 var Group = require('../controllers/group');
@@ -34,7 +34,7 @@ router.get('/api/recursos/cond/:val', async function (req, res) {
     })
     
     .catch(erro => {
-      res.render('error', { error: erro, message: "Erro na obtenção da user de recursos" })
+      console.error(erro)
     })
 });
 
@@ -74,7 +74,7 @@ router.get('/api/recursos', async function (req, res, next) {
     })
 
     .catch(erro => {
-      res.render('error', { error: erro, message: "Erro na obtenção da user de recursos" })
+      console.error(erro)
     })
 });
 
@@ -90,8 +90,8 @@ router.get('/api/recursos/:id', async function (req, res, next) {
     .then(response => {
       res.jsonp(response)
     })  
-    .catch(e => {
-      console.log("Erro na obtenção do recurso" )
+    .catch(erro => {
+      console.error(erro)
     })
 });
 
@@ -104,7 +104,7 @@ router.get('/api/search/groups/:pattern', function (req, res, next) {
       res.jsonp(recursos)
     })
     .catch(erro => {
-      res.render('error', { error: erro, message: "Erro na obtenção dos grupos" })
+      console.error(erro)
     })
 });
 
@@ -119,7 +119,7 @@ router.get('/api/groups/:id', function (req, res, next) {
       res.jsonp(recursos)
     })
     .catch(erro => {
-      res.render('error', { error: erro, message: "Erro na obtenção do grupo" })
+      console.error(erro)
     })
 
 });
@@ -166,13 +166,14 @@ router.post('/api/recursos', function (req, res) {
 
           res.jsonp(responseWithToken);
         })
-        .catch(e => {
+        .catch(erro => {
+          console.error(erro)
           console.log("Erro ao atualizar submissions");
         })
 
     })
     .catch(erro => {
-      res.render('error', { error: erro, message: "Erro na inserção do recurso" })
+      console.error(erro)
     })
 
 })
@@ -213,7 +214,7 @@ router.post('/api/groups', function (req, res) {
       res.jsonp(responseWithToken);
     })
     .catch(erro => {
-      res.render('error', { error: erro, message: "Erro na criação do grupo" })
+      console.error(erro)
     })
 
   /* Group.addGroup(group)
@@ -250,7 +251,7 @@ router.put('/api/:idUser/recursos/:id', function (req, res) {
       res.jsonp(dados)
     })
     .catch(erro => {
-      res.render('error', { error: erro, message: "Erro na edição do recurso" })
+      console.error(erro)
     })
 })
 
@@ -265,7 +266,7 @@ router.delete('/api/recursos/:file/creator/:creator', function (req, res) {
       res.jsonp(dados)
     })
     .catch(erro => {
-      res.render('error', { error: erro, message: "Erro na remoção de um ficheiro" })
+      console.error(erro)
     })
   }
   else {
@@ -282,7 +283,7 @@ router.get('/api/tipos', function (req, res) {
       res.jsonp(r)
     })
     .catch(erro => {
-      res.render('error', { error: erro, message: "Erro na obtenção das tipos" })
+      console.error(erro)
     })
 });
 
@@ -295,7 +296,7 @@ router.get('/api/user_groups', function (req, res) {
       res.jsonp(r)
     })
     .catch(erro => {
-      res.render('error', { error: erro, message: "Erro na obtenção dos grupos" })
+      console.error(erro)
     })
 });
 
@@ -324,7 +325,7 @@ router.get('/api/recursos/tipos/:tipo', async function (req, res) {
     })
 
     .catch(erro => {
-      res.render('error', { error: erro, message: "Erro na obtenção da user de recursos" })
+      console.error(erro)
     })
 });
 
@@ -339,7 +340,7 @@ router.get('/api/recursos/group/:idGroup', async function (req, res, next) {
     })
 
     .catch(erro => {
-      res.render('error', { error: erro, message: "Erro na obtenção dos recursos do grupo" })
+      console.error(erro)
     })
 });
 
@@ -366,8 +367,8 @@ router.delete('/api/groups/:id', async function (req, res, next) {
     console.log("APAGOU GRUPO", deleteResult);
 
     res.jsonp(userResponse.data);
-} catch (error) {
-    console.log("Erro ao remover grupo.");
+  } catch (error) {
+    console.error(erro)
      
 }
 
@@ -393,9 +394,8 @@ router.delete('/api/groups/:id/user/:username', async function (req, res, next) 
     console.log("APAGOU DO GRUPO", deleteResult);
 
     res.jsonp(userResponse.data);
-} catch (error) {
-    console.log("Erro ao remover grupo.");
-     
+  } catch (error) {
+    console.error(erro)
 }
 
 });
@@ -419,8 +419,8 @@ router.put('/api/groups/:id/user/:username', async function (req, res, next) {
     console.log("ADICIONOU AO GRUPO", deleteResult);
 
     res.jsonp(userResponse.data);
-} catch (error) {
-    console.log("Erro ao adicionar ao grupo.");
+  } catch (error) {
+    console.error(erro)
      
 }
 
@@ -435,8 +435,8 @@ router.get('/api/categorias', async function (req, res, next) {
       console.log(response)
       res.jsonp(response)
     })
-    .catch(e => {
-      console.log("Erro na obtenção das categorias.")
+    .catch(erro => {
+      console.error(erro)
     })
 });
 
@@ -465,7 +465,7 @@ router.get('/api/recursos/categorias/:categ', async function (req, res) {
     })
 
     .catch(erro => {
-      res.render('error', { error: erro, message: "Erro na obtenção da user de recursos" })
+      console.error(erro)
     })
 });
 
@@ -478,7 +478,16 @@ router.get('/api/recursos/grupos/:g', async function (req, res) {
   //decode the token
   var decoded = jwt.verify(req.query.token, "EngWeb2023");
   var level = decoded.level
-  var groups = await Group.getGroupsUser(decoded.username)
+  var groups = await Group.searchGroupId(req.params.g)
+  var groupsFiltrado = groups
+
+  // take out the elem 0 from groups if g is not 'Public'
+  if (req.params.g != 'Public')
+  {
+    groupsFiltrado = groups.filter(function(value, index, arr) {  
+      return value != 0;
+    });
+  }
 
   // check if there is a sort query
   if (req.query.sort) {
@@ -488,15 +497,15 @@ router.get('/api/recursos/grupos/:g', async function (req, res) {
   }
   console.log("sort: " + sort)
 
-  console.log("groups: " + groups)
+  console.log("groups: " + groupsFiltrado)
 
-  Recurso.recsByGroups(groups,sort)
+  Recurso.recsByGroups(groupsFiltrado,sort)
     .then(recursos => {
       res.jsonp(recursos)
     })
 
     .catch(erro => {
-      res.render('error', { error: erro, message: "Erro na obtenção da user de recursos" })
+      console.error(erro)
     })
 });
 
@@ -523,7 +532,7 @@ router.post('/api/categorias', function (req, res) {
 
     })
     .catch(erro => {
-      console.log("Erro na inserção da categoria")
+      console.error(erro)
     })
 
 })
@@ -564,7 +573,7 @@ router.post('/api/recursos/:file/addComment', async function (req, res) {
     
         })
         .catch(erro => {
-          console.log("Erro na inserção do comentário: " + erro)
+          console.error(erro)
         })
       }
       else {
@@ -578,7 +587,7 @@ router.post('/api/recursos/:file/addComment', async function (req, res) {
       }
     })  
     .catch(e => {
-      console.log("Erro na obtenção do recursooo: " + e )
+      console.error(e)
     })
   
   
@@ -607,7 +616,7 @@ router.delete('/api/recursos/:id/removeComment/:comment', function (req, res, ne
 
     })
     .catch(erro => {
-      console.log("Erro na remoção do comentário")
+      console.error(erro)
     })
 
 });
@@ -639,7 +648,7 @@ router.put('/api/recursos/:id/editComment', function (req, res, next) {
 
     })
     .catch(erro => {
-      console.log("Erro na atualização do comentário")
+      console.error(erro)
     })
 
 });
@@ -661,7 +670,7 @@ router.put('/api/recursos/:id/addFavorites', function (req, res, next) {
 
     })
     .catch(erro => {
-      console.log("Erro na atualizar favoritos")
+      console.error(erro)
     })
 
 });
@@ -683,6 +692,7 @@ router.put('/api/recursos/:id/removeFavorites', function (req, res, next) {
 
     })
     .catch(erro => {
+      console.error(erro)
       console.log("Erro na atualizar favoritos")
     })
 
@@ -717,6 +727,7 @@ console.log(req.body)
       res.jsonp(responseWithToken);
     })
     .catch(erro => {
+      console.error(erro)
       console.log("Erro na atualização do recurso: " + erro.message); 
     })
   }

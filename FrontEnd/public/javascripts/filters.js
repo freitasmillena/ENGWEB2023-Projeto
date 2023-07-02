@@ -133,6 +133,8 @@ document.addEventListener('DOMContentLoaded', function() {
       // Get the selected option value
       const selectedGroup = this.value;
 
+      console.log(selectedGroup);
+
       if ( selectedGroup === "all") {
         // Go to the url without the filter
         window.location.href = '/recursos';

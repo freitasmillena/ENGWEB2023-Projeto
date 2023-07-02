@@ -1,10 +1,11 @@
+#!/usr/bin/env python3
+
 import os
 import sys
 import json
 import random
-import hashlib
 import string
-from datetime import datetime
+from datetime import datetime, timedelta
 
 f_id = 0
 u_id = 0
@@ -55,8 +56,12 @@ def gen_users(amount):
         user['surname'] = random.sample(sur_names, 1)[0]
         user['username'] = f"{user['name'].lower()}{u_id}"
         user['level'] = random.sample(level_array, 1)[0]
-        user['dataRegisto'] = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
-        user['dataAtualizao'] = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
+        timestamp_epoch_to_now = random.uniform(0, datetime.now().timestamp())
+        random_datetime = datetime.fromtimestamp(timestamp_epoch_to_now)
+        user['dataRegisto'] = random_datetime.strftime('%Y-%m-%dT%H:%M:%S')
+        random_timedelta = timedelta(seconds=random.uniform(0, (datetime.now() - random_datetime).total_seconds()))
+        random_final_datetime = random_datetime + random_timedelta
+        user['dataAtualizao'] = random_final_datetime.strftime('%Y-%m-%dT%H:%M:%S')
         user['salt'] = os.urandom(32).hex()
         user['hash'] = (''.join(random.choice(string.hexdigits) for _ in range(1024))).lower()
         user['email'] = str(user['_id'])+'@'+user['surname'].lower()+'.com'
@@ -100,10 +105,12 @@ def gen_entry(file):
         entry['description'] = f"This is a {type} file."
     else:
         entry['description'] = None
-    entry['created'] = datetime.fromtimestamp(
-        os.path.getctime(file)).strftime('%Y-%m-%dT%H:%M:%S')
-    entry['modified'] = datetime.fromtimestamp(
-        os.path.getmtime(file)).strftime('%Y-%m-%dT%H:%M:%S')
+    timestamp_epoch_to_now = random.uniform(0, datetime.now().timestamp())
+    random_datetime = datetime.fromtimestamp(timestamp_epoch_to_now)
+    entry['created'] = random_datetime.strftime('%Y-%m-%dT%H:%M:%S')
+    random_timedelta = timedelta(seconds=random.uniform(0, (datetime.now() - random_datetime).total_seconds()))
+    random_final_datetime = random_datetime + random_timedelta
+    entry['modified'] = random_final_datetime.strftime('%Y-%m-%dT%H:%M:%S')
     u=random.sample(range(0,u_id),1)[0]
     entry['creator'] = f"{user_array[u]['username']}"
     user_array[u]['submissions'].append(entry['_id'])
@@ -126,12 +133,15 @@ def gen_entry(file):
         how_many = random.randint(0, 50)
         for i in range(how_many):
             picked_id = random.sample(range(0, u_id), 1)[0]
+            user_datetime=datetime.strptime(user_array[picked_id]['dataRegisto'], '%Y-%m-%dT%H:%M:%S')
+            random_timedelta = timedelta(seconds=random.uniform(0, (datetime.now() - user_datetime).total_seconds()))
+            random_final_datetime = random_datetime + random_timedelta
             if entry['_id'] not in user_array[picked_id]['favorites']:
                 user_array[picked_id]['favorites'].append(entry['_id'])
             new_comment = { '_id': c_id,
                             'user': f"{user_array[picked_id]['username']}",
                             'comment': random.sample(comments, 1)[0],
-                            'created': datetime.now().strftime('%Y-%m-%dT%H:%M:%S')}
+                            'created': random_final_datetime.strftime('%Y-%m-%dT%H:%M:%S')}
             c_id += 1
             entry['comments'].append(new_comment)
             user_array[picked_id]['comments'].append(new_comment['_id'])
